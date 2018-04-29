@@ -5,7 +5,9 @@ public class GameManager {
 		// TODO Auto-generated method stu
 		
 		ajsdgfjhgasjdh
-		
+
+
+		changed by sean
 		b
 
 	}
