@@ -16,7 +16,7 @@
 10. To upload your files (commit and push)
 ```
 git add .
-git commit -m "description of what you did"
+git commit -m "very short description of what you did"
 git push
 ```
 Note: First time pushing requires `git push origin master` instead of `git push` and you can check the status of your files at any time with `git status`
