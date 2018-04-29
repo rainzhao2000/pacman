@@ -82,3 +82,17 @@ For our game, everything is going to be handled by the GameManager class; this i
 | Mouse left click for starting the game<br><br>Nothing is needed to detect this input, the start button will be a clickable button. | No processing needed. | Begin the game. |
 
 The reason for the IPO chart being empty is that the complexity of our project is not on how the program process the user’s input, but on the algorithm that allows the program to function as intended.
+
+### Requirements
+
+You may come up with an idea of your own; however, keep in mind that it must meet the standards and expectations for a Grade 12 University Preparation course.
+Your program must incorporate programming concepts learned throughout the course of the year, including:  
+* Java GUI and/or graphics components
+* Data Types
+* Decision statements 
+* Looping structures
+* 1D & 2D arrays
+* Object-oriented programming 
+* Methods & overloading
+* Writing to File
+* Recursion 
