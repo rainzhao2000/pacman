@@ -4,15 +4,16 @@
 
 ### How to setup github (mac os)
 
-1. Install git from https://git-scm.com/downloads
-2. (From here on out, type commands using terminal) cd into your folder of choice for workspace (see terminal navigation commands)
-3. Configure your name with `git config --global user.name "Mona Lisa"`
+1. Create a github account and give me your username or the email you used, then I'll send an invite and you can accept it.
+2. Install git from https://git-scm.com/downloads
+3. (From here on out, type commands using terminal) cd into your folder of choice for workspace (see terminal navigation commands)
+4. Configure your name with `git config --global user.name "Mona Lisa"`
 5. Configure your github email `git config --global user.email "email@example.com"`
-5. Clone this repository `git clone https://github.com/rainzhao2000/pacman.git`
-6. `cd pacman`
-7. Work on files in eclipse
-8. To update your files (in case I made changes) `git pull`
-9. To upload your files (commit and push)
+6. Clone this repository `git clone https://github.com/rainzhao2000/pacman.git`
+7. `cd pacman`
+8. Work on files in eclipse
+9. To update your files (in case I made changes) `git pull`
+10. To upload your files (commit and push)
 ```
 git add .
 git commit -m "description of what you did"
