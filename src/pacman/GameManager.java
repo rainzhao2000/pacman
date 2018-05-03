@@ -44,7 +44,7 @@ public class GameManager {
 		frmPacman = new JFrame();
 		frmPacman.setResizable(false);
 		frmPacman.setTitle("Pac-Man");
-		frmPacman.setSize(600, 800);
+		frmPacman.setBounds(100, 100, 224, 288);
 		frmPacman.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
