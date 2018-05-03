@@ -1,6 +1,6 @@
 /*
  * Collaborators: Jacky Zhao and Rain Zhao
- * Due Date: wallCode Jun 2pathCodewallCode8
+ * Due Date: 1 Jun 2018
  * Description:
  */
 
@@ -35,34 +35,7 @@ public class GameManager {
 	private static final int pinkyCode = 7;
 	private static final int inkyCode = 8;
 	private static final int clydeCode = 9;
-	static int[][] map/* = {
-			{ wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, pathCode },
-			{ wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, wallCode, }
-			}*/;
+	static int[][] map;
 	private final Action mapCreatorAction = new MapCreatorAction();
 
 	/**
