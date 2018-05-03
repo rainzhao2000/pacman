@@ -24,7 +24,7 @@ Note: First time pushing requires `git push origin master` instead of `git push`
 <details>
  <summary>Description:</summary>
 <br>
-We’re going to try to replicate the popular game of Pac-Man in Java with GUI elements. Although, it is important to note that for complexity reasons (yes Pac-Man is incredibly complex, see for example just the ghost behaviour alone), our proposal provides a basis for our own simplified interpretation and modification of the rules; which may also differ from our final game.
+We’re going to try to replicate the popular game of Pac-Man in Java with GUI elements. Although, it is important to note that for complexity reasons (yes Pac-Man is incredibly complex, see for example just the ghost behaviour alone: http://gameinternals.com/post/2072558330/understanding-pac-man-ghost-behavior), our proposal provides a basis for our own simplified interpretation and modification of the rules; which may also differ from our final game.
 
 Our version of the game will have the player control Pac-Man through a maze with each stage housing 240 Pac-Dots, 4 Power Pellets, 4 Ghosts as well as a random bonus fruit that appears during the gameplay under the center Ghost House where the ghosts spawn. When Pac-Man walks over a Pac-Dot or Power Pellet or a fruit, they will be eaten. Each Pac-Dot eaten adds 10 points to the player’s score and the fruits vary from Cherry: 100 points, to Strawberry: 300 points, to Orange: 500 points, to Apple: 700 points, to Melon: 1000 points, to Galaxian Boss: 2000 points, to Bell: 3000 points, to Key: 5000 points. 
 
