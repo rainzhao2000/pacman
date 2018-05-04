@@ -13,7 +13,7 @@ public class DrawPanel extends JPanel {
 	int padding = GameManager.padding;
 	int mapWidth = GameManager.mapWidth;
 	int mapHeight = GameManager.mapHeight;
-	
+
 	/*
 	 * Framerate dictates the delay between paint refreshes as this method gets
 	 * called from repaint().
@@ -26,7 +26,52 @@ public class DrawPanel extends JPanel {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		drawMap(g);
 		drawGrid(g);
+	}
+
+	/*
+	 * Temporary draw map method with simplified colors instead of sprites
+	 */
+	public void drawMap(Graphics g) {
+		for (int row = 0; row < map.length; row++) {
+			for (int col = 0; col < map[row].length; col++) {
+				int x = col * (tileWidth + padding);
+				int y = row * (tileWidth + padding);
+				g.setColor(getColor(map[row][col]));
+				g.fillRect(x, y, tileWidth + padding, tileWidth + padding);
+			}
+		}
+	}
+	
+	/*
+	 * Temporary color getter
+	 */
+	public Color getColor(int code) {
+		switch (code) {
+		case GameManager.pathCode:
+			return Color.black;
+		case GameManager.wallCode:
+			return Color.blue;
+		case GameManager.pacdotCode:
+			return Color.lightGray;
+		case GameManager.powerPelletCode:
+			return Color.white;
+		case GameManager.fruitCode:
+			return Color.magenta;
+		case GameManager.pacmanCode:
+			return Color.yellow;
+		case GameManager.blinkyCode:
+			return Color.red;
+		case GameManager.pinkyCode:
+			return Color.pink;
+		case GameManager.inkyCode:
+			return Color.cyan;
+		case GameManager.clydeCode:
+			return Color.orange;
+		default:
+			return new Color(150, 100, 100);
+		}
 	}
 
 	/*
