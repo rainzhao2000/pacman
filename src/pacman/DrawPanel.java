@@ -7,10 +7,11 @@ import javax.swing.JPanel;
 
 public class DrawPanel extends JPanel {
 
-	int framerate = 30;
+	int framerate = 60;
 	int[][] map = GameManager.map;
 	int tileWidth = GameManager.tileWidth;
 	int padding = GameManager.padding;
+	int tilePadWidth = GameManager.tilePadWidth;
 	int mapWidth = GameManager.mapWidth;
 	int mapHeight = GameManager.mapHeight;
 
@@ -36,10 +37,10 @@ public class DrawPanel extends JPanel {
 	public void drawMap(Graphics g) {
 		for (int row = 0; row < map.length; row++) {
 			for (int col = 0; col < map[row].length; col++) {
-				int x = col * (tileWidth + padding);
-				int y = row * (tileWidth + padding);
+				int x = col * tilePadWidth;
+				int y = row * tilePadWidth;
 				g.setColor(getColor(map[row][col]));
-				g.fillRect(x, y, tileWidth + padding, tileWidth + padding);
+				g.fillRect(x, y, tilePadWidth, tilePadWidth);
 			}
 		}
 	}
@@ -81,12 +82,12 @@ public class DrawPanel extends JPanel {
 		g.setColor(Color.green);
 		g.fillRect(0, 0, mapWidth, padding);
 		for (int row = 1; row <= map.length; row++) {
-			int y = row * (tileWidth + padding);
+			int y = row * tilePadWidth;
 			g.fillRect(0, y, mapWidth, padding);
 		}
 		g.fillRect(0, 0, padding, mapHeight);
 		for (int col = 1; col <= map[0].length; col++) {
-			int x = col * (tileWidth + padding);
+			int x = col * tilePadWidth;
 			g.fillRect(x, 0, padding, mapHeight);
 		}
 	}

@@ -37,6 +37,7 @@ public class GameManager {
 	static int[][] map = new int[31][28];
 	static final int tileWidth = 10;
 	static final int padding = 1;
+	static final int tilePadWidth = tileWidth + padding;
 	static final int mapWidth = map[0].length * tileWidth + (map[0].length + 1) * padding;
 	static final int mapHeight = map.length * tileWidth + (map.length + 1) * padding;
 	private final Action mapCreatorAction = new MapCreatorAction();
@@ -73,7 +74,7 @@ public class GameManager {
 		frmPacman = new JFrame();
 		frmPacman.setResizable(false);
 		frmPacman.setTitle("Pac-Man");
-		frmPacman.setBounds(100, 100, 309, 500);
+		frmPacman.setBounds(400, 100, 309, 500);
 		frmPacman.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmPacman.getContentPane().setLayout(null);
 
