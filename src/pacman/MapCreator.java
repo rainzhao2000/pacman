@@ -14,15 +14,19 @@ public class MapCreator {
 	JFrame frmMapCreator;
 	JFrame frmPacman = GameManager.window.frmPacman;
 	int[][] map = GameManager.map;
+	int mapWidth = GameManager.mapWidth;
+	int mapHeight = GameManager.mapHeight;
+	boolean paused = GameManager.paused;
 
 	/**
 	 * Create the application.
 	 */
 	public MapCreator() {
 		initialize();
+		// Unpause the canvas rendering in GameManager on close of MapCreator
 		frmMapCreator.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(WindowEvent winEvt) {
-				GameManager.paused = false;
+				paused = false;
 				System.out.println("Game Unpaused");
 			}
 		});
@@ -32,12 +36,9 @@ public class MapCreator {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		for (int row = 0; row < map.length; row++) {
-			for (int col = 0; col < map[row].length; col++) {
-				map[row][col] = GameManager.pathCode;
-			}
-		}
+		blankMap();
 
+		// Set up the window (frame), and its elements
 		frmMapCreator = new JFrame();
 		frmMapCreator.setResizable(false);
 		frmMapCreator.setTitle("Pac-Man Map Creator");
@@ -46,7 +47,7 @@ public class MapCreator {
 		frmMapCreator.getContentPane().setLayout(null);
 
 		DrawPanel canvas = new DrawPanel();
-		canvas.setBounds(0, 0, 309, 342);
+		canvas.setBounds(0, 0, mapWidth, mapHeight);
 		frmMapCreator.getContentPane().add(canvas);
 
 		JButton btnPath = new JButton("path");
@@ -89,6 +90,7 @@ public class MapCreator {
 		btnClyde.setBounds(315, 375, 117, 29);
 		frmMapCreator.getContentPane().add(btnClyde);
 
+		// Repaint the canvas with paintImmediately() for synchronous painting
 		Timer t = new Timer(1, new ActionListener() {
 
 			@Override
@@ -107,4 +109,16 @@ public class MapCreator {
 			}
 		});
 	}
+
+	/*
+	 * Reset all values in map array to 0 (path)
+	 */
+	private void blankMap() {
+		for (int row = 0; row < map.length; row++) {
+			for (int col = 0; col < map[row].length; col++) {
+				map[row][col] = GameManager.pathCode;
+			}
+		}
+	}
+
 }

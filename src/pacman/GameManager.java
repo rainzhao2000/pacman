@@ -24,7 +24,6 @@ public class GameManager {
 	static GameManager window;
 	private MapCreator mapCreatorWindow;
 	JFrame frmPacman;
-	static boolean paused = false;
 	static final int pathCode = 0;
 	static final int wallCode = 1;
 	static final int pacdotCode = 2;
@@ -36,7 +35,12 @@ public class GameManager {
 	static final int inkyCode = 8;
 	static final int clydeCode = 9;
 	static int[][] map = new int[31][28];
+	static final int tileWidth = 10;
+	static final int padding = 1;
+	static final int mapWidth = map[0].length * tileWidth + (map[0].length + 1) * padding;
+	static final int mapHeight = map.length * tileWidth + (map.length + 1) * padding;
 	private final Action mapCreatorAction = new MapCreatorAction();
+	static boolean paused = false;
 
 	/**
 	 * Launch the application.
@@ -65,6 +69,7 @@ public class GameManager {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		// Set up the window (frame), and its elements
 		frmPacman = new JFrame();
 		frmPacman.setResizable(false);
 		frmPacman.setTitle("Pac-Man");
@@ -81,7 +86,7 @@ public class GameManager {
 		frmPacman.getContentPane().add(lblScore);
 
 		DrawPanel canvas = new DrawPanel();
-		canvas.setBounds(0, 50, 309, 342);
+		canvas.setBounds(0, 50, mapWidth, mapHeight);
 		frmPacman.getContentPane().add(canvas);
 
 		JPanel infoPanel = new JPanel();
@@ -96,7 +101,8 @@ public class GameManager {
 		btnMapCreator.setBounds(94, 449, 120, 29);
 		frmPacman.getContentPane().add(btnMapCreator);
 		btnMapCreator.setAction(mapCreatorAction);
-		
+
+		// Repaint the canvas with paintImmediately() for synchronous painting
 		Timer t = new Timer(1, new ActionListener() {
 
 			@Override
@@ -116,12 +122,19 @@ public class GameManager {
 		});
 	}
 
+	// Action that opens the MapCreator window
 	private class MapCreatorAction extends AbstractAction {
 		public MapCreatorAction() {
 			putValue(NAME, "Map Creator");
 			putValue(SHORT_DESCRIPTION, "Customize the map");
 		}
 
+		/*
+		 * When the component this action is attached to is triggered, pause the
+		 * current canvas rendering (so that resources can be allocated to the
+		 * MapCreator canvas), then try to close any existing open MapCreator
+		 * window and instantiate a new MapCreator window
+		 */
 		public void actionPerformed(ActionEvent e) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
