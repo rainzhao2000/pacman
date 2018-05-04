@@ -163,7 +163,7 @@ public class MapCreator {
 		int row = e.getY() / tilePadWidth;
 		map[row][col] = currentObject;
 	}
-	
+
 	private class PathSelect extends AbstractAction {
 		public PathSelect() {
 			putValue(NAME, "path");

@@ -20,7 +20,7 @@ public class DrawPanel extends JPanel {
 	 * called from repaint().
 	 */
 	@Override
-    protected void paintComponent(Graphics g) {
+	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		try {
 			Thread.sleep(1000 / framerate); // milliseconds
@@ -44,7 +44,7 @@ public class DrawPanel extends JPanel {
 			}
 		}
 	}
-	
+
 	/*
 	 * Temporary color getter
 	 */
