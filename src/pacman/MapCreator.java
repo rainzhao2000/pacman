@@ -2,6 +2,7 @@ package pacman;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.util.concurrent.Executors;
 
 import javax.swing.JButton;
@@ -19,6 +20,12 @@ public class MapCreator {
 	 */
 	public MapCreator() {
 		initialize();
+		frmMapCreator.addWindowListener(new java.awt.event.WindowAdapter() {
+			public void windowClosing(WindowEvent winEvt) {
+				GameManager.paused = false;
+				System.out.println("Game Unpaused");
+			}
+		});
 	}
 
 	/**

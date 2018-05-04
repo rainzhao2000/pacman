@@ -8,6 +8,8 @@ package pacman;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.concurrent.Executors;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -15,12 +17,14 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 public class GameManager {
 
 	static GameManager window;
 	private MapCreator mapCreatorWindow;
 	JFrame frmPacman;
+	static boolean paused = false;
 	static final int pathCode = 0;
 	static final int wallCode = 1;
 	static final int pacdotCode = 2;
@@ -92,6 +96,24 @@ public class GameManager {
 		btnMapCreator.setBounds(94, 449, 120, 29);
 		frmPacman.getContentPane().add(btnMapCreator);
 		btnMapCreator.setAction(mapCreatorAction);
+		
+		Timer t = new Timer(1, new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				canvas.repaint();
+			}
+		});
+		t.start();
+		Executors.newSingleThreadExecutor().execute(new Runnable() {
+
+			@Override
+			public void run() {
+				while (!paused) {
+					canvas.paintImmediately(canvas.getBounds());
+				}
+			}
+		});
 	}
 
 	private class MapCreatorAction extends AbstractAction {
@@ -103,6 +125,8 @@ public class GameManager {
 		public void actionPerformed(ActionEvent e) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
+					paused = true;
+					System.out.println("Game Paused");
 					try {
 						mapCreatorWindow.frmMapCreator.dispose();
 						mapCreatorWindow = new MapCreator();
