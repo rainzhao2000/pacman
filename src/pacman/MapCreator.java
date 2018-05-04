@@ -131,7 +131,6 @@ public class MapCreator {
 
 		// Repaint the canvas with paintImmediately() for synchronous painting
 		Timer t = new Timer(1, new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				canvas.repaint();
@@ -139,7 +138,6 @@ public class MapCreator {
 		});
 		t.start();
 		Executors.newSingleThreadExecutor().execute(new Runnable() {
-
 			@Override
 			public void run() {
 				while (true) {
