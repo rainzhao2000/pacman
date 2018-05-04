@@ -11,13 +11,10 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class GameManager {
 
@@ -67,45 +64,34 @@ public class GameManager {
 		frmPacman = new JFrame();
 		frmPacman.setResizable(false);
 		frmPacman.setTitle("Pac-Man");
-		frmPacman.setBounds(100, 100, 309, 515);
+		frmPacman.setBounds(100, 100, 309, 500);
 		frmPacman.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmPacman.getContentPane().setLayout(null);
-		 
-		 JLabel lblHighScore = new JLabel("High Score:");
-		 lblHighScore.setBounds(118, 6, 72, 16);
-		 frmPacman.getContentPane().add(lblHighScore);
-		 
-		 JLabel lblScore = new JLabel("0");
-		 lblScore.setBounds(14, 24, 280, 16);
-		 frmPacman.getContentPane().add(lblScore);
 
-		 DrawPanel canvas = new DrawPanel();
-		 canvas.setBounds(0, 50, 309, 342);
-		 frmPacman.getContentPane().add(canvas);
-		
+		JLabel lblHighScore = new JLabel("High Score:");
+		lblHighScore.setBounds(118, 6, 72, 16);
+		frmPacman.getContentPane().add(lblHighScore);
+
+		JLabel lblScore = new JLabel("0");
+		lblScore.setBounds(14, 24, 280, 16);
+		frmPacman.getContentPane().add(lblScore);
+
+		DrawPanel canvas = new DrawPanel();
+		canvas.setBounds(0, 50, 309, 342);
+		frmPacman.getContentPane().add(canvas);
+
 		JPanel infoPanel = new JPanel();
 		infoPanel.setBounds(14, 392, 280, 40);
 		frmPacman.getContentPane().add(infoPanel);
 
-		JPanel debugPanel = new JPanel();
-		debugPanel.setBounds(0, 432, 309, 60);
-		frmPacman.getContentPane().add(debugPanel);
-
 		JLabel lblDebugControls = new JLabel("Debug Controls");
+		lblDebugControls.setBounds(105, 434, 99, 16);
+		frmPacman.getContentPane().add(lblDebugControls);
 
 		JButton btnMapCreator = new JButton("Map Creator");
+		btnMapCreator.setBounds(94, 449, 120, 29);
+		frmPacman.getContentPane().add(btnMapCreator);
 		btnMapCreator.setAction(mapCreatorAction);
-		GroupLayout gl_debugPanel = new GroupLayout(debugPanel);
-		gl_debugPanel.setHorizontalGroup(gl_debugPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_debugPanel.createSequentialGroup().addGap(105)
-						.addComponent(lblDebugControls, GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE).addGap(105))
-				.addGroup(gl_debugPanel.createSequentialGroup().addGap(94)
-						.addComponent(btnMapCreator, GroupLayout.PREFERRED_SIZE, 42, Short.MAX_VALUE).addGap(95)));
-		gl_debugPanel.setVerticalGroup(gl_debugPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_debugPanel.createSequentialGroup().addGap(7).addComponent(lblDebugControls)
-						.addPreferredGap(ComponentPlacement.RELATED).addComponent(btnMapCreator).addContainerGap(23,
-								Short.MAX_VALUE)));
-		debugPanel.setLayout(gl_debugPanel);
 	}
 
 	private class MapCreatorAction extends AbstractAction {
