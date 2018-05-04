@@ -19,8 +19,8 @@ public class DrawPanel extends JPanel {
 	 * called from repaint().
 	 */
 	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
+    protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		try {
 			Thread.sleep(1000 / framerate); // milliseconds
 		} catch (InterruptedException e) {
