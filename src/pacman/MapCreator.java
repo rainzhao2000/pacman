@@ -1,14 +1,18 @@
 package pacman;
 
-import java.awt.Canvas;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.concurrent.Executors;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.Timer;
 
 public class MapCreator {
 
 	JFrame frmMapCreator;
 	JFrame frmPacman = GameManager.window.frmPacman;
+	int[][] map = GameManager.map;
 
 	/**
 	 * Create the application.
@@ -21,10 +25,9 @@ public class MapCreator {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		GameManager.map = new int[31][28];
-		for (int row = 0; row < GameManager.map.length; row++) {
-			for (int col = 0; col < GameManager.map[row].length; col++) {
-				GameManager.map[row][col] = 0;
+		for (int row = 0; row < map.length; row++) {
+			for (int col = 0; col < map[row].length; col++) {
+				map[row][col] = GameManager.pathCode;
 			}
 		}
 
@@ -35,7 +38,7 @@ public class MapCreator {
 		frmMapCreator.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmMapCreator.getContentPane().setLayout(null);
 
-		Canvas canvas = new Canvas();
+		DrawPanel canvas = new DrawPanel();
 		canvas.setBounds(0, 0, 309, 342);
 		frmMapCreator.getContentPane().add(canvas);
 
@@ -78,5 +81,23 @@ public class MapCreator {
 		JButton btnClyde = new JButton("clyde");
 		btnClyde.setBounds(315, 375, 117, 29);
 		frmMapCreator.getContentPane().add(btnClyde);
+
+		Timer t = new Timer(1, new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				canvas.repaint();
+			}
+		});
+		t.start();
+		Executors.newSingleThreadExecutor().execute(new Runnable() {
+
+			@Override
+			public void run() {
+				while (true) {
+					canvas.paintImmediately(canvas.getBounds());
+				}
+			}
+		});
 	}
 }
