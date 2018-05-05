@@ -24,7 +24,7 @@ public class GameManager {
 	private int framerate = Main.framerate;
 	private MapCreator mapCreatorWindow = null;
 	private final Action mapCreatorAction = new MapCreatorAction();
-	Thread thread;
+	private Thread thread = Main.gameManagerCanvasThread;
 
 	/**
 	 * Create the application.

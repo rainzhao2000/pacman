@@ -22,8 +22,8 @@ public class MapCreator {
 	private int tilePadWidth = Main.tilePadWidth;
 	private int mapWidth = Main.mapWidth;
 	private int mapHeight = Main.mapHeight;
-	private Thread thread;
-	private Thread gameManagerCanvasThread = Main.gameManager.thread;
+	private Thread thread = Main.mapCreatorCanvasThread;
+	private Thread gameManagerCanvasThread = Main.gameManagerCanvasThread;
 	private Codes currentObject = Codes.path;
 	private final Action pathSelect = new PathSelect();
 	private final Action wallSelect = new WallSelect();
