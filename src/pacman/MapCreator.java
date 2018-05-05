@@ -1,29 +1,30 @@
 package pacman;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowEvent;
-import java.util.concurrent.Executors;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.Timer;
+
+import pacman.Main.Codes;
 
 public class MapCreator {
 
 	JFrame frmMapCreator;
-	JFrame frmPacman = GameManager.window.frmPacman;
-	int[][] map = GameManager.map;
-	int tilePadWidth = GameManager.tilePadWidth;
-	int mapWidth = GameManager.mapWidth;
-	int mapHeight = GameManager.mapHeight;
-	boolean paused = GameManager.paused;
-	private int currentObject = 0;
+	private JFrame frmPacman = Main.gameManager.frmPacman;
+	private int framerate = Main.framerate;
+	private Codes[][] map = Main.map;
+	private int tilePadWidth = Main.tilePadWidth;
+	private int mapWidth = Main.mapWidth;
+	private int mapHeight = Main.mapHeight;
+	private Thread thread;
+	private Thread gameManagerCanvasThread = Main.gameManager.thread;
+	private Codes currentObject = Codes.path;
 	private final Action pathSelect = new PathSelect();
 	private final Action wallSelect = new WallSelect();
 	private final Action pacdotSelect = new PacdotSelect();
@@ -43,7 +44,8 @@ public class MapCreator {
 		// Unpause the canvas rendering in GameManager on close of MapCreator
 		frmMapCreator.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(WindowEvent winEvt) {
-				paused = false;
+				thread.interrupt();
+				gameManagerCanvasThread.start();
 				System.out.println("Game Unpaused");
 			}
 		});
@@ -130,21 +132,30 @@ public class MapCreator {
 		frmMapCreator.getContentPane().add(btnClyde);
 
 		// Repaint the canvas with paintImmediately() for synchronous painting
-		Timer t = new Timer(1, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				canvas.repaint();
-			}
-		});
-		t.start();
-		Executors.newSingleThreadExecutor().execute(new Runnable() {
-			@Override
+		/*
+		 * Timer t = new Timer(1, new ActionListener() {
+		 * 
+		 * @Override public void actionPerformed(ActionEvent e) {
+		 * canvas.repaint(); } }); t.start();
+		 * Executors.newSingleThreadExecutor().execute(new Runnable() {
+		 * 
+		 * @Override public void run() { while (true) {
+		 * canvas.paintImmediately(canvas.getBounds()); } } });
+		 */
+		thread = new Thread(new Runnable() {
 			public void run() {
 				while (true) {
-					canvas.paintImmediately(canvas.getBounds());
+					try {
+						Thread.sleep(1000 / framerate); // milliseconds
+					} catch (InterruptedException e) {
+						break;
+					}
+					canvas.repaint();
+					System.out.println("painting creator");
 				}
 			}
 		});
+		thread.start();
 	}
 
 	/*
@@ -153,7 +164,7 @@ public class MapCreator {
 	private void blankMap() {
 		for (int row = 0; row < map.length; row++) {
 			for (int col = 0; col < map[row].length; col++) {
-				map[row][col] = GameManager.pathCode;
+				map[row][col] = Codes.path;
 			}
 		}
 	}
@@ -170,7 +181,7 @@ public class MapCreator {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			currentObject = GameManager.pathCode;
+			currentObject = Codes.path;
 			System.out.println("path selected " + currentObject);
 		}
 	}
@@ -181,7 +192,7 @@ public class MapCreator {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			currentObject = GameManager.wallCode;
+			currentObject = Codes.wall;
 			System.out.println("wall selected " + currentObject);
 		}
 	}
@@ -192,7 +203,7 @@ public class MapCreator {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			currentObject = GameManager.pacdotCode;
+			currentObject = Codes.pacdot;
 			System.out.println("pacdot selected " + currentObject);
 		}
 	}
@@ -203,7 +214,7 @@ public class MapCreator {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			currentObject = GameManager.powerPelletCode;
+			currentObject = Codes.powerPellet;
 			System.out.println("power pellet selected " + currentObject);
 		}
 	}
@@ -214,7 +225,7 @@ public class MapCreator {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			currentObject = GameManager.fruitCode;
+			currentObject = Codes.fruit;
 			System.out.println("fruit selected " + currentObject);
 		}
 	}
@@ -225,7 +236,7 @@ public class MapCreator {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			currentObject = GameManager.pacmanCode;
+			currentObject = Codes.pacman;
 			System.out.println("pacman selected " + currentObject);
 		}
 	}
@@ -236,7 +247,7 @@ public class MapCreator {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			currentObject = GameManager.blinkyCode;
+			currentObject = Codes.blinky;
 			System.out.println("blinky selected " + currentObject);
 		}
 	}
@@ -247,7 +258,7 @@ public class MapCreator {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			currentObject = GameManager.pinkyCode;
+			currentObject = Codes.pinky;
 			System.out.println("pinky selected " + currentObject);
 		}
 	}
@@ -258,7 +269,7 @@ public class MapCreator {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			currentObject = GameManager.inkyCode;
+			currentObject = Codes.inky;
 			System.out.println("inky selected " + currentObject);
 		}
 	}
@@ -269,7 +280,7 @@ public class MapCreator {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			currentObject = GameManager.clydeCode;
+			currentObject = Codes.clyde;
 			System.out.println("clyde selected " + currentObject);
 		}
 	}

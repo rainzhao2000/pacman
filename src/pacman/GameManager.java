@@ -8,8 +8,6 @@ package pacman;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.concurrent.Executors;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -17,47 +15,16 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
 public class GameManager {
 
-	static GameManager window;
-	private MapCreator mapCreatorWindow;
 	JFrame frmPacman;
-	static final int pathCode = 0;
-	static final int wallCode = 1;
-	static final int pacdotCode = 2;
-	static final int powerPelletCode = 3;
-	static final int fruitCode = 4;
-	static final int pacmanCode = 5;
-	static final int blinkyCode = 6;
-	static final int pinkyCode = 7;
-	static final int inkyCode = 8;
-	static final int clydeCode = 9;
-	static int[][] map = new int[31][28];
-	static final int tileWidth = 10;
-	static final int padding = 1;
-	static final int tilePadWidth = tileWidth + padding;
-	static final int mapWidth = map[0].length * tileWidth + (map[0].length + 1) * padding;
-	static final int mapHeight = map.length * tileWidth + (map.length + 1) * padding;
+	private int mapWidth = Main.mapWidth;
+	private int mapHeight = Main.mapHeight;
+	private int framerate = Main.framerate;
+	private MapCreator mapCreatorWindow = null;
 	private final Action mapCreatorAction = new MapCreatorAction();
-	static boolean paused = false;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					window = new GameManager();
-					window.frmPacman.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	Thread thread;
 
 	/**
 	 * Create the application.
@@ -104,21 +71,30 @@ public class GameManager {
 		btnMapCreator.setAction(mapCreatorAction);
 
 		// Repaint the canvas with paintImmediately() for synchronous painting
-		Timer t = new Timer(1, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				canvas.repaint();
-			}
-		});
-		t.start();
-		Executors.newSingleThreadExecutor().execute(new Runnable() {
-			@Override
+		/*
+		 * Timer t = new Timer(1, new ActionListener() {
+		 * 
+		 * @Override public void actionPerformed(ActionEvent e) {
+		 * canvas.repaint(); } }); t.start();
+		 * Executors.newSingleThreadExecutor().execute(new Runnable() {
+		 * 
+		 * @Override public void run() { while (!paused) {
+		 * canvas.paintImmediately(canvas.getBounds()); } } });
+		 */
+		thread = new Thread(new Runnable() {
 			public void run() {
-				while (!paused) {
-					canvas.paintImmediately(canvas.getBounds());
+				while (true) {
+					try {
+						Thread.sleep(1000 / framerate); // milliseconds
+					} catch (InterruptedException e) {
+						break;
+					}
+					canvas.repaint();
+					System.out.println("painting");
 				}
 			}
 		});
+		thread.start();
 	}
 
 	// Action that opens the MapCreator window
@@ -137,16 +113,13 @@ public class GameManager {
 		public void actionPerformed(ActionEvent e) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					paused = true;
+					thread.interrupt();
 					System.out.println("Game Paused");
-					try {
+					if (mapCreatorWindow != null) {
 						mapCreatorWindow.frmMapCreator.dispose();
-						mapCreatorWindow = new MapCreator();
-						mapCreatorWindow.frmMapCreator.setVisible(true);
-					} catch (Exception e) {
-						mapCreatorWindow = new MapCreator();
-						mapCreatorWindow.frmMapCreator.setVisible(true);
 					}
+					mapCreatorWindow = new MapCreator();
+					mapCreatorWindow.frmMapCreator.setVisible(true);
 				}
 			});
 		}

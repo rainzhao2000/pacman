@@ -5,28 +5,28 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+import pacman.Main.Codes;
+
 public class DrawPanel extends JPanel {
 
-	int framerate = 60;
-	int[][] map = GameManager.map;
-	int tileWidth = GameManager.tileWidth;
-	int padding = GameManager.padding;
-	int tilePadWidth = GameManager.tilePadWidth;
-	int mapWidth = GameManager.mapWidth;
-	int mapHeight = GameManager.mapHeight;
+	// int framerate = 60;
+	Codes[][] map = Main.map;
+	int tileWidth = Main.tileWidth;
+	int padding = Main.padding;
+	int tilePadWidth = Main.tilePadWidth;
+	int mapWidth = Main.mapWidth;
+	int mapHeight = Main.mapHeight;
 
 	/*
 	 * Framerate dictates the delay between paint refreshes as this method gets
 	 * called from repaint().
 	 */
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		try {
-			Thread.sleep(1000 / framerate); // milliseconds
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+	protected void paintComponent(
+			Graphics g) {/*
+							 * try { Thread.sleep(1000 / framerate); //
+							 * milliseconds } catch (InterruptedException e) {
+							 * e.printStackTrace(); }
+							 */
 		drawMap(g);
 		drawGrid(g);
 	}
@@ -34,7 +34,7 @@ public class DrawPanel extends JPanel {
 	/*
 	 * Temporary draw map method with simplified colors instead of sprites
 	 */
-	public void drawMap(Graphics g) {
+	private void drawMap(Graphics g) {
 		for (int row = 0; row < map.length; row++) {
 			for (int col = 0; col < map[row].length; col++) {
 				int x = col * tilePadWidth;
@@ -48,27 +48,27 @@ public class DrawPanel extends JPanel {
 	/*
 	 * Temporary color getter
 	 */
-	public Color getColor(int code) {
+	static Color getColor(Codes code) {
 		switch (code) {
-		case GameManager.pathCode:
+		case path:
 			return Color.black;
-		case GameManager.wallCode:
+		case wall:
 			return Color.blue;
-		case GameManager.pacdotCode:
+		case pacdot:
 			return Color.lightGray;
-		case GameManager.powerPelletCode:
+		case powerPellet:
 			return Color.white;
-		case GameManager.fruitCode:
+		case fruit:
 			return Color.magenta;
-		case GameManager.pacmanCode:
+		case pacman:
 			return Color.yellow;
-		case GameManager.blinkyCode:
+		case blinky:
 			return Color.red;
-		case GameManager.pinkyCode:
+		case pinky:
 			return Color.pink;
-		case GameManager.inkyCode:
+		case inky:
 			return Color.cyan;
-		case GameManager.clydeCode:
+		case clyde:
 			return Color.orange;
 		default:
 			return new Color(150, 100, 100);
@@ -78,7 +78,7 @@ public class DrawPanel extends JPanel {
 	/*
 	 * Draw padding guides at every row and column (forming a visual grid)
 	 */
-	public void drawGrid(Graphics g) {
+	private void drawGrid(Graphics g) {
 		g.setColor(Color.green);
 		g.fillRect(0, 0, mapWidth, padding);
 		for (int row = 1; row <= map.length; row++) {
