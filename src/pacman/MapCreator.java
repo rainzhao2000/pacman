@@ -35,6 +35,7 @@ public class MapCreator {
 	private final Action pinkySelect = new PinkySelect();
 	private final Action inkySelect = new InkySelect();
 	private final Action clydeSelect = new ClydeSelect();
+	private DrawPanel canvas;
 
 	/**
 	 * Create the application.
@@ -45,6 +46,7 @@ public class MapCreator {
 		frmMapCreator.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(WindowEvent winEvt) {
 				thread.interrupt();
+				gameManagerCanvasThread = new Thread(new RepaintRunnable("game manager", framerate, canvas));
 				gameManagerCanvasThread.start();
 				System.out.println("Game Unpaused");
 			}
@@ -65,7 +67,7 @@ public class MapCreator {
 		frmMapCreator.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmMapCreator.getContentPane().setLayout(null);
 
-		DrawPanel canvas = new DrawPanel();
+		canvas = new DrawPanel();
 		canvas.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
@@ -142,19 +144,7 @@ public class MapCreator {
 		 * @Override public void run() { while (true) {
 		 * canvas.paintImmediately(canvas.getBounds()); } } });
 		 */
-		thread = new Thread(new Runnable() {
-			public void run() {
-				while (true) {
-					try {
-						Thread.sleep(1000 / framerate); // milliseconds
-					} catch (InterruptedException e) {
-						break;
-					}
-					canvas.repaint();
-					System.out.println("painting creator");
-				}
-			}
-		});
+		thread = new Thread(new RepaintRunnable("map creator", framerate, canvas));
 		thread.start();
 	}
 

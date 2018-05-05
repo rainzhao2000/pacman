@@ -81,19 +81,7 @@ public class GameManager {
 		 * @Override public void run() { while (!paused) {
 		 * canvas.paintImmediately(canvas.getBounds()); } } });
 		 */
-		thread = new Thread(new Runnable() {
-			public void run() {
-				while (true) {
-					try {
-						Thread.sleep(1000 / framerate); // milliseconds
-					} catch (InterruptedException e) {
-						break;
-					}
-					canvas.repaint();
-					System.out.println("painting");
-				}
-			}
-		});
+		thread = new Thread(new RepaintRunnable("game manager", framerate, canvas));
 		thread.start();
 	}
 
