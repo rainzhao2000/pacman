@@ -21,12 +21,7 @@ public class DrawPanel extends JPanel {
 	 * Framerate dictates the delay between paint refreshes as this method gets
 	 * called from repaint().
 	 */
-	protected void paintComponent(
-			Graphics g) {/*
-							 * try { Thread.sleep(1000 / framerate); //
-							 * milliseconds } catch (InterruptedException e) {
-							 * e.printStackTrace(); }
-							 */
+	protected void paintComponent(Graphics g) {
 		drawMap(g);
 		drawGrid(g);
 	}
