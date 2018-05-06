@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -48,7 +50,8 @@ public class DrawPanel extends JPanel implements ActionListener {
 				try {
 					g.setColor(getColor(map[row][col]));
 				} catch (NullPointerException e) {
-					g.setColor(getColor(Codes.path));
+					blankMap();
+					return;
 				}
 				g.fillRect(x, y, tilePadWidth, tilePadWidth);
 			}
@@ -102,6 +105,26 @@ public class DrawPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	void setTile(MouseEvent e, Codes code) {
+		int col = e.getX() / tilePadWidth;
+		int row = e.getY() / tilePadWidth;
+		map[row][col] = code;
+	}
+
+	boolean uploadMap(ArrayList<String> lines) {
+		try {
+			for (int row = 0; row < map.length; row++) {
+				String[] line = lines.get(row).split(" ");
+				for (int col = 0; col < map[row].length; col++) {
+					map[row][col] = Codes.lookupByName(line[col]);
+				}
+			}
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+
 	/*
 	 * Reset all values in map array to 0 (path)
 	 */
@@ -112,5 +135,5 @@ public class DrawPanel extends JPanel implements ActionListener {
 			}
 		}
 	}
-	
+
 }

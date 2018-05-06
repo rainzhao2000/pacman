@@ -5,11 +5,25 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import pacman.Main.Codes;
 
@@ -19,7 +33,6 @@ public class MapCreator {
 	private JFrame frmPacman = Main.gameManager.frmPacman;
 	private int framerate = Main.framerate;
 	private Codes[][] map = Main.map;
-	private int tilePadWidth = Main.tilePadWidth;
 	private int mapWidth = Main.mapWidth;
 	private int mapHeight = Main.mapHeight;
 	private Codes currentObject = Codes.path;
@@ -33,8 +46,13 @@ public class MapCreator {
 	private final Action pinkySelect = new PinkySelect();
 	private final Action inkySelect = new InkySelect();
 	private final Action clydeSelect = new ClydeSelect();
+	private final Action defaultMapSelect = new DefaultMapSelect();
+	private final Action blankMapSelect = new BlankMapSelect();
+	private final Action loadMapSelect = new LoadMapSelect();
+	private final Action saveMapSelect = new SaveMapSelect();
 	private DrawPanel canvas;
 	private DrawPanel gameManagerCanvas = Main.gameManager.canvas;
+	private JTextField txtFieldFileName;
 
 	/**
 	 * Create the application.
@@ -58,7 +76,7 @@ public class MapCreator {
 		frmMapCreator = new JFrame();
 		frmMapCreator.setResizable(false);
 		frmMapCreator.setTitle("Pac-Man Map Creator");
-		frmMapCreator.setBounds(frmPacman.getX() + frmPacman.getWidth(), frmPacman.getY(), 450, 450);
+		frmMapCreator.setBounds(frmPacman.getX() + frmPacman.getWidth(), frmPacman.getY(), 450, 498);
 		frmMapCreator.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmMapCreator.getContentPane().setLayout(null);
 
@@ -66,13 +84,13 @@ public class MapCreator {
 		canvas.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				setTile(e);
+				canvas.setTile(e, currentObject);
 			}
 		});
 		canvas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				setTile(e);
+				canvas.setTile(e, currentObject);
 			}
 		});
 		canvas.setBounds(0, 0, mapWidth, mapHeight);
@@ -127,28 +145,35 @@ public class MapCreator {
 		btnClyde.setAction(clydeSelect);
 		btnClyde.setBounds(315, 375, 117, 29);
 		frmMapCreator.getContentPane().add(btnClyde);
-		
+
 		JButton btnDefaultMap = new JButton("default map");
+		btnDefaultMap.setAction(defaultMapSelect);
 		btnDefaultMap.setBounds(0, 354, 117, 29);
 		frmMapCreator.getContentPane().add(btnDefaultMap);
-		
+
 		JButton btnBlankMap = new JButton("blank map");
+		btnBlankMap.setAction(blankMapSelect);
 		btnBlankMap.setBounds(129, 354, 117, 29);
 		frmMapCreator.getContentPane().add(btnBlankMap);
-		
+
 		JButton btnLoadMap = new JButton("load map");
+		btnLoadMap.setAction(loadMapSelect);
 		btnLoadMap.setBounds(0, 393, 117, 29);
 		frmMapCreator.getContentPane().add(btnLoadMap);
-		
+
 		JButton btnSaveMap = new JButton("save map");
+		btnSaveMap.setAction(saveMapSelect);
 		btnSaveMap.setBounds(129, 393, 117, 29);
 		frmMapCreator.getContentPane().add(btnSaveMap);
-	}
 
-	private void setTile(MouseEvent e) {
-		int col = e.getX() / tilePadWidth;
-		int row = e.getY() / tilePadWidth;
-		map[row][col] = currentObject;
+		txtFieldFileName = new JTextField();
+		txtFieldFileName.setBounds(129, 434, 134, 28);
+		frmMapCreator.getContentPane().add(txtFieldFileName);
+		txtFieldFileName.setColumns(10);
+
+		JLabel lblSaveAsFile = new JLabel("Save As File Name:");
+		lblSaveAsFile.setBounds(10, 440, 123, 16);
+		frmMapCreator.getContentPane().add(lblSaveAsFile);
 	}
 
 	private class PathSelect extends AbstractAction {
@@ -258,6 +283,125 @@ public class MapCreator {
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Codes.clyde;
 			System.out.println(currentObject + " selected");
+		}
+	}
+
+	private class DefaultMapSelect extends AbstractAction {
+		public DefaultMapSelect() {
+			putValue(NAME, "default map");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			ArrayList<String> lines = new ArrayList<String>();
+			File file = new File("default map.txt");
+			BufferedReader reader = null;
+
+			try {
+				reader = new BufferedReader(new FileReader(file));
+				String line = null;
+
+				while ((line = reader.readLine()) != null) {
+					lines.add(line);
+				}
+			} catch (FileNotFoundException e1) {
+				JOptionPane.showMessageDialog(frmMapCreator, "'default map.txt' not found.", "File not found",
+						JOptionPane.ERROR_MESSAGE);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			} finally {
+				try {
+					if (reader != null) {
+						reader.close();
+					}
+				} catch (IOException e1) {
+				}
+			}
+			if (!canvas.uploadMap(lines)) {
+				JOptionPane.showMessageDialog(frmMapCreator, "Invalid text file structure and/or codes", "Invalid Map",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	private class BlankMapSelect extends AbstractAction {
+		public BlankMapSelect() {
+			putValue(NAME, "blank map");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			canvas.blankMap();
+		}
+	}
+
+	private class LoadMapSelect extends AbstractAction {
+		public LoadMapSelect() {
+			putValue(NAME, "load map");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			ArrayList<String> lines = new ArrayList<String>();
+			File file = new File("default map.txt");
+			BufferedReader reader = null;
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+			int result = fileChooser.showOpenDialog(frmMapCreator);
+			if (result == JFileChooser.APPROVE_OPTION) {
+				file = fileChooser.getSelectedFile();
+			}
+
+			try {
+				reader = new BufferedReader(new FileReader(file));
+				String line = null;
+
+				while ((line = reader.readLine()) != null) {
+					lines.add(line);
+				}
+			} catch (FileNotFoundException e1) {
+				JOptionPane.showMessageDialog(frmMapCreator, "'default map.txt' not found.", "File not found",
+						JOptionPane.ERROR_MESSAGE);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			} finally {
+				try {
+					if (reader != null) {
+						reader.close();
+					}
+				} catch (IOException e1) {
+				}
+			}
+			if (!canvas.uploadMap(lines)) {
+				JOptionPane.showMessageDialog(frmMapCreator, "Invalid text file structure and/or codes", "Invalid Map",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	private class SaveMapSelect extends AbstractAction {
+		public SaveMapSelect() {
+			putValue(NAME, "save map");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			if (txtFieldFileName.getText().equals("")) {
+				JOptionPane.showMessageDialog(frmMapCreator, "You need to enter a file name.", "File name error",
+						JOptionPane.ERROR_MESSAGE);
+			} else {
+				ArrayList<String> lines = new ArrayList<String>();
+				for (int row = 0; row < map.length; row++) {
+					StringBuilder line = new StringBuilder();
+					for (int col = 0; col < map[row].length; col++) {
+						System.out.println(map[row][col].getCode());
+						line.append(map[row][col].getCode() + " ");
+					}
+					lines.add(line.toString());
+				}
+				Path file = Paths.get(txtFieldFileName.getText() + ".txt");
+				try {
+					Files.write(file, lines, Charset.forName("UTF-8"));
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
 		}
 	}
 }

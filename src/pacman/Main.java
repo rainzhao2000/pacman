@@ -1,11 +1,37 @@
 package pacman;
 
 import java.awt.EventQueue;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main {
 
 	static enum Codes {
-		path, wall, pacdot, powerPellet, fruit, pacman, blinky, pinky, inky, clyde
+
+		path("0"), wall("1"), pacdot("2"), powerPellet("3"), fruit("4"), pacman("5"), blinky("6"), pinky("7"), inky(
+				"8"), clyde("9");
+
+		private final String code;
+		private static final Map<String, Codes> codeIndex = new HashMap<String, Codes>();
+
+		static {
+			for (Codes code : Codes.values()) {
+				codeIndex.put(code.getCode(), code);
+			}
+		}
+
+		Codes(String code) {
+			this.code = code;
+		}
+
+		String getCode() {
+			return code;
+		}
+
+		static Codes lookupByName(String name) {
+			return codeIndex.get(name);
+		}
+
 	}
 
 	static GameManager gameManager;
