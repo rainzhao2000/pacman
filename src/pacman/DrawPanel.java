@@ -45,7 +45,11 @@ public class DrawPanel extends JPanel implements ActionListener {
 			for (int col = 0; col < map[row].length; col++) {
 				int x = col * tilePadWidth;
 				int y = row * tilePadWidth;
-				g.setColor(getColor(map[row][col]));
+				try {
+					g.setColor(getColor(map[row][col]));
+				} catch (NullPointerException e) {
+					g.setColor(getColor(Codes.path));
+				}
 				g.fillRect(x, y, tilePadWidth, tilePadWidth);
 			}
 		}
@@ -98,4 +102,15 @@ public class DrawPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	/*
+	 * Reset all values in map array to 0 (path)
+	 */
+	void blankMap() {
+		for (int row = 0; row < map.length; row++) {
+			for (int col = 0; col < map[row].length; col++) {
+				map[row][col] = Codes.path;
+			}
+		}
+	}
+	
 }

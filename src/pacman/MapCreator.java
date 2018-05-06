@@ -54,8 +54,6 @@ public class MapCreator {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		blankMap();
-
 		// Set up the window (frame), and its elements
 		frmMapCreator = new JFrame();
 		frmMapCreator.setResizable(false);
@@ -129,17 +127,22 @@ public class MapCreator {
 		btnClyde.setAction(clydeSelect);
 		btnClyde.setBounds(315, 375, 117, 29);
 		frmMapCreator.getContentPane().add(btnClyde);
-	}
-
-	/*
-	 * Reset all values in map array to 0 (path)
-	 */
-	private void blankMap() {
-		for (int row = 0; row < map.length; row++) {
-			for (int col = 0; col < map[row].length; col++) {
-				map[row][col] = Codes.path;
-			}
-		}
+		
+		JButton btnDefaultMap = new JButton("default map");
+		btnDefaultMap.setBounds(0, 354, 117, 29);
+		frmMapCreator.getContentPane().add(btnDefaultMap);
+		
+		JButton btnBlankMap = new JButton("blank map");
+		btnBlankMap.setBounds(129, 354, 117, 29);
+		frmMapCreator.getContentPane().add(btnBlankMap);
+		
+		JButton btnLoadMap = new JButton("load map");
+		btnLoadMap.setBounds(0, 393, 117, 29);
+		frmMapCreator.getContentPane().add(btnLoadMap);
+		
+		JButton btnSaveMap = new JButton("save map");
+		btnSaveMap.setBounds(129, 393, 117, 29);
+		frmMapCreator.getContentPane().add(btnSaveMap);
 	}
 
 	private void setTile(MouseEvent e) {
