@@ -8,11 +8,10 @@ public class Main {
 
 	static enum Codes {
 
-		path("0"), wall("1"), pacdot("2"), powerPellet("3"), fruit("4"), pacman("5"), blinky("6"), pinky("7"), inky(
-				"8"), clyde("9");
+		path(0), wall(1), pacdot(2), powerPellet(3), fruit(4), pacman(5), blinky(6), pinky(7), inky(8), clyde(9);
 
-		private final String code;
-		private static final Map<String, Codes> codeIndex = new HashMap<String, Codes>();
+		private final int code;
+		private static final Map<Integer, Codes> codeIndex = new HashMap<Integer, Codes>();
 
 		static {
 			for (Codes code : Codes.values()) {
@@ -20,16 +19,16 @@ public class Main {
 			}
 		}
 
-		Codes(String code) {
+		Codes(int code) {
 			this.code = code;
 		}
 
-		String getCode() {
+		int getCode() {
 			return code;
 		}
 
-		static Codes lookupByName(String name) {
-			return codeIndex.get(name);
+		static Codes lookupByName(int code) {
+			return codeIndex.get(code);
 		}
 
 	}

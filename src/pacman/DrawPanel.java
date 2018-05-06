@@ -116,7 +116,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 			for (int row = 0; row < map.length; row++) {
 				String[] line = lines.get(row).split(" ");
 				for (int col = 0; col < map[row].length; col++) {
-					map[row][col] = Codes.lookupByName(line[col]);
+					map[row][col] = Codes.lookupByName(Integer.parseInt(line[col]));
 				}
 			}
 		} catch (Exception e) {
