@@ -176,6 +176,10 @@ public class MapCreator {
 		frmMapCreator.getContentPane().add(lblSaveAsFile);
 	}
 
+	/*
+	 * The following classes are Actions attributed to button components in the
+	 * frame and sets the currentObject
+	 */
 	private class PathSelect extends AbstractAction {
 		public PathSelect() {
 			putValue(NAME, "path");
@@ -286,40 +290,17 @@ public class MapCreator {
 		}
 	}
 
+	/*
+	 * The following classes are actions attributed to the buttons that handle
+	 * map selection, saving and loading
+	 */
 	private class DefaultMapSelect extends AbstractAction {
 		public DefaultMapSelect() {
 			putValue(NAME, "default map");
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			ArrayList<String> lines = new ArrayList<String>();
-			File file = new File("default map.txt");
-			BufferedReader reader = null;
-
-			try {
-				reader = new BufferedReader(new FileReader(file));
-				String line = null;
-
-				while ((line = reader.readLine()) != null) {
-					lines.add(line);
-				}
-			} catch (FileNotFoundException e1) {
-				JOptionPane.showMessageDialog(frmMapCreator, "'default map.txt' not found.", "File not found",
-						JOptionPane.ERROR_MESSAGE);
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			} finally {
-				try {
-					if (reader != null) {
-						reader.close();
-					}
-				} catch (IOException e1) {
-				}
-			}
-			if (!canvas.uploadMap(lines)) {
-				JOptionPane.showMessageDialog(frmMapCreator, "Invalid text file structure and/or codes", "Invalid Map",
-						JOptionPane.ERROR_MESSAGE);
-			}
+			Main.defaultMap(frmMapCreator, canvas);
 		}
 	}
 
@@ -338,7 +319,11 @@ public class MapCreator {
 			putValue(NAME, "load map");
 		}
 
+		/*
+		 * Looks for a chosen file in current directory and uploads it to map
+		 */
 		public void actionPerformed(ActionEvent e) {
+			// Open JFileChooser dialog to import map file
 			ArrayList<String> lines = new ArrayList<String>();
 			File file = new File("default map.txt");
 			BufferedReader reader = null;
@@ -349,6 +334,7 @@ public class MapCreator {
 				file = fileChooser.getSelectedFile();
 			}
 
+			// Read each line as string and add to ArrayList of strings
 			try {
 				reader = new BufferedReader(new FileReader(file));
 				String line = null;
@@ -357,7 +343,7 @@ public class MapCreator {
 					lines.add(line);
 				}
 			} catch (FileNotFoundException e1) {
-				JOptionPane.showMessageDialog(frmMapCreator, "'default map.txt' not found.", "File not found",
+				JOptionPane.showMessageDialog(frmMapCreator, "File not found.", "File not found",
 						JOptionPane.ERROR_MESSAGE);
 			} catch (IOException e1) {
 				e1.printStackTrace();
@@ -369,6 +355,8 @@ public class MapCreator {
 				} catch (IOException e1) {
 				}
 			}
+
+			// upload ArrayList of strings to map array
 			if (!canvas.uploadMap(lines)) {
 				JOptionPane.showMessageDialog(frmMapCreator, "Invalid text file structure and/or codes", "Invalid Map",
 						JOptionPane.ERROR_MESSAGE);
@@ -381,11 +369,16 @@ public class MapCreator {
 			putValue(NAME, "save map");
 		}
 
+		/*
+		 * Writes the current map code values to a text file of a specified path
+		 */
 		public void actionPerformed(ActionEvent e) {
 			if (txtFieldFileName.getText().equals("")) {
 				JOptionPane.showMessageDialog(frmMapCreator, "You need to enter a file name.", "File name error",
 						JOptionPane.ERROR_MESSAGE);
 			} else {
+				// Get the code values of each element in map array and add to
+				// ArrayList of strings
 				ArrayList<String> lines = new ArrayList<String>();
 				for (int row = 0; row < map.length; row++) {
 					StringBuilder line = new StringBuilder();
@@ -395,6 +388,8 @@ public class MapCreator {
 					}
 					lines.add(line.toString());
 				}
+
+				// Write ArrayList of strings to file
 				Path file = Paths.get(txtFieldFileName.getText() + ".txt");
 				try {
 					Files.write(file, lines, Charset.forName("UTF-8"));

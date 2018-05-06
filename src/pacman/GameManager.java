@@ -69,6 +69,8 @@ public class GameManager {
 		btnMapCreator.setBounds(94, 449, 120, 29);
 		frmPacman.getContentPane().add(btnMapCreator);
 		btnMapCreator.setAction(mapCreatorAction);
+
+		Main.defaultMap(frmPacman, canvas);
 	}
 
 	// Action that opens the MapCreator window

@@ -22,18 +22,27 @@ public class DrawPanel extends JPanel implements ActionListener {
 	private int mapWidth = Main.mapWidth;
 	private int mapHeight = Main.mapHeight;
 
+	/*
+	 * DrawPanel constructor sets paused and timer states
+	 */
 	public DrawPanel(boolean paused, int framerate) {
 		this.paused = paused;
 		timer = new Timer(1000 / framerate, this);
 		timer.start();
 	}
 
+	/*
+	 * Repaints the panel at the conditions of the timer
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == timer && !paused) {
 			repaint();
 		}
 	}
 
+	/*
+	 * Handles all painting
+	 */
 	protected void paintComponent(Graphics g) {
 		drawMap(g);
 		drawGrid(g);
@@ -92,12 +101,15 @@ public class DrawPanel extends JPanel implements ActionListener {
 	 * Draw padding guides at every row and column (forming a visual grid)
 	 */
 	private void drawGrid(Graphics g) {
+		// Draw horizontal guides
 		g.setColor(Color.green);
 		g.fillRect(0, 0, mapWidth, padding);
 		for (int row = 1; row <= map.length; row++) {
 			int y = row * tilePadWidth;
 			g.fillRect(0, y, mapWidth, padding);
 		}
+
+		// Draw vertical guides
 		g.fillRect(0, 0, padding, mapHeight);
 		for (int col = 1; col <= map[0].length; col++) {
 			int x = col * tilePadWidth;
@@ -105,12 +117,20 @@ public class DrawPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	/*
+	 * Finds the element in map array corresponding to position of mouse cursor
+	 * and sets the element to a specified code
+	 */
 	void setTile(MouseEvent e, Codes code) {
 		int col = e.getX() / tilePadWidth;
 		int row = e.getY() / tilePadWidth;
 		map[row][col] = code;
 	}
 
+	/*
+	 * Looks up an ArrayList of strings and adds the Codes objects obtained from
+	 * the code values to the map array
+	 */
 	boolean uploadMap(ArrayList<String> lines) {
 		try {
 			for (int row = 0; row < map.length; row++) {
@@ -126,7 +146,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 	}
 
 	/*
-	 * Reset all values in map array to 0 (path)
+	 * Reset all elements in map array to path
 	 */
 	void blankMap() {
 		for (int row = 0; row < map.length; row++) {
