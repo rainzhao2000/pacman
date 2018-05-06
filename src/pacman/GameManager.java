@@ -53,7 +53,7 @@ public class GameManager {
 		lblScore.setBounds(14, 24, 280, 16);
 		frmPacman.getContentPane().add(lblScore);
 
-		canvas = new DrawPanel();
+		canvas = new DrawPanel(false, framerate);
 		canvas.setBounds(0, 50, mapWidth, mapHeight);
 		frmPacman.getContentPane().add(canvas);
 
@@ -69,13 +69,6 @@ public class GameManager {
 		btnMapCreator.setBounds(94, 449, 120, 29);
 		frmPacman.getContentPane().add(btnMapCreator);
 		btnMapCreator.setAction(mapCreatorAction);
-
-		// Create new thread if first time
-		if (Main.gameManagerCanvasThread == null) {
-			Main.gameManagerPaused = false;
-			Main.gameManagerCanvasThread = new Thread(new RepaintRunnable("game manager", Main.gameManagerPaused, framerate, canvas));
-			Main.gameManagerCanvasThread.start();
-		}
 	}
 
 	// Action that opens the MapCreator window
@@ -94,7 +87,7 @@ public class GameManager {
 		public void actionPerformed(ActionEvent e) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					Main.gameManagerPaused = true;
+					canvas.paused = true;
 					System.out.println("Game Paused");
 					if (mapCreatorWindow != null) {
 						mapCreatorWindow.frmMapCreator.dispose();

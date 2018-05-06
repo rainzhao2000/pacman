@@ -2,24 +2,36 @@ package pacman;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import pacman.Main.Codes;
 
-public class DrawPanel extends JPanel {
+public class DrawPanel extends JPanel implements ActionListener {
 
-	Codes[][] map = Main.map;
-	int tileWidth = Main.tileWidth;
-	int padding = Main.padding;
-	int tilePadWidth = Main.tilePadWidth;
-	int mapWidth = Main.mapWidth;
-	int mapHeight = Main.mapHeight;
+	boolean paused;
+	private Timer timer;
+	private Codes[][] map = Main.map;
+	private int padding = Main.padding;
+	private int tilePadWidth = Main.tilePadWidth;
+	private int mapWidth = Main.mapWidth;
+	private int mapHeight = Main.mapHeight;
 
-	/*
-	 * Framerate dictates the delay between paint refreshes as this method gets
-	 * called from repaint().
-	 */
+	public DrawPanel(boolean paused, int framerate) {
+		this.paused = paused;
+		timer = new Timer(1000 / framerate, this);
+		timer.start();
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == timer && !paused) {
+			repaint();
+		}
+	}
+
 	protected void paintComponent(Graphics g) {
 		drawMap(g);
 		drawGrid(g);

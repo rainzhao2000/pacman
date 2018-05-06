@@ -16,10 +16,6 @@ public class Main {
 	static final int tilePadWidth = tileWidth + padding;
 	static final int mapWidth = map[0].length * tileWidth + (map[0].length + 1) * padding;
 	static final int mapHeight = map.length * tileWidth + (map.length + 1) * padding;
-	static Thread gameManagerCanvasThread = null;
-	static Thread mapCreatorCanvasThread = null;
-	static boolean gameManagerPaused;
-	static boolean mapCreatorPaused;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {

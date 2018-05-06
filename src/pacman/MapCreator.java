@@ -44,11 +44,7 @@ public class MapCreator {
 		// Unpause the canvas rendering in GameManager on close of MapCreator
 		frmMapCreator.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(WindowEvent winEvt) {
-				Main.mapCreatorPaused = true;
-				synchronized (gameManagerCanvas) {
-					Main.gameManagerPaused = false;
-		            gameManagerCanvas.notifyAll(); // Unblocks thread
-		        }
+				gameManagerCanvas.paused = false;
 				System.out.println("Game Unpaused");
 			}
 		});
@@ -68,7 +64,7 @@ public class MapCreator {
 		frmMapCreator.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmMapCreator.getContentPane().setLayout(null);
 
-		canvas = new DrawPanel();
+		canvas = new DrawPanel(false, framerate);
 		canvas.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
@@ -133,13 +129,6 @@ public class MapCreator {
 		btnClyde.setAction(clydeSelect);
 		btnClyde.setBounds(315, 375, 117, 29);
 		frmMapCreator.getContentPane().add(btnClyde);
-		
-		// Create new thread if first time
-		if (Main.mapCreatorCanvasThread == null) {
-			Main.mapCreatorPaused = false;
-			Main.mapCreatorCanvasThread = new Thread(new RepaintRunnable("map creator", Main.mapCreatorPaused, framerate, canvas));
-			Main.mapCreatorCanvasThread.start();
-		}
 	}
 
 	/*
@@ -166,7 +155,7 @@ public class MapCreator {
 
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Codes.path;
-			System.out.println("path selected " + currentObject);
+			System.out.println(currentObject + " selected");
 		}
 	}
 
@@ -177,7 +166,7 @@ public class MapCreator {
 
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Codes.wall;
-			System.out.println("wall selected " + currentObject);
+			System.out.println(currentObject + " selected");
 		}
 	}
 
@@ -188,7 +177,7 @@ public class MapCreator {
 
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Codes.pacdot;
-			System.out.println("pacdot selected " + currentObject);
+			System.out.println(currentObject + " selected");
 		}
 	}
 
@@ -199,7 +188,7 @@ public class MapCreator {
 
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Codes.powerPellet;
-			System.out.println("power pellet selected " + currentObject);
+			System.out.println(currentObject + " selected");
 		}
 	}
 
@@ -210,7 +199,7 @@ public class MapCreator {
 
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Codes.fruit;
-			System.out.println("fruit selected " + currentObject);
+			System.out.println(currentObject + " selected");
 		}
 	}
 
@@ -221,7 +210,7 @@ public class MapCreator {
 
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Codes.pacman;
-			System.out.println("pacman selected " + currentObject);
+			System.out.println(currentObject + " selected");
 		}
 	}
 
@@ -232,7 +221,7 @@ public class MapCreator {
 
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Codes.blinky;
-			System.out.println("blinky selected " + currentObject);
+			System.out.println(currentObject + " selected");
 		}
 	}
 
@@ -243,7 +232,7 @@ public class MapCreator {
 
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Codes.pinky;
-			System.out.println("pinky selected " + currentObject);
+			System.out.println(currentObject + " selected");
 		}
 	}
 
@@ -254,7 +243,7 @@ public class MapCreator {
 
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Codes.inky;
-			System.out.println("inky selected " + currentObject);
+			System.out.println(currentObject + " selected");
 		}
 	}
 
@@ -265,7 +254,7 @@ public class MapCreator {
 
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Codes.clyde;
-			System.out.println("clyde selected " + currentObject);
+			System.out.println(currentObject + " selected");
 		}
 	}
 }
