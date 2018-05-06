@@ -19,12 +19,12 @@ import javax.swing.JPanel;
 public class GameManager {
 
 	JFrame frmPacman;
+	DrawPanel canvas;
 	private int mapWidth = Main.mapWidth;
 	private int mapHeight = Main.mapHeight;
 	private int framerate = Main.framerate;
 	private MapCreator mapCreatorWindow = null;
 	private final Action mapCreatorAction = new MapCreatorAction();
-	private Thread thread = Main.gameManagerCanvasThread;
 
 	/**
 	 * Create the application.
@@ -53,7 +53,7 @@ public class GameManager {
 		lblScore.setBounds(14, 24, 280, 16);
 		frmPacman.getContentPane().add(lblScore);
 
-		DrawPanel canvas = new DrawPanel();
+		canvas = new DrawPanel();
 		canvas.setBounds(0, 50, mapWidth, mapHeight);
 		frmPacman.getContentPane().add(canvas);
 
@@ -70,19 +70,12 @@ public class GameManager {
 		frmPacman.getContentPane().add(btnMapCreator);
 		btnMapCreator.setAction(mapCreatorAction);
 
-		// Repaint the canvas with paintImmediately() for synchronous painting
-		/*
-		 * Timer t = new Timer(1, new ActionListener() {
-		 * 
-		 * @Override public void actionPerformed(ActionEvent e) {
-		 * canvas.repaint(); } }); t.start();
-		 * Executors.newSingleThreadExecutor().execute(new Runnable() {
-		 * 
-		 * @Override public void run() { while (!paused) {
-		 * canvas.paintImmediately(canvas.getBounds()); } } });
-		 */
-		thread = new Thread(new RepaintRunnable("game manager", framerate, canvas));
-		thread.start();
+		// Create new thread if first time
+		if (Main.gameManagerCanvasThread == null) {
+			Main.gameManagerPaused = false;
+			Main.gameManagerCanvasThread = new Thread(new RepaintRunnable("game manager", Main.gameManagerPaused, framerate, canvas));
+			Main.gameManagerCanvasThread.start();
+		}
 	}
 
 	// Action that opens the MapCreator window
@@ -101,7 +94,7 @@ public class GameManager {
 		public void actionPerformed(ActionEvent e) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					thread.interrupt();
+					Main.gameManagerPaused = true;
 					System.out.println("Game Paused");
 					if (mapCreatorWindow != null) {
 						mapCreatorWindow.frmMapCreator.dispose();

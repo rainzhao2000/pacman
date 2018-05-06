@@ -22,8 +22,6 @@ public class MapCreator {
 	private int tilePadWidth = Main.tilePadWidth;
 	private int mapWidth = Main.mapWidth;
 	private int mapHeight = Main.mapHeight;
-	private Thread thread = Main.mapCreatorCanvasThread;
-	private Thread gameManagerCanvasThread = Main.gameManagerCanvasThread;
 	private Codes currentObject = Codes.path;
 	private final Action pathSelect = new PathSelect();
 	private final Action wallSelect = new WallSelect();
@@ -36,6 +34,7 @@ public class MapCreator {
 	private final Action inkySelect = new InkySelect();
 	private final Action clydeSelect = new ClydeSelect();
 	private DrawPanel canvas;
+	private DrawPanel gameManagerCanvas = Main.gameManager.canvas;
 
 	/**
 	 * Create the application.
@@ -45,9 +44,11 @@ public class MapCreator {
 		// Unpause the canvas rendering in GameManager on close of MapCreator
 		frmMapCreator.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(WindowEvent winEvt) {
-				thread.interrupt();
-				gameManagerCanvasThread = new Thread(new RepaintRunnable("game manager", framerate, canvas));
-				gameManagerCanvasThread.start();
+				Main.mapCreatorPaused = true;
+				synchronized (gameManagerCanvas) {
+					Main.gameManagerPaused = false;
+		            gameManagerCanvas.notifyAll(); // Unblocks thread
+		        }
 				System.out.println("Game Unpaused");
 			}
 		});
@@ -132,20 +133,13 @@ public class MapCreator {
 		btnClyde.setAction(clydeSelect);
 		btnClyde.setBounds(315, 375, 117, 29);
 		frmMapCreator.getContentPane().add(btnClyde);
-
-		// Repaint the canvas with paintImmediately() for synchronous painting
-		/*
-		 * Timer t = new Timer(1, new ActionListener() {
-		 * 
-		 * @Override public void actionPerformed(ActionEvent e) {
-		 * canvas.repaint(); } }); t.start();
-		 * Executors.newSingleThreadExecutor().execute(new Runnable() {
-		 * 
-		 * @Override public void run() { while (true) {
-		 * canvas.paintImmediately(canvas.getBounds()); } } });
-		 */
-		thread = new Thread(new RepaintRunnable("map creator", framerate, canvas));
-		thread.start();
+		
+		// Create new thread if first time
+		if (Main.mapCreatorCanvasThread == null) {
+			Main.mapCreatorPaused = false;
+			Main.mapCreatorCanvasThread = new Thread(new RepaintRunnable("map creator", Main.mapCreatorPaused, framerate, canvas));
+			Main.mapCreatorCanvasThread.start();
+		}
 	}
 
 	/*

@@ -9,7 +9,6 @@ import pacman.Main.Codes;
 
 public class DrawPanel extends JPanel {
 
-	// int framerate = 60;
 	Codes[][] map = Main.map;
 	int tileWidth = Main.tileWidth;
 	int padding = Main.padding;
