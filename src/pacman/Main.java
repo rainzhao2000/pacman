@@ -16,7 +16,8 @@ import javax.swing.JOptionPane;
 public class Main {
 
 	/*
-	 * Enumerator handles codes of elements that will be referenced from map array
+	 * Enumerator handles codes of elements that will be referenced from map
+	 * array
 	 */
 	static enum Codes {
 
@@ -26,8 +27,8 @@ public class Main {
 		private static final Map<Integer, Codes> codeIndex = new HashMap<Integer, Codes>();
 
 		/*
-		 * Make a HashMap to hold references to Codes objects by reference of their
-		 * values
+		 * Make a HashMap to hold references to Codes objects by reference of
+		 * their values
 		 */
 		static {
 			for (Codes code : Codes.values()) {
