@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -14,19 +15,25 @@ import pacman.Main.Codes;
 
 public class DrawPanel extends JPanel implements ActionListener {
 
+	int score;
 	boolean paused;
+	boolean edible;
 	private Timer timer;
 	private Codes[][] map = Main.map;
 	private int padding = Main.padding;
 	private int tilePadWidth = Main.tilePadWidth;
 	private int mapWidth = Main.mapWidth;
 	private int mapHeight = Main.mapHeight;
+	
+	// private JLabel lblScore = Main.gameManager.lblScore;
 
 	/*
 	 * DrawPanel constructor sets paused and timer states
 	 */
 	public DrawPanel(boolean paused, int framerate) {
 		this.paused = paused;
+		score = 0;
+		edible = false;
 		timer = new Timer(1000 / framerate, this);
 		timer.start();
 	}
@@ -36,6 +43,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == timer && !paused) {
+			Main.gameManager.lblScore.setText(Integer.toString(score));
 			repaint();
 		}
 	}
@@ -118,8 +126,8 @@ public class DrawPanel extends JPanel implements ActionListener {
 	}
 
 	/*
-	 * Finds the element in map array corresponding to position of mouse cursor
-	 * and sets the element to a specified code
+	 * Finds the element in map array corresponding to position of mouse cursor and
+	 * sets the element to a specified code
 	 */
 	void setTile(MouseEvent e, Codes code) {
 		int col = e.getX() / tilePadWidth;
@@ -128,8 +136,8 @@ public class DrawPanel extends JPanel implements ActionListener {
 	}
 
 	/*
-	 * Looks up an ArrayList of strings and adds the Codes objects obtained from
-	 * the code values to the map array
+	 * Looks up an ArrayList of strings and adds the Codes objects obtained from the
+	 * code values to the map array
 	 */
 	boolean uploadMap(ArrayList<String> lines) {
 		try {

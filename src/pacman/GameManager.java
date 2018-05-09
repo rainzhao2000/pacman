@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 public class GameManager {
 
 	JFrame frmPacman;
+	JLabel lblScore;
 	DrawPanel canvas;
 	private int mapWidth = Main.mapWidth;
 	private int mapHeight = Main.mapHeight;
@@ -49,7 +50,7 @@ public class GameManager {
 		lblHighScore.setBounds(118, 6, 72, 16);
 		frmPacman.getContentPane().add(lblHighScore);
 
-		JLabel lblScore = new JLabel("0");
+		lblScore = new JLabel("0");
 		lblScore.setBounds(14, 24, 280, 16);
 		frmPacman.getContentPane().add(lblScore);
 
@@ -81,10 +82,10 @@ public class GameManager {
 		}
 
 		/*
-		 * When the component this action is attached to is triggered, pause the
-		 * current canvas rendering (so that resources can be allocated to the
-		 * MapCreator canvas), then try to close any existing open MapCreator
-		 * window and instantiate a new MapCreator window
+		 * When the component this action is attached to is triggered, pause the current
+		 * canvas rendering (so that resources can be allocated to the MapCreator
+		 * canvas), then try to close any existing open MapCreator window and
+		 * instantiate a new MapCreator window
 		 */
 		public void actionPerformed(ActionEvent e) {
 			EventQueue.invokeLater(new Runnable() {

@@ -21,6 +21,8 @@ public class Main {
 	static enum Codes {
 
 		path(0), wall(1), pacdot(2), powerPellet(3), fruit(4), pacman(5), blinky(6), pinky(7), inky(8), clyde(9);
+		// remove pacman and ghosts
+		// ********************************************************
 
 		private final int code;
 		private static final Map<Integer, Codes> codeIndex = new HashMap<Integer, Codes>();
@@ -66,6 +68,13 @@ public class Main {
 	static final int tilePadWidth = tileWidth + padding;
 	static final int mapWidth = map[0].length * tileWidth + (map[0].length + 1) * padding;
 	static final int mapHeight = map.length * tileWidth + (map.length + 1) * padding;
+	static Pacman pacman = new Pacman(23, 14, 2, 1);
+
+	// constructor parameter need to be modified
+	static Ghost blinky = new Ghost();
+	static Ghost inky = new Ghost();
+	static Ghost pinky = new Ghost();
+	static Ghost clyde = new Ghost();
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -78,13 +87,6 @@ public class Main {
 				}
 			}
 		});
-
-		for (int i = 0; i < map.length; i++) {
-			for (int j = 0; j < map[i].length; j++) {
-				System.out.print(map[i][j]);
-			}
-			System.out.println();
-		}
 	}
 
 	/*
@@ -115,6 +117,7 @@ public class Main {
 					reader.close();
 				}
 			} catch (IOException e1) {
+
 			}
 		}
 

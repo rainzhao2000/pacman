@@ -2,27 +2,17 @@ package pacman;
 
 import pacman.Main.Codes;
 
-public class Pacman {
-	// For the direction variable:
-	// 1 represents left, 2 represents right, 3 represents up, 4 represents down.
-	// For the coordinate variables:
-	// the first row is row 0 and the first column is col 0
+public class Ghost {
 	private int row, col, direction;
 	private double updatePeriod;
-	private boolean alive;
 	private Codes[][] map = Main.map;
 
-	// Pacman constructor
-	public Pacman(int row, int col, double updatePeriod, int direction) {
-		this.row = row;
-		this.col = col;
-		this.updatePeriod = updatePeriod;
-		this.direction = direction;
-		this.alive = true;
+	public Ghost() {
+
 	}
 
 	// return speed
-	public double getUpdatePeriod() {
+	public double getupdatePeriod() {
 		return updatePeriod;
 	}
 
@@ -36,7 +26,11 @@ public class Pacman {
 		return col;
 	}
 
-	// update the position of the Pacman
+	public void respawn() {
+		// reset row and col
+		// reset to ghost house
+	}
+
 	public void update() {
 		if (direction == 1) {
 			// left
@@ -61,9 +55,6 @@ public class Pacman {
 		}
 	}
 
-	// return true if the block at r and c is not a wall
-	// return false if the block at r and c is a wall
-	// set alive to false if the block at r and c is a ghost
 	private boolean check(int r, int c) {
 		if (r < 0 || r >= map.length || c < 0 || c >= map[0].length) {
 			// exceed boundary
@@ -94,6 +85,7 @@ public class Pacman {
 			// instead of checking ghost in array, we have to check ghost's position
 			// edible & ghost, points++ and re-spawn ghost
 			// in-edible & ghost, alive = false & restart game
+			// ghosts can overlap
 			if (map[r][c] == Codes.blinky || map[r][c] == Codes.inky || map[r][c] == Codes.pinky
 					|| map[r][c] == Codes.clyde) {
 				// ghost
@@ -102,5 +94,4 @@ public class Pacman {
 			}
 		}
 	}
-
 }

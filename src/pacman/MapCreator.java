@@ -36,6 +36,9 @@ public class MapCreator {
 	private int mapWidth = Main.mapWidth;
 	private int mapHeight = Main.mapHeight;
 	private Codes currentObject = Codes.path;
+	private DrawPanel canvas;
+	private DrawPanel gameManagerCanvas = Main.gameManager.canvas;
+	private JTextField txtFieldFileName;
 	private final Action pathSelect = new PathSelect();
 	private final Action wallSelect = new WallSelect();
 	private final Action pacdotSelect = new PacdotSelect();
@@ -50,9 +53,6 @@ public class MapCreator {
 	private final Action blankMapSelect = new BlankMapSelect();
 	private final Action loadMapSelect = new LoadMapSelect();
 	private final Action saveMapSelect = new SaveMapSelect();
-	private DrawPanel canvas;
-	private DrawPanel gameManagerCanvas = Main.gameManager.canvas;
-	private JTextField txtFieldFileName;
 
 	/**
 	 * Create the application.
@@ -291,8 +291,8 @@ public class MapCreator {
 	}
 
 	/*
-	 * The following classes are actions attributed to the buttons that handle
-	 * map selection, saving and loading
+	 * The following classes are actions attributed to the buttons that handle map
+	 * selection, saving and loading
 	 */
 	private class DefaultMapSelect extends AbstractAction {
 		public DefaultMapSelect() {
