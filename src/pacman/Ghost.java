@@ -6,9 +6,16 @@ public class Ghost {
 	private int row, col, direction;
 	private double updatePeriod;
 	private Codes[][] map = Main.map;
+	private boolean edible;
 
-	public Ghost() {
+	// edible timer
+	// refresh timer
+	// etc
 
+	public Ghost(int row, int col) {
+		this.edible = false;
+		this.row = row;
+		this.col = col;
 	}
 
 	// return speed
@@ -26,9 +33,18 @@ public class Ghost {
 		return col;
 	}
 
+	public boolean getState() {
+		return edible;
+	}
+
 	public void respawn() {
 		// reset row and col
 		// reset to ghost house
+	}
+
+	// modifier method for the edible variable of the ghost
+	public void changeState(boolean newState) {
+		this.edible = newState;
 	}
 
 	public void update() {
@@ -89,7 +105,6 @@ public class Ghost {
 			if (map[r][c] == Codes.blinky || map[r][c] == Codes.inky || map[r][c] == Codes.pinky
 					|| map[r][c] == Codes.clyde) {
 				// ghost
-				alive = false;
 				return true;
 			}
 		}

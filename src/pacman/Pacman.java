@@ -11,6 +11,7 @@ public class Pacman {
 	private double updatePeriod;
 	private boolean alive;
 	private Codes[][] map = Main.map;
+	// refresh timer
 
 	// Pacman constructor
 	public Pacman(int row, int col, double updatePeriod, int direction) {
@@ -64,6 +65,9 @@ public class Pacman {
 	// return true if the block at r and c is not a wall
 	// return false if the block at r and c is a wall
 	// set alive to false if the block at r and c is a ghost
+
+	// reassign pacdot and powerpellet when refreshing?
+
 	private boolean check(int r, int c) {
 		if (r < 0 || r >= map.length || c < 0 || c >= map[0].length) {
 			// exceed boundary
@@ -79,7 +83,7 @@ public class Pacman {
 		} else if (map[r][c] == Codes.powerPellet) {
 			// power pellet
 			map[r][c] = Codes.path;
-			Main.gameManager.canvas.edible = true;
+			Main.gameManager.canvas.setGhostsEdible();
 			Main.gameManager.canvas.score += 50;
 			return true;
 		} else if (map[r][c] == Codes.fruit) {
@@ -94,12 +98,41 @@ public class Pacman {
 			// instead of checking ghost in array, we have to check ghost's position
 			// edible & ghost, points++ and re-spawn ghost
 			// in-edible & ghost, alive = false & restart game
-			if (map[r][c] == Codes.blinky || map[r][c] == Codes.inky || map[r][c] == Codes.pinky
-					|| map[r][c] == Codes.clyde) {
-				// ghost
-				alive = false;
-				return true;
+
+			if (Main.blinky.getrow() == r && Main.blinky.getcol() == c) {
+				if (Main.blinky.getState()) {
+					// edible
+					// add score
+				} else {
+					// lose life
+				}
 			}
+			if (Main.inky.getrow() == r && Main.inky.getcol() == c) {
+
+				if (Main.inky.getState()) {
+					// edible
+					// add score
+				} else {
+					// lose life
+				}
+			}
+			if (Main.pinky.getrow() == r && Main.pinky.getcol() == c) {
+				if (Main.pinky.getState()) {
+					// edible
+					// add score
+				} else {
+					// lose life
+				}
+			}
+			if (Main.clyde.getrow() == r && Main.clyde.getcol() == c) {
+				if (Main.clyde.getState()) {
+					// edible
+					// add score
+				} else {
+					// lose life
+				}
+			}
+
 		}
 	}
 

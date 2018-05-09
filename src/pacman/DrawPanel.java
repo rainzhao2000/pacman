@@ -24,7 +24,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 	private int tilePadWidth = Main.tilePadWidth;
 	private int mapWidth = Main.mapWidth;
 	private int mapHeight = Main.mapHeight;
-	
+
 	// private JLabel lblScore = Main.gameManager.lblScore;
 
 	/*
@@ -73,6 +73,17 @@ public class DrawPanel extends JPanel implements ActionListener {
 				g.fillRect(x, y, tilePadWidth, tilePadWidth);
 			}
 		}
+	}
+
+	/*
+	 * 
+	 */
+	void setGhostsEdible() {
+		Main.blinky.changeState(true);
+		Main.pinky.changeState(true);
+		Main.inky.changeState(true);
+		Main.clyde.changeState(true);
+		// reset edible timer of each ghost
 	}
 
 	/*

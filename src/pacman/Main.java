@@ -71,10 +71,10 @@ public class Main {
 	static Pacman pacman = new Pacman(23, 14, 2, 1);
 
 	// constructor parameter need to be modified
-	static Ghost blinky = new Ghost();
-	static Ghost inky = new Ghost();
-	static Ghost pinky = new Ghost();
-	static Ghost clyde = new Ghost();
+	static Ghost blinky = new Ghost(11, 14);
+	static Ghost inky = new Ghost(14, 12);
+	static Ghost pinky = new Ghost(14, 14);
+	static Ghost clyde = new Ghost(14, 16);
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
