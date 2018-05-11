@@ -216,34 +216,34 @@ public class DrawPanel extends JPanel implements ActionListener {
 			for (int row = 0; row < map.length; row++) {
 				String[] line = lines.get(row).split(" ");
 				for (int col = 0; col < map[row].length; col++) {
-					int index = Integer.parseInt(line[col]);
-					if (index == 5) {
+					int cell = Integer.parseInt(line[col]);
+					if (cell == Codes.pacman.getCode()) {
 						// pacman
 						Main.pacman.setRow(row);
 						Main.pacman.setCol(col);
 						map[row][col] = Codes.lookupByName(0);
-					} else if (index == 6) {
+					} else if (cell == Codes.blinky.getCode()) {
 						// blinky
 						Main.blinky.setRow(row);
 						Main.blinky.setCol(col);
 						map[row][col] = Codes.lookupByName(0);
-					} else if (index == 7) {
+					} else if (cell == Codes.pinky.getCode()) {
 						// pinky
 						Main.pinky.setRow(row);
 						Main.pinky.setCol(col);
 						map[row][col] = Codes.lookupByName(0);
-					} else if (index == 8) {
+					} else if (cell == Codes.inky.getCode()) {
 						// inky
 						Main.inky.setRow(row);
 						Main.inky.setCol(col);
 						map[row][col] = Codes.lookupByName(0);
-					} else if (index == 9) {
+					} else if (cell == Codes.clyde.getCode()) {
 						// clyde
 						Main.clyde.setRow(row);
 						Main.clyde.setCol(col);
 						map[row][col] = Codes.lookupByName(0);
 					} else {
-						map[row][col] = Codes.lookupByName(index);
+						map[row][col] = Codes.lookupByName(cell);
 					}
 				}
 			}
