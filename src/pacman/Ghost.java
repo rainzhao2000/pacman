@@ -70,8 +70,6 @@ public class Ghost {
 			}
 		}
 	}
-	
-
 
 	private boolean check(int r, int c) {
 		if (r < 0 || r >= map.length || c < 0 || c >= map[0].length) {
@@ -104,11 +102,13 @@ public class Ghost {
 			// edible & ghost, points++ and re-spawn ghost
 			// in-edible & ghost, alive = false & restart game
 			// ghosts can overlap
+			// ************************************************************************************
 			if (map[r][c] == Codes.blinky || map[r][c] == Codes.inky || map[r][c] == Codes.pinky
 					|| map[r][c] == Codes.clyde) {
 				// ghost
 				return true;
 			}
+			return true;
 		}
 	}
 }
