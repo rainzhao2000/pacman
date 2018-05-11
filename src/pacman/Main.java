@@ -68,13 +68,13 @@ public class Main {
 	static final int tilePadWidth = tileWidth + padding;
 	static final int mapWidth = map[0].length * tileWidth + (map[0].length + 1) * padding;
 	static final int mapHeight = map.length * tileWidth + (map.length + 1) * padding;
-	static Pacman pacman = new Pacman(23, 14, 2, 1);
+	static Pacman pacman = new Pacman(23, 14, 5, 1);
 
 	// constructor parameter need to be modified
-	static Ghost blinky = new Ghost(11, 14);
-	static Ghost inky = new Ghost(14, 12);
-	static Ghost pinky = new Ghost(14, 14);
-	static Ghost clyde = new Ghost(14, 16);
+	static Ghost blinky = new Ghost(11, 14, 5);
+	static Ghost inky = new Ghost(14, 12, 5);
+	static Ghost pinky = new Ghost(14, 14, 5);
+	static Ghost clyde = new Ghost(14, 16, 5);
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {

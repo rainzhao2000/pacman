@@ -91,7 +91,6 @@ public class Pacman implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == refreshTimer) {
 			update();
-			System.out.println(lives);
 		}
 	}
 

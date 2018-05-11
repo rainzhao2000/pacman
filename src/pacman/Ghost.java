@@ -1,21 +1,37 @@
 package pacman;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
+
 import pacman.Main.Codes;
 
-public class Ghost {
+public class Ghost implements ActionListener {
 	private int row, col, direction;
 	private double updatePeriod;
 	private Codes[][] map = Main.map;
 	private boolean edible;
+	private Timer refreshTimer;
 
 	// edible timer
 	// refresh timer
 	// etc
 
-	public Ghost(int row, int col) {
+	public Ghost(int row, int col, int updatePeriod) {
 		this.edible = false;
 		this.row = row;
 		this.col = col;
+		refreshTimer = new Timer((int) (1000 / updatePeriod), this);
+		refreshTimer.start();
+	}
+
+	// Repaints the panel at the conditions of the timer
+
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == refreshTimer) {
+			update();
+		}
 	}
 
 	// return speed
@@ -60,21 +76,29 @@ public class Ghost {
 			// left
 			if (check(row, col - 1)) {
 				col--;
+			} else {
+				direction = (int) (Math.random() * 4 + 1);
 			}
 		} else if (direction == 2) {
 			// right
 			if (check(row, col + 1)) {
 				col++;
+			} else {
+				direction = (int) (Math.random() * 4 + 1);
 			}
 		} else if (direction == 3) {
 			// up
 			if (check(row - 1, col)) {
 				row--;
+			} else {
+				direction = (int) (Math.random() * 4 + 1);
 			}
 		} else {
 			// down
 			if (check(row + 1, col)) {
 				row++;
+			} else {
+				direction = (int) (Math.random() * 4 + 1);
 			}
 		}
 	}
@@ -86,37 +110,12 @@ public class Ghost {
 		} else if (map[r][c] == Codes.wall) {
 			// wall
 			return false;
-		} else if (map[r][c] == Codes.pacdot) {
-			// pacdot
-			map[r][c] = Codes.path;
-			Main.gameManager.canvas.score += 10;
-			return true;
-		} else if (map[r][c] == Codes.powerPellet) {
-			// power pellet
-			map[r][c] = Codes.path;
-			Main.gameManager.canvas.edible = true;
-			Main.gameManager.canvas.score += 50;
-			return true;
-		} else if (map[r][c] == Codes.fruit) {
-			// fruit
-			map[r][c] = Codes.path;
-			Main.gameManager.canvas.score += 100;
-			return true;
-		} else if (map[r][c] == Codes.path) {
-			// path
-			return true;
 		} else {
-			// instead of checking ghost in array, we have to check ghost's position
-			// edible & ghost, points++ and re-spawn ghost
-			// in-edible & ghost, alive = false & restart game
-			// ghosts can overlap
-			// ************************************************************************************
-			if (map[r][c] == Codes.blinky || map[r][c] == Codes.inky || map[r][c] == Codes.pinky
-					|| map[r][c] == Codes.clyde) {
-				// ghost
-				return true;
-			}
 			return true;
 		}
+	}
+	
+	private boolean intersection() {
+		
 	}
 }
