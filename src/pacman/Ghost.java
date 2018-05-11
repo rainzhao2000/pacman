@@ -70,6 +70,8 @@ public class Ghost {
 			}
 		}
 	}
+	
+
 
 	private boolean check(int r, int c) {
 		if (r < 0 || r >= map.length || c < 0 || c >= map[0].length) {

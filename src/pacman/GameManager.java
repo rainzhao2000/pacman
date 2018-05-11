@@ -8,6 +8,8 @@ package pacman;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -16,7 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class GameManager {
+public class GameManager implements KeyListener {
 
 	JFrame frmPacman;
 	JLabel lblScore;
@@ -45,6 +47,8 @@ public class GameManager {
 		frmPacman.setBounds(400, 100, 309, 500);
 		frmPacman.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmPacman.getContentPane().setLayout(null);
+		frmPacman.addKeyListener(this);
+		frmPacman.setFocusable(true);
 
 		JLabel lblHighScore = new JLabel("High Score:");
 		lblHighScore.setBounds(118, 6, 72, 16);
@@ -100,5 +104,39 @@ public class GameManager {
 				}
 			});
 		}
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		int code = e.getKeyCode();
+
+		if (code == KeyEvent.VK_DOWN) {
+			Main.pacman.down();
+
+		}
+		if (code == KeyEvent.VK_UP) {
+			Main.pacman.up();
+		}
+		if (code == KeyEvent.VK_LEFT) {
+
+			Main.pacman.left();
+		}
+
+		if (code == KeyEvent.VK_RIGHT) {
+			Main.pacman.right();
+		}
+
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 }

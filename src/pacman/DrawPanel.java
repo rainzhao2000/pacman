@@ -34,7 +34,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 		this.paused = paused;
 		score = 0;
 		edible = false;
-		timer = new Timer(1000 / framerate, this);
+		timer = new Timer(1000, this);
 		timer.start();
 	}
 
@@ -44,8 +44,68 @@ public class DrawPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == timer && !paused) {
 			Main.gameManager.lblScore.setText(Integer.toString(score));
+			if (!Main.pacman.getState()) {
+				if (Main.pacman.getLives() == 0) {
+					// game over
+					end();
+				} else {
+					respawn();
+				}
+			}
 			repaint();
+			// debug
+			// print();
+			System.out.println(Main.pacman.getDirection());
 		}
+	}
+
+	// debug
+	void print() {
+		Codes[][] map = Main.map;
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[i].length; j++) {
+				if (map[i][j] == Codes.wall) {
+					System.out.print("/");
+				} else if (map[i][j] == Codes.pacdot) {
+					System.out.print(".");
+				} else if (map[i][j] == Codes.powerPellet) {
+					System.out.print(",");
+				} else if (map[i][j] == Codes.path) {
+					System.out.print(" ");
+				} else {
+					if (Main.blinky.getrow() == i && Main.blinky.getcol() == j) {
+						System.out.print("B");
+					} else if (Main.pinky.getrow() == i && Main.pinky.getcol() == j) {
+						System.out.print("P");
+					} else if (Main.inky.getrow() == i && Main.inky.getcol() == j) {
+						System.out.print("I");
+					} else if (Main.clyde.getrow() == i && Main.clyde.getcol() == j) {
+						System.out.print("C");
+					} else if (Main.pacman.getrow() == i && Main.pacman.getcol() == j) {
+						System.out.print("?");
+					}
+				}
+			}
+			System.out.println();
+		}
+		System.out.println();
+		System.out.println();
+	}
+
+	void respawn() {
+		// respawn all ghosts
+		// respawn pacman
+		// DO NOT respawn pacdots and power pellets
+		Main.blinky.respawn();
+		Main.pinky.respawn();
+		Main.inky.respawn();
+		Main.clyde.respawn();
+		Main.pacman.respawn();
+	}
+
+	void end() {
+		// display ending
+		// go back to beginning
 	}
 
 	/*

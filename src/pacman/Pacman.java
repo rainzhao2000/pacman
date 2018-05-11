@@ -1,8 +1,13 @@
 package pacman;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
+
 import pacman.Main.Codes;
 
-public class Pacman {
+public class Pacman implements ActionListener {
 	// For the direction variable:
 	// 1 represents left, 2 represents right, 3 represents up, 4 represents down.
 	// For the coordinate variables:
@@ -11,6 +16,9 @@ public class Pacman {
 	private double updatePeriod;
 	private boolean alive;
 	private Codes[][] map = Main.map;
+	private int eatCounter;
+	private int lives;
+	private Timer refreshTimer;
 	// refresh timer
 
 	// Pacman constructor
@@ -20,6 +28,39 @@ public class Pacman {
 		this.updatePeriod = updatePeriod;
 		this.direction = direction;
 		this.alive = true;
+		this.lives = 3;
+		refreshTimer = new Timer(1000, this);
+		refreshTimer.start();
+	}
+
+	int getDirection() {
+		return direction;
+	}
+
+	void up() {
+		direction = 3;
+	}
+
+	void down() {
+		direction = 4;
+	}
+
+	void left() {
+		direction = 1;
+	}
+
+	void right() {
+		direction = 2;
+	}
+
+	// return alive
+	public boolean getState() {
+		return alive;
+	}
+
+	// return lives
+	public int getLives() {
+		return lives;
 	}
 
 	// return speed
@@ -35,6 +76,14 @@ public class Pacman {
 	// return col
 	public int getcol() {
 		return col;
+	}
+
+	// Repaints the panel at the conditions of the timer
+
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == refreshTimer) {
+			update();
+		}
 	}
 
 	// update the position of the Pacman
@@ -85,6 +134,7 @@ public class Pacman {
 			map[r][c] = Codes.path;
 			Main.gameManager.canvas.setGhostsEdible();
 			Main.gameManager.canvas.score += 50;
+			eatCounter = 0;
 			return true;
 		} else if (map[r][c] == Codes.fruit) {
 			// fruit
@@ -103,8 +153,16 @@ public class Pacman {
 				if (Main.blinky.getState()) {
 					// edible
 					// add score
+					// respawn ghost
+					Main.gameManager.canvas.score += (int) (Math.pow(2, eatCounter) * 200);
+					Main.blinky.respawn();
+					eatCounter++;
+					return true;
 				} else {
 					// lose life
+					lives--;
+					alive = false;
+					return false;
 				}
 			}
 			if (Main.inky.getrow() == r && Main.inky.getcol() == c) {
@@ -112,28 +170,54 @@ public class Pacman {
 				if (Main.inky.getState()) {
 					// edible
 					// add score
+					Main.gameManager.canvas.score += (int) (Math.pow(2, eatCounter) * 200);
+					Main.inky.respawn();
+					eatCounter++;
+					return true;
 				} else {
 					// lose life
+					lives--;
+					alive = false;
+					return false;
 				}
 			}
 			if (Main.pinky.getrow() == r && Main.pinky.getcol() == c) {
 				if (Main.pinky.getState()) {
 					// edible
 					// add score
+					Main.gameManager.canvas.score += (int) (Math.pow(2, eatCounter) * 200);
+					Main.pinky.respawn();
+					eatCounter++;
+					return true;
 				} else {
 					// lose life
+					lives--;
+					alive = false;
+					return false;
 				}
 			}
 			if (Main.clyde.getrow() == r && Main.clyde.getcol() == c) {
 				if (Main.clyde.getState()) {
 					// edible
 					// add score
+					Main.gameManager.canvas.score += (int) (Math.pow(2, eatCounter) * 200);
+					Main.clyde.respawn();
+					eatCounter++;
+					return true;
 				} else {
 					// lose life
+					lives--;
+					alive = false;
+					return false;
 				}
 			}
-
+			return true;
 		}
 	}
 
+	void respawn() {
+		row = 23;
+		col = 14;
+		alive = true;
+	}
 }
