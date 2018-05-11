@@ -28,9 +28,17 @@ public class Ghost {
 		return row;
 	}
 
+	public void setRow(int row) {
+		this.row = row;
+	}
+
 	// return col
 	public int getcol() {
 		return col;
+	}
+
+	public void setCol(int col) {
+		this.col = col;
 	}
 
 	public boolean getState() {

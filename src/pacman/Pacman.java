@@ -29,7 +29,7 @@ public class Pacman implements ActionListener {
 		this.direction = direction;
 		this.alive = true;
 		this.lives = 3;
-		refreshTimer = new Timer(1000, this);
+		refreshTimer = new Timer((int) (1000 / updatePeriod), this);
 		refreshTimer.start();
 	}
 
@@ -73,9 +73,17 @@ public class Pacman implements ActionListener {
 		return row;
 	}
 
+	public void setRow(int row) {
+		this.row = row;
+	}
+
 	// return col
 	public int getcol() {
 		return col;
+	}
+
+	public void setCol(int col) {
+		this.col = col;
 	}
 
 	// Repaints the panel at the conditions of the timer
@@ -83,6 +91,7 @@ public class Pacman implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == refreshTimer) {
 			update();
+			System.out.println(lives);
 		}
 	}
 
@@ -109,6 +118,7 @@ public class Pacman implements ActionListener {
 				row++;
 			}
 		}
+
 	}
 
 	// return true if the block at r and c is not a wall
@@ -121,6 +131,68 @@ public class Pacman implements ActionListener {
 		if (r < 0 || r >= map.length || c < 0 || c >= map[0].length) {
 			// exceed boundary
 			return false;
+		} else if (Main.blinky.getrow() == r && Main.blinky.getcol() == c) {
+			// instead of checking ghost in array, we have to check ghost's position
+			// edible & ghost, points++ and re-spawn ghost
+			// in-edible & ghost, alive = false & restart game
+
+			if (Main.blinky.getState()) {
+				// edible
+				// add score
+				// respawn ghost
+				Main.gameManager.canvas.score += (int) (Math.pow(2, eatCounter) * 200);
+				Main.blinky.respawn();
+				eatCounter++;
+				return true;
+			} else {
+				// lose life
+				lives--;
+				alive = false;
+				return false;
+			}
+		} else if (Main.inky.getrow() == r && Main.inky.getcol() == c) {
+
+			if (Main.inky.getState()) {
+				// edible
+				// add score
+				Main.gameManager.canvas.score += (int) (Math.pow(2, eatCounter) * 200);
+				Main.inky.respawn();
+				eatCounter++;
+				return true;
+			} else {
+				// lose life
+				lives--;
+				alive = false;
+				return false;
+			}
+		} else if (Main.pinky.getrow() == r && Main.pinky.getcol() == c) {
+			if (Main.pinky.getState()) {
+				// edible
+				// add score
+				Main.gameManager.canvas.score += (int) (Math.pow(2, eatCounter) * 200);
+				Main.pinky.respawn();
+				eatCounter++;
+				return true;
+			} else {
+				// lose life
+				lives--;
+				alive = false;
+				return false;
+			}
+		} else if (Main.clyde.getrow() == r && Main.clyde.getcol() == c) {
+			if (Main.clyde.getState()) {
+				// edible
+				// add score
+				Main.gameManager.canvas.score += (int) (Math.pow(2, eatCounter) * 200);
+				Main.clyde.respawn();
+				eatCounter++;
+				return true;
+			} else {
+				// lose life
+				lives--;
+				alive = false;
+				return false;
+			}
 		} else if (map[r][c] == Codes.wall) {
 			// wall
 			return false;
@@ -141,76 +213,8 @@ public class Pacman implements ActionListener {
 			map[r][c] = Codes.path;
 			Main.gameManager.canvas.score += 100;
 			return true;
-		} else if (map[r][c] == Codes.path) {
-			// path
-			return true;
 		} else {
-			// instead of checking ghost in array, we have to check ghost's position
-			// edible & ghost, points++ and re-spawn ghost
-			// in-edible & ghost, alive = false & restart game
-
-			if (Main.blinky.getrow() == r && Main.blinky.getcol() == c) {
-				if (Main.blinky.getState()) {
-					// edible
-					// add score
-					// respawn ghost
-					Main.gameManager.canvas.score += (int) (Math.pow(2, eatCounter) * 200);
-					Main.blinky.respawn();
-					eatCounter++;
-					return true;
-				} else {
-					// lose life
-					lives--;
-					alive = false;
-					return false;
-				}
-			}
-			if (Main.inky.getrow() == r && Main.inky.getcol() == c) {
-
-				if (Main.inky.getState()) {
-					// edible
-					// add score
-					Main.gameManager.canvas.score += (int) (Math.pow(2, eatCounter) * 200);
-					Main.inky.respawn();
-					eatCounter++;
-					return true;
-				} else {
-					// lose life
-					lives--;
-					alive = false;
-					return false;
-				}
-			}
-			if (Main.pinky.getrow() == r && Main.pinky.getcol() == c) {
-				if (Main.pinky.getState()) {
-					// edible
-					// add score
-					Main.gameManager.canvas.score += (int) (Math.pow(2, eatCounter) * 200);
-					Main.pinky.respawn();
-					eatCounter++;
-					return true;
-				} else {
-					// lose life
-					lives--;
-					alive = false;
-					return false;
-				}
-			}
-			if (Main.clyde.getrow() == r && Main.clyde.getcol() == c) {
-				if (Main.clyde.getState()) {
-					// edible
-					// add score
-					Main.gameManager.canvas.score += (int) (Math.pow(2, eatCounter) * 200);
-					Main.clyde.respawn();
-					eatCounter++;
-					return true;
-				} else {
-					// lose life
-					lives--;
-					alive = false;
-					return false;
-				}
-			}
+			// path
 			return true;
 		}
 	}

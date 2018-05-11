@@ -33,7 +33,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 		this.paused = paused;
 		score = 0;
 		edible = false;
-		timer = new Timer(1000, this);
+		timer = new Timer(1000 / framerate, this);
 		timer.start();
 	}
 
@@ -54,7 +54,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 			repaint();
 			// debug
 			// print();
-			System.out.println(Main.pacman.getDirection());
+			// System.out.println(Main.pacman.getDirection());
 		}
 	}
 
@@ -124,7 +124,19 @@ public class DrawPanel extends JPanel implements ActionListener {
 				int x = col * tilePadWidth;
 				int y = row * tilePadWidth;
 				try {
-					g.setColor(getColor(map[row][col]));
+					if (Main.blinky.getrow() == row && Main.blinky.getcol() == col) {
+						g.setColor(Color.RED);
+					} else if (Main.pinky.getrow() == row && Main.pinky.getcol() == col) {
+						g.setColor(Color.PINK);
+					} else if (Main.inky.getrow() == row && Main.inky.getcol() == col) {
+						g.setColor(Color.CYAN);
+					} else if (Main.clyde.getrow() == row && Main.clyde.getcol() == col) {
+						g.setColor(Color.ORANGE);
+					} else if (Main.pacman.getrow() == row && Main.pacman.getcol() == col) {
+						g.setColor(Color.YELLOW);
+					} else {
+						g.setColor(getColor(map[row][col]));
+					}
 				} catch (NullPointerException e) {
 					blankMap();
 					return;
@@ -160,16 +172,6 @@ public class DrawPanel extends JPanel implements ActionListener {
 			return Color.white;
 		case fruit:
 			return Color.magenta;
-		case pacman:
-			return Color.yellow;
-		case blinky:
-			return Color.red;
-		case pinky:
-			return Color.pink;
-		case inky:
-			return Color.cyan;
-		case clyde:
-			return Color.orange;
 		default:
 			return new Color(150, 100, 100);
 		}
@@ -214,7 +216,35 @@ public class DrawPanel extends JPanel implements ActionListener {
 			for (int row = 0; row < map.length; row++) {
 				String[] line = lines.get(row).split(" ");
 				for (int col = 0; col < map[row].length; col++) {
-					map[row][col] = Codes.lookupByName(Integer.parseInt(line[col]));
+					int index = Integer.parseInt(line[col]);
+					if (index == 5) {
+						// pacman
+						Main.pacman.setRow(row);
+						Main.pacman.setCol(col);
+						map[row][col] = Codes.lookupByName(0);
+					} else if (index == 6) {
+						// blinky
+						Main.blinky.setRow(row);
+						Main.blinky.setCol(col);
+						map[row][col] = Codes.lookupByName(0);
+					} else if (index == 7) {
+						// pinky
+						Main.pinky.setRow(row);
+						Main.pinky.setCol(col);
+						map[row][col] = Codes.lookupByName(0);
+					} else if (index == 8) {
+						// inky
+						Main.inky.setRow(row);
+						Main.inky.setCol(col);
+						map[row][col] = Codes.lookupByName(0);
+					} else if (index == 9) {
+						// clyde
+						Main.clyde.setRow(row);
+						Main.clyde.setCol(col);
+						map[row][col] = Codes.lookupByName(0);
+					} else {
+						map[row][col] = Codes.lookupByName(index);
+					}
 				}
 			}
 		} catch (Exception e) {

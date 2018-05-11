@@ -20,7 +20,7 @@ public class Main {
 	 */
 	static enum Codes {
 
-		path(0), wall(1), pacdot(2), powerPellet(3), fruit(4), pacman(5), blinky(6), pinky(7), inky(8), clyde(9);
+		path(0), wall(1), pacdot(2), powerPellet(3), fruit(4);
 		// remove pacman and ghosts
 		// ********************************************************
 
@@ -68,7 +68,7 @@ public class Main {
 	static final int tilePadWidth = tileWidth + padding;
 	static final int mapWidth = map[0].length * tileWidth + (map[0].length + 1) * padding;
 	static final int mapHeight = map.length * tileWidth + (map.length + 1) * padding;
-	static Pacman pacman = new Pacman(23, 14, 2, 1);
+	static Pacman pacman = new Pacman(23, 14, 4, 1);
 
 	// constructor parameter need to be modified
 	static Ghost blinky = new Ghost(11, 14);
