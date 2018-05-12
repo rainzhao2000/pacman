@@ -18,21 +18,21 @@ public class DrawPanel extends JPanel implements ActionListener {
 
 	private Timer timer;
 
+	private int tileWidth = Main.tileWidth;
 	private int padding = Main.padding;
 	private int tilePadWidth = Main.tilePadWidth;
 	private int mapWidth = Main.mapWidth;
 	private int mapHeight = Main.mapHeight;
 	private int score;
 
-	boolean paused;
-
-	// private JLabel lblScore = Main.gameManager.lblScore;
+	private boolean paused = false;
+	private boolean doDrawGrid;
 
 	/*
 	 * DrawPanel constructor sets paused and timer states
 	 */
-	public DrawPanel(boolean paused, int framerate) {
-		this.paused = paused;
+	public DrawPanel(boolean doDrawGrid, int framerate) {
+		this.doDrawGrid = doDrawGrid;
 		score = 0;
 		timer = new Timer(1000 / framerate, this);
 		timer.start();
@@ -97,7 +97,9 @@ public class DrawPanel extends JPanel implements ActionListener {
 	 */
 	protected void paintComponent(Graphics g) {
 		drawMap(g);
-		drawGrid(g);
+		if (doDrawGrid) {
+			drawGrid(g);
+		}
 	}
 
 	/*
@@ -106,6 +108,9 @@ public class DrawPanel extends JPanel implements ActionListener {
 	private void drawMap(Graphics g) {
 		for (int row = 0; row < map.length; row++) {
 			for (int col = 0; col < map[row].length; col++) {
+				int x = col * tilePadWidth;
+				int y = row * tilePadWidth;
+				int width = tilePadWidth;
 				try {
 					if (Main.pacman.getrow() == row && Main.pacman.getcol() == col) {
 						g.setColor(Color.YELLOW);
@@ -118,15 +123,20 @@ public class DrawPanel extends JPanel implements ActionListener {
 					} else if (Main.clyde.getrow() == row && Main.clyde.getcol() == col) {
 						g.setColor(Color.ORANGE);
 					} else {
+						if (map[row][col] == Codes.pacdot) {
+							g.setColor(getColor(Codes.path));
+							g.fillRect(x, y, width, width);
+							width = tileWidth / 4;
+							x += (tilePadWidth - width) / 2 + padding;
+							y += (tilePadWidth - width) / 2 + padding;
+						}
 						g.setColor(getColor(map[row][col]));
 					}
 				} catch (NullPointerException e) {
 					blankMap();
 					return;
 				}
-				int x = col * tilePadWidth;
-				int y = row * tilePadWidth;
-				g.fillRect(x, y, tilePadWidth, tilePadWidth);
+				g.fillRect(x, y, width, width);
 			}
 		}
 	}
@@ -141,7 +151,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 		case wall:
 			return Color.blue;
 		case pacdot:
-			return Color.lightGray;
+			return Color.white;
 		case powerPellet:
 			return Color.white;
 		case fruit:
@@ -275,6 +285,18 @@ public class DrawPanel extends JPanel implements ActionListener {
 
 	boolean getPaused() {
 		return paused;
+	}
+
+	void setPaused(boolean state) {
+		paused = state;
+	}
+
+	boolean getDoDrawGrid() {
+		return doDrawGrid;
+	}
+
+	void setDoDrawGrid(boolean state) {
+		doDrawGrid = state;
 	}
 
 }

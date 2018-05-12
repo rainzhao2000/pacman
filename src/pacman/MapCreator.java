@@ -32,16 +32,16 @@ public class MapCreator {
 	private JFrame frmMapCreator;
 	private JFrame frmPacman = Main.game.getFrame();
 	private DrawPanel canvas;
-	private DrawPanel gameManagerCanvas = Main.game.getCanvas();
+	private DrawPanel gameCanvas = Main.game.getCanvas();
 	private JTextField txtFieldFileName;
-	
+
 	private Codes[][] map = Main.map;
 	private Codes currentObject = Codes.path;
-	
+
 	private int mapWidth = Main.mapWidth;
 	private int mapHeight = Main.mapHeight;
 	private int framerate = Main.framerate;
-	
+
 	private final Action pathSelect = new PathSelect();
 	private final Action wallSelect = new WallSelect();
 	private final Action pacdotSelect = new PacdotSelect();
@@ -62,10 +62,10 @@ public class MapCreator {
 	 */
 	public MapCreator() {
 		initialize();
-		// Unpause the canvas rendering in GameManager on close of MapCreator
+		// Unpause the canvas rendering in Game on close of MapCreator
 		frmMapCreator.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(WindowEvent winEvt) {
-				gameManagerCanvas.paused = false;
+				gameCanvas.setPaused(false);
 				System.out.println("Game Unpaused");
 			}
 		});
@@ -83,7 +83,7 @@ public class MapCreator {
 		frmMapCreator.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmMapCreator.getContentPane().setLayout(null);
 
-		canvas = new DrawPanel(false, framerate);
+		canvas = new DrawPanel(true, framerate);
 		canvas.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
@@ -178,7 +178,7 @@ public class MapCreator {
 		lblSaveAsFile.setBounds(10, 440, 123, 16);
 		frmMapCreator.getContentPane().add(lblSaveAsFile);
 	}
-	
+
 	JFrame getFrame() {
 		return frmMapCreator;
 	}
@@ -298,8 +298,8 @@ public class MapCreator {
 	}
 
 	/*
-	 * The following classes are actions attributed to the buttons that handle map
-	 * selection, saving and loading
+	 * The following classes are actions attributed to the buttons that handle
+	 * map selection, saving and loading
 	 */
 	private class DefaultMapSelect extends AbstractAction {
 		public DefaultMapSelect() {

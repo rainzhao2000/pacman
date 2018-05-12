@@ -6,6 +6,7 @@
 
 package pacman;
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -30,6 +31,7 @@ public class Game implements KeyListener {
 	private int framerate = Main.framerate;
 
 	private final Action mapCreatorAction = new MapCreatorAction();
+	private final Action toggleGridAction = new ToggleGridAction();
 
 	/**
 	 * Create the application.
@@ -72,26 +74,34 @@ public class Game implements KeyListener {
 		lblDebugControls.setBounds(105, 434, 99, 16);
 		frmGame.getContentPane().add(lblDebugControls);
 
+		JPanel debugPanel = new JPanel();
+		debugPanel.setBounds(0, 450, 309, 28);
+		frmGame.getContentPane().add(debugPanel);
+		debugPanel.setLayout(new BorderLayout(0, 0));
+
 		JButton btnMapCreator = new JButton("Map Creator");
-		btnMapCreator.setBounds(94, 449, 120, 29);
-		frmGame.getContentPane().add(btnMapCreator);
+		debugPanel.add(btnMapCreator, BorderLayout.WEST);
 		btnMapCreator.setAction(mapCreatorAction);
+
+		JButton btnToggleGrid = new JButton("Toggle Grid");
+		btnToggleGrid.setAction(toggleGridAction);
+		debugPanel.add(btnToggleGrid, BorderLayout.EAST);
 
 		Main.defaultMap(frmGame, canvas);
 	}
-	
+
 	JFrame getFrame() {
 		return frmGame;
 	}
-	
+
 	DrawPanel getCanvas() {
 		return canvas;
 	}
-	
+
 	JLabel getScoreLabel() {
 		return lblScore;
 	}
-	
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
@@ -137,7 +147,7 @@ public class Game implements KeyListener {
 		public void actionPerformed(ActionEvent e) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					canvas.paused = true;
+					canvas.setPaused(true);
 					System.out.println("Game Paused");
 					if (mapCreatorWindow != null) {
 						mapCreatorWindow.getFrame().dispose();
@@ -148,5 +158,14 @@ public class Game implements KeyListener {
 			});
 		}
 	}
-	
+
+	private class ToggleGridAction extends AbstractAction {
+		public ToggleGridAction() {
+			putValue(NAME, "Toggle Grid");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			canvas.setDoDrawGrid(!canvas.getDoDrawGrid());
+		}
+	}
 }
