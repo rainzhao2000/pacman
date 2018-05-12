@@ -14,15 +14,17 @@ import pacman.Main.Codes;
 
 public class DrawPanel extends JPanel implements ActionListener {
 
-	int score;
-	boolean paused;
-	boolean edible;
-	private Timer timer;
 	private Codes[][] map = Main.map;
+
+	private Timer timer;
+
 	private int padding = Main.padding;
 	private int tilePadWidth = Main.tilePadWidth;
 	private int mapWidth = Main.mapWidth;
 	private int mapHeight = Main.mapHeight;
+	private int score;
+
+	boolean paused;
 
 	// private JLabel lblScore = Main.gameManager.lblScore;
 
@@ -32,7 +34,6 @@ public class DrawPanel extends JPanel implements ActionListener {
 	public DrawPanel(boolean paused, int framerate) {
 		this.paused = paused;
 		score = 0;
-		edible = false;
 		timer = new Timer(1000 / framerate, this);
 		timer.start();
 	}
@@ -42,7 +43,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == timer && !paused) {
-			Main.gameManager.lblScore.setText(Integer.toString(score));
+			Main.game.getScoreLabel().setText(Integer.toString(score));
 			if (!Main.pacman.getState()) {
 				if (Main.pacman.getLives() == 0) {
 					// game over
@@ -91,22 +92,6 @@ public class DrawPanel extends JPanel implements ActionListener {
 		System.out.println();
 	}
 
-	void respawn() {
-		// respawn all ghosts
-		// respawn pacman
-		// DO NOT respawn pacdots and power pellets
-		Main.blinky.respawn();
-		Main.pinky.respawn();
-		Main.inky.respawn();
-		Main.clyde.respawn();
-		Main.pacman.respawn();
-	}
-
-	void end() {
-		// display ending
-		// go back to beginning
-	}
-
 	/*
 	 * Handles all painting
 	 */
@@ -121,10 +106,10 @@ public class DrawPanel extends JPanel implements ActionListener {
 	private void drawMap(Graphics g) {
 		for (int row = 0; row < map.length; row++) {
 			for (int col = 0; col < map[row].length; col++) {
-				int x = col * tilePadWidth;
-				int y = row * tilePadWidth;
 				try {
-					if (Main.blinky.getrow() == row && Main.blinky.getcol() == col) {
+					if (Main.pacman.getrow() == row && Main.pacman.getcol() == col) {
+						g.setColor(Color.YELLOW);
+					} else if (Main.blinky.getrow() == row && Main.blinky.getcol() == col) {
 						g.setColor(Color.RED);
 					} else if (Main.pinky.getrow() == row && Main.pinky.getcol() == col) {
 						g.setColor(Color.PINK);
@@ -132,8 +117,6 @@ public class DrawPanel extends JPanel implements ActionListener {
 						g.setColor(Color.CYAN);
 					} else if (Main.clyde.getrow() == row && Main.clyde.getcol() == col) {
 						g.setColor(Color.ORANGE);
-					} else if (Main.pacman.getrow() == row && Main.pacman.getcol() == col) {
-						g.setColor(Color.YELLOW);
 					} else {
 						g.setColor(getColor(map[row][col]));
 					}
@@ -141,20 +124,11 @@ public class DrawPanel extends JPanel implements ActionListener {
 					blankMap();
 					return;
 				}
+				int x = col * tilePadWidth;
+				int y = row * tilePadWidth;
 				g.fillRect(x, y, tilePadWidth, tilePadWidth);
 			}
 		}
-	}
-
-	/*
-	 * 
-	 */
-	void setGhostsEdible() {
-		Main.blinky.changeState(true);
-		Main.pinky.changeState(true);
-		Main.inky.changeState(true);
-		Main.clyde.changeState(true);
-		// reset edible timer of each ghost
 	}
 
 	/*
@@ -198,8 +172,8 @@ public class DrawPanel extends JPanel implements ActionListener {
 	}
 
 	/*
-	 * Finds the element in map array corresponding to position of mouse cursor and
-	 * sets the element to a specified code
+	 * Finds the element in map array corresponding to position of mouse cursor
+	 * and sets the element to a specified code
 	 */
 	void setTile(MouseEvent e, Codes code) {
 		int col = e.getX() / tilePadWidth;
@@ -208,42 +182,42 @@ public class DrawPanel extends JPanel implements ActionListener {
 	}
 
 	/*
-	 * Looks up an ArrayList of strings and adds the Codes objects obtained from the
-	 * code values to the map array
+	 * Looks up an ArrayList of strings and adds the Codes objects obtained from
+	 * the code values to the map array
 	 */
 	boolean uploadMap(ArrayList<String> lines) {
 		try {
 			for (int row = 0; row < map.length; row++) {
 				String[] line = lines.get(row).split(" ");
 				for (int col = 0; col < map[row].length; col++) {
-					int cell = Integer.parseInt(line[col]);
-					if (cell == Codes.pacman.getCode()) {
+					int tile = Integer.parseInt(line[col]);
+					if (tile == Codes.pacman.getCode()) {
 						// pacman
 						Main.pacman.setRow(row);
 						Main.pacman.setCol(col);
 						map[row][col] = Codes.lookupByName(0);
-					} else if (cell == Codes.blinky.getCode()) {
+					} else if (tile == Codes.blinky.getCode()) {
 						// blinky
 						Main.blinky.setRow(row);
 						Main.blinky.setCol(col);
 						map[row][col] = Codes.lookupByName(0);
-					} else if (cell == Codes.pinky.getCode()) {
+					} else if (tile == Codes.pinky.getCode()) {
 						// pinky
 						Main.pinky.setRow(row);
 						Main.pinky.setCol(col);
 						map[row][col] = Codes.lookupByName(0);
-					} else if (cell == Codes.inky.getCode()) {
+					} else if (tile == Codes.inky.getCode()) {
 						// inky
 						Main.inky.setRow(row);
 						Main.inky.setCol(col);
 						map[row][col] = Codes.lookupByName(0);
-					} else if (cell == Codes.clyde.getCode()) {
+					} else if (tile == Codes.clyde.getCode()) {
 						// clyde
 						Main.clyde.setRow(row);
 						Main.clyde.setCol(col);
 						map[row][col] = Codes.lookupByName(0);
 					} else {
-						map[row][col] = Codes.lookupByName(cell);
+						map[row][col] = Codes.lookupByName(tile);
 					}
 				}
 			}
@@ -262,6 +236,45 @@ public class DrawPanel extends JPanel implements ActionListener {
 				map[row][col] = Codes.path;
 			}
 		}
+	}
+
+	void respawn() {
+		// respawn all ghosts
+		// respawn pacman
+		// DO NOT respawn pacdots and power pellets
+		Main.pacman.respawn();
+		Main.blinky.respawn();
+		Main.pinky.respawn();
+		Main.inky.respawn();
+		Main.clyde.respawn();
+	}
+
+	void end() {
+		// display ending
+		// go back to beginning
+	}
+
+	/*
+	 * 
+	 */
+	void setGhostsEdible() {
+		Main.blinky.changeState(true);
+		Main.pinky.changeState(true);
+		Main.inky.changeState(true);
+		Main.clyde.changeState(true);
+		// reset edible timer of each ghost
+	}
+
+	int getScore() {
+		return score;
+	}
+
+	void setScore(int score) {
+		this.score = score;
+	}
+
+	boolean getPaused() {
+		return paused;
 	}
 
 }

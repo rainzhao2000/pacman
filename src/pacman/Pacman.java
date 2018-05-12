@@ -9,16 +9,21 @@ import pacman.Main.Codes;
 
 public class Pacman implements ActionListener {
 	// For the direction variable:
-	// 1 represents left, 2 represents right, 3 represents up, 4 represents down.
+	// 1 represents left, 2 represents right, 3 represents up, 4 represents
+	// down.
 	// For the coordinate variables:
 	// the first row is row 0 and the first column is col 0
-	private int row, col, direction;
-	private double updatePeriod;
-	private boolean alive;
 	private Codes[][] map = Main.map;
+
+	private Timer refreshTimer;
+
+	private int row, col, direction;
 	private int eatCounter;
 	private int lives;
-	private Timer refreshTimer;
+
+	private double updatePeriod;
+
+	private boolean alive;
 	// refresh timer
 
 	// Pacman constructor
@@ -54,35 +59,35 @@ public class Pacman implements ActionListener {
 	}
 
 	// return alive
-	public boolean getState() {
+	boolean getState() {
 		return alive;
 	}
 
 	// return lives
-	public int getLives() {
+	int getLives() {
 		return lives;
 	}
 
 	// return speed
-	public double getUpdatePeriod() {
+	double getUpdatePeriod() {
 		return updatePeriod;
 	}
 
 	// return row
-	public int getrow() {
+	int getrow() {
 		return row;
 	}
 
-	public void setRow(int row) {
+	void setRow(int row) {
 		this.row = row;
 	}
 
 	// return col
-	public int getcol() {
+	int getcol() {
 		return col;
 	}
 
-	public void setCol(int col) {
+	void setCol(int col) {
 		this.col = col;
 	}
 
@@ -95,7 +100,7 @@ public class Pacman implements ActionListener {
 	}
 
 	// update the position of the Pacman
-	public void update() {
+	void update() {
 		if (direction == 1) {
 			// left
 			if (check(row, col - 1)) {
@@ -131,7 +136,8 @@ public class Pacman implements ActionListener {
 			// exceed boundary
 			return false;
 		} else if (Main.blinky.getrow() == r && Main.blinky.getcol() == c) {
-			// instead of checking ghost in array, we have to check ghost's position
+			// instead of checking ghost in array, we have to check ghost's
+			// position
 			// edible & ghost, points++ and re-spawn ghost
 			// in-edible & ghost, alive = false & restart game
 
@@ -139,7 +145,8 @@ public class Pacman implements ActionListener {
 				// edible
 				// add score
 				// respawn ghost
-				Main.gameManager.canvas.score += (int) (Math.pow(2, eatCounter) * 200);
+				Main.game.getCanvas()
+						.setScore(Main.game.getCanvas().getScore() + (int) (Math.pow(2, eatCounter) * 200));
 				Main.blinky.respawn();
 				eatCounter++;
 				return true;
@@ -154,7 +161,8 @@ public class Pacman implements ActionListener {
 			if (Main.inky.getState()) {
 				// edible
 				// add score
-				Main.gameManager.canvas.score += (int) (Math.pow(2, eatCounter) * 200);
+				Main.game.getCanvas()
+						.setScore(Main.game.getCanvas().getScore() + (int) (Math.pow(2, eatCounter) * 200));
 				Main.inky.respawn();
 				eatCounter++;
 				return true;
@@ -168,7 +176,8 @@ public class Pacman implements ActionListener {
 			if (Main.pinky.getState()) {
 				// edible
 				// add score
-				Main.gameManager.canvas.score += (int) (Math.pow(2, eatCounter) * 200);
+				Main.game.getCanvas()
+						.setScore(Main.game.getCanvas().getScore() + (int) (Math.pow(2, eatCounter) * 200));
 				Main.pinky.respawn();
 				eatCounter++;
 				return true;
@@ -182,7 +191,8 @@ public class Pacman implements ActionListener {
 			if (Main.clyde.getState()) {
 				// edible
 				// add score
-				Main.gameManager.canvas.score += (int) (Math.pow(2, eatCounter) * 200);
+				Main.game.getCanvas()
+						.setScore(Main.game.getCanvas().getScore() + (int) (Math.pow(2, eatCounter) * 200));
 				Main.clyde.respawn();
 				eatCounter++;
 				return true;
@@ -198,19 +208,19 @@ public class Pacman implements ActionListener {
 		} else if (map[r][c] == Codes.pacdot) {
 			// pacdot
 			map[r][c] = Codes.path;
-			Main.gameManager.canvas.score += 10;
+			Main.game.getCanvas().setScore(Main.game.getCanvas().getScore() + 10);
 			return true;
 		} else if (map[r][c] == Codes.powerPellet) {
 			// power pellet
 			map[r][c] = Codes.path;
-			Main.gameManager.canvas.setGhostsEdible();
-			Main.gameManager.canvas.score += 50;
+			Main.game.getCanvas().setGhostsEdible();
+			Main.game.getCanvas().setScore(Main.game.getCanvas().getScore() + 50);
 			eatCounter = 0;
 			return true;
 		} else if (map[r][c] == Codes.fruit) {
 			// fruit
 			map[r][c] = Codes.path;
-			Main.gameManager.canvas.score += 100;
+			Main.game.getCanvas().setScore(Main.game.getCanvas().getScore() + 100);
 			return true;
 		} else {
 			// path

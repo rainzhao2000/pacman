@@ -29,16 +29,19 @@ import pacman.Main.Codes;
 
 public class MapCreator {
 
-	JFrame frmMapCreator;
-	private JFrame frmPacman = Main.gameManager.frmPacman;
-	private int framerate = Main.framerate;
+	private JFrame frmMapCreator;
+	private JFrame frmPacman = Main.game.getFrame();
+	private DrawPanel canvas;
+	private DrawPanel gameManagerCanvas = Main.game.getCanvas();
+	private JTextField txtFieldFileName;
+	
 	private Codes[][] map = Main.map;
+	private Codes currentObject = Codes.path;
+	
 	private int mapWidth = Main.mapWidth;
 	private int mapHeight = Main.mapHeight;
-	private Codes currentObject = Codes.path;
-	private DrawPanel canvas;
-	private DrawPanel gameManagerCanvas = Main.gameManager.canvas;
-	private JTextField txtFieldFileName;
+	private int framerate = Main.framerate;
+	
 	private final Action pathSelect = new PathSelect();
 	private final Action wallSelect = new WallSelect();
 	private final Action pacdotSelect = new PacdotSelect();
@@ -174,6 +177,10 @@ public class MapCreator {
 		JLabel lblSaveAsFile = new JLabel("Save As File Name:");
 		lblSaveAsFile.setBounds(10, 440, 123, 16);
 		frmMapCreator.getContentPane().add(lblSaveAsFile);
+	}
+	
+	JFrame getFrame() {
+		return frmMapCreator;
 	}
 
 	/*

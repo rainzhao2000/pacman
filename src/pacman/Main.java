@@ -16,20 +16,19 @@ import javax.swing.JOptionPane;
 public class Main {
 
 	/*
-	 * Enumerator handles codes of elements that will be referenced from map array
+	 * Enumerator handles codes of elements that will be referenced from map
+	 * array
 	 */
 	static enum Codes {
 
 		path(0), wall(1), pacdot(2), powerPellet(3), fruit(4), pacman(5), blinky(6), pinky(7), inky(8), clyde(9);
-		// remove pacman and ghosts
-		// ********************************************************
 
 		private final int code;
 		private static final Map<Integer, Codes> codeIndex = new HashMap<Integer, Codes>();
 
 		/*
-		 * Make a HashMap to hold references to Codes objects by reference of their
-		 * values
+		 * Make a HashMap to hold references to Codes objects by reference of
+		 * their values
 		 */
 		static {
 			for (Codes code : Codes.values()) {
@@ -60,28 +59,29 @@ public class Main {
 
 	}
 
-	static GameManager gameManager;
-	static final int framerate = 60;
+	static Game game;
+
 	static Codes[][] map = new Codes[31][28];
+
 	static final int tileWidth = 10;
 	static final int padding = 1;
 	static final int tilePadWidth = tileWidth + padding;
 	static final int mapWidth = map[0].length * tileWidth + (map[0].length + 1) * padding;
 	static final int mapHeight = map.length * tileWidth + (map.length + 1) * padding;
-	static Pacman pacman = new Pacman(23, 14, 5, 1);
+	static final int framerate = 60;
 
-	// constructor parameter need to be modified
+	static Pacman pacman = new Pacman(23, 14, 5, 1);
 	static Ghost blinky = new Ghost(11, 14, 5);
-	static Ghost inky = new Ghost(14, 12, 5);
 	static Ghost pinky = new Ghost(14, 14, 5);
+	static Ghost inky = new Ghost(14, 12, 5);
 	static Ghost clyde = new Ghost(14, 16, 5);
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					gameManager = new GameManager();
-					gameManager.frmPacman.setVisible(true);
+					game = new Game();
+					game.getFrame().setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

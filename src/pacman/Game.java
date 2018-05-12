@@ -18,21 +18,23 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class GameManager implements KeyListener {
+public class Game implements KeyListener {
 
-	JFrame frmPacman;
-	JLabel lblScore;
-	DrawPanel canvas;
+	private JFrame frmGame;
+	private DrawPanel canvas;
+	private JLabel lblScore;
+	private MapCreator mapCreatorWindow = null;
+
 	private int mapWidth = Main.mapWidth;
 	private int mapHeight = Main.mapHeight;
 	private int framerate = Main.framerate;
-	private MapCreator mapCreatorWindow = null;
+
 	private final Action mapCreatorAction = new MapCreatorAction();
 
 	/**
 	 * Create the application.
 	 */
-	public GameManager() {
+	public Game() {
 		initialize();
 	}
 
@@ -41,91 +43,70 @@ public class GameManager implements KeyListener {
 	 */
 	private void initialize() {
 		// Set up the window (frame), and its elements
-		frmPacman = new JFrame();
-		frmPacman.setResizable(false);
-		frmPacman.setTitle("Pac-Man");
-		frmPacman.setBounds(400, 100, 309, 500);
-		frmPacman.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmPacman.getContentPane().setLayout(null);
-		frmPacman.addKeyListener(this);
-		frmPacman.setFocusable(true);
+		frmGame = new JFrame();
+		frmGame.setResizable(false);
+		frmGame.setTitle("Pac-Man");
+		frmGame.setBounds(400, 100, 309, 500);
+		frmGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmGame.getContentPane().setLayout(null);
+		frmGame.addKeyListener(this);
+		frmGame.setFocusable(true);
 
 		JLabel lblHighScore = new JLabel("High Score:");
 		lblHighScore.setBounds(118, 6, 72, 16);
-		frmPacman.getContentPane().add(lblHighScore);
+		frmGame.getContentPane().add(lblHighScore);
 
 		lblScore = new JLabel("0");
 		lblScore.setBounds(14, 24, 280, 16);
-		frmPacman.getContentPane().add(lblScore);
+		frmGame.getContentPane().add(lblScore);
 
 		canvas = new DrawPanel(false, framerate);
 		canvas.setBounds(0, 50, mapWidth, mapHeight);
-		frmPacman.getContentPane().add(canvas);
+		frmGame.getContentPane().add(canvas);
 
 		JPanel infoPanel = new JPanel();
 		infoPanel.setBounds(14, 392, 280, 40);
-		frmPacman.getContentPane().add(infoPanel);
+		frmGame.getContentPane().add(infoPanel);
 
 		JLabel lblDebugControls = new JLabel("Debug Controls");
 		lblDebugControls.setBounds(105, 434, 99, 16);
-		frmPacman.getContentPane().add(lblDebugControls);
+		frmGame.getContentPane().add(lblDebugControls);
 
 		JButton btnMapCreator = new JButton("Map Creator");
 		btnMapCreator.setBounds(94, 449, 120, 29);
-		frmPacman.getContentPane().add(btnMapCreator);
+		frmGame.getContentPane().add(btnMapCreator);
 		btnMapCreator.setAction(mapCreatorAction);
 
-		Main.defaultMap(frmPacman, canvas);
+		Main.defaultMap(frmGame, canvas);
 	}
-
-	// Action that opens the MapCreator window
-	private class MapCreatorAction extends AbstractAction {
-		public MapCreatorAction() {
-			putValue(NAME, "Map Creator");
-			putValue(SHORT_DESCRIPTION, "Customize the map");
-		}
-
-		/*
-		 * When the component this action is attached to is triggered, pause the current
-		 * canvas rendering (so that resources can be allocated to the MapCreator
-		 * canvas), then try to close any existing open MapCreator window and
-		 * instantiate a new MapCreator window
-		 */
-		public void actionPerformed(ActionEvent e) {
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					canvas.paused = true;
-					System.out.println("Game Paused");
-					if (mapCreatorWindow != null) {
-						mapCreatorWindow.frmMapCreator.dispose();
-					}
-					mapCreatorWindow = new MapCreator();
-					mapCreatorWindow.frmMapCreator.setVisible(true);
-				}
-			});
-		}
+	
+	JFrame getFrame() {
+		return frmGame;
 	}
-
+	
+	DrawPanel getCanvas() {
+		return canvas;
+	}
+	
+	JLabel getScoreLabel() {
+		return lblScore;
+	}
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
-
 		if (code == KeyEvent.VK_DOWN) {
 			Main.pacman.down();
-
 		}
 		if (code == KeyEvent.VK_UP) {
 			Main.pacman.up();
 		}
 		if (code == KeyEvent.VK_LEFT) {
-
 			Main.pacman.left();
 		}
-
 		if (code == KeyEvent.VK_RIGHT) {
 			Main.pacman.right();
 		}
-
 	}
 
 	@Override
@@ -139,4 +120,33 @@ public class GameManager implements KeyListener {
 		// TODO Auto-generated method stub
 
 	}
+
+	// Action that opens the MapCreator window
+	private class MapCreatorAction extends AbstractAction {
+		public MapCreatorAction() {
+			putValue(NAME, "Map Creator");
+			putValue(SHORT_DESCRIPTION, "Customize the map");
+		}
+
+		/*
+		 * When the component this action is attached to is triggered, pause the
+		 * current canvas rendering (so that resources can be allocated to the
+		 * MapCreator canvas), then try to close any existing open MapCreator
+		 * window and instantiate a new MapCreator window
+		 */
+		public void actionPerformed(ActionEvent e) {
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					canvas.paused = true;
+					System.out.println("Game Paused");
+					if (mapCreatorWindow != null) {
+						mapCreatorWindow.getFrame().dispose();
+					}
+					mapCreatorWindow = new MapCreator();
+					mapCreatorWindow.getFrame().setVisible(true);
+				}
+			});
+		}
+	}
+	
 }

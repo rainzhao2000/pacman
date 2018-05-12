@@ -114,8 +114,8 @@ public class Ghost implements ActionListener {
 			return true;
 		}
 	}
-	
-	private boolean intersection() {
-		
-	}
+//	
+//	private boolean intersection() {
+//		
+//	}
 }
