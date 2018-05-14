@@ -2,21 +2,31 @@ package pacman;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
 
 import pacman.Main.Code;
 import pacman.Main.Direction;
 
-public class Character {
+public class Character implements ActionListener {
 
 	protected Code[][] map = Main.map;
 
 	protected Direction dir;
 
+	protected DrawPanel canvas;
 	protected Color color;
+	protected Timer timer;
 
-	// speed in tiles/sec
-	protected int rowSpawn, colSpawn, row, col, x, y, speed;
+	protected int rowSpawn, colSpawn, row, col;
+	protected double x, y, speed; // speed in tiles/sec
 
+	public void actionPerformed(ActionEvent e) {
+		
+	}
+	
 	void draw(Graphics g) {
 		
 	}
@@ -28,6 +38,8 @@ public class Character {
 	void respawn() {
 		row = rowSpawn;
 		col = colSpawn;
+		x = col * Main.tilePadWidth;
+		y = row * Main.tilePadWidth;
 	}
 
 	int getRow() {

@@ -29,6 +29,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 	private Component parent;
 	private Timer timer;
 
+	private int framerate;
 	private int score;
 
 	private boolean paused = false;
@@ -40,6 +41,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 	public DrawPanel(Component parent, boolean doDrawGrid, int framerate) {
 		this.parent = parent;
 		this.doDrawGrid = doDrawGrid;
+		this.framerate = framerate;
 		score = 0;
 		defaultMap();
 		timer = new Timer(1000 / framerate, this);
@@ -203,19 +205,19 @@ public class DrawPanel extends JPanel implements ActionListener {
 				for (int col = 0; col < map[row].length; col++) {
 					int tile = Integer.parseInt(line[col]);
 					if (tile == Code.pacman.getCode()) {
-						pacman = new Pacman(this, Direction.left, row, col, 1);
+						pacman = new Pacman(this, Direction.left, row, col);
 						map[row][col] = Code.path;
 					} else if (tile == Code.blinky.getCode()) {
-						ghosts.add(new Ghost(Direction.left, row, col, 1, Color.red));
+						ghosts.add(new Ghost(Direction.left, row, col, Color.red));
 						map[row][col] = Code.path;
 					} else if (tile == Code.pinky.getCode()) {
-						ghosts.add(new Ghost(Direction.left, row, col, 1, Color.pink));
+						ghosts.add(new Ghost(Direction.left, row, col, Color.pink));
 						map[row][col] = Code.path;
 					} else if (tile == Code.inky.getCode()) {
-						ghosts.add(new Ghost(Direction.left, row, col, 1, Color.cyan));
+						ghosts.add(new Ghost(Direction.left, row, col, Color.cyan));
 						map[row][col] = Code.path;
 					} else if (tile == Code.clyde.getCode()) {
-						ghosts.add(new Ghost(Direction.left, row, col, 1, Color.orange));
+						ghosts.add(new Ghost(Direction.left, row, col, Color.orange));
 						map[row][col] = Code.path;
 					} else {
 						map[row][col] = Code.lookupByValue(tile);
@@ -273,6 +275,10 @@ public class DrawPanel extends JPanel implements ActionListener {
 		return ghosts;
 	}
 
+	int getFramerate() {
+		return framerate;
+	}
+	
 	int getScore() {
 		return score;
 	}

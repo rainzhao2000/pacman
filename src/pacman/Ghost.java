@@ -3,6 +3,8 @@ package pacman;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import javax.swing.Timer;
+
 import pacman.Main.Code;
 import pacman.Main.Direction;
 
@@ -10,15 +12,17 @@ public class Ghost extends Character {
 
 	private boolean edible;
 
-	public Ghost(Direction dir, int row, int col, int speed, Color color) {
+	public Ghost(Direction dir, int row, int col, Color color) {
 		this.dir = dir;
 		this.row = row;
 		this.col = col;
 		x = col * Main.tilePadWidth;
 		y = row * Main.tilePadWidth;
-		this.speed = speed;
+		speed = 5;
 		this.color = color;
 		edible = false;
+		timer = new Timer((int) (1 / speed), this);
+		timer.start();
 	}
 
 	@Override
@@ -26,7 +30,7 @@ public class Ghost extends Character {
 		x = col * Main.tilePadWidth;
 		y = row * Main.tilePadWidth;
 		g.setColor(color);
-		g.fillRect(x, y, Main.tilePadWidth, Main.tilePadWidth);
+		g.fillRect((int) x, (int) y, Main.tilePadWidth, Main.tilePadWidth);
 	}
 
 	@Override
