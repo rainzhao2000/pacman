@@ -1,33 +1,34 @@
 package pacman;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import pacman.Main.Codes;
+import pacman.Main.Directions;
 
 public class DrawPanel extends JPanel implements ActionListener {
 
 	private Codes[][] map = Main.map;
 
-	private Pacman pacman = Main.pacman;
-	private Ghost blinky = Main.blinky;
-	private Ghost pinky = Main.pinky;
-	private Ghost inky = Main.inky;
-	private Ghost clyde = Main.clyde;
+	private Pacman pacman;
+	private ArrayList<Ghost> ghosts;
+	private Component parent;
 	private Timer timer;
 
-	private int tileWidth = Main.tileWidth;
-	private int padding = Main.padding;
-	private int tilePadWidth = Main.tilePadWidth;
-	private int mapWidth = Main.mapWidth;
-	private int mapHeight = Main.mapHeight;
 	private int score;
 
 	private boolean paused = false;
@@ -36,9 +37,11 @@ public class DrawPanel extends JPanel implements ActionListener {
 	/*
 	 * DrawPanel constructor sets paused and timer states
 	 */
-	public DrawPanel(boolean doDrawGrid, int framerate) {
+	public DrawPanel(Component parent, boolean doDrawGrid, int framerate) {
+		this.parent = parent;
 		this.doDrawGrid = doDrawGrid;
 		score = 0;
+		defaultMap();
 		timer = new Timer(1000 / framerate, this);
 		timer.start();
 	}
@@ -66,10 +69,9 @@ public class DrawPanel extends JPanel implements ActionListener {
 			drawGrid(g);
 		}
 		pacman.draw(g);
-		blinky.draw(g);
-		pinky.draw(g);
-		inky.draw(g);
-		clyde.draw(g);
+		for (Ghost ghost : ghosts) {
+			ghost.draw(g);
+		}
 	}
 
 	/*
@@ -78,36 +80,35 @@ public class DrawPanel extends JPanel implements ActionListener {
 	private void drawMap(Graphics g) {
 		for (int row = 0; row < map.length; row++) {
 			for (int col = 0; col < map[row].length; col++) {
-				int x = col * tilePadWidth;
-				int y = row * tilePadWidth;
-				int width = tilePadWidth;
+				int x = col * Main.tilePadWidth;
+				int y = row * Main.tilePadWidth;
+				int width = Main.tilePadWidth;
+				/*
+				 * if (pacman.getrow() == row && pacman.getcol() == col) {
+				 * g.setColor(Color.YELLOW); } else if (blinky.getrow() ==
+				 * row && blinky.getcol() == col) { g.setColor(Color.RED); }
+				 * else if (pinky.getrow() == row && pinky.getcol() == col)
+				 * { g.setColor(Color.PINK); } else if (inky.getrow() == row
+				 * && inky.getcol() == col) { g.setColor(Color.CYAN); } else
+				 * if (clyde.getrow() == row && clyde.getcol() == col) {
+				 * g.setColor(Color.ORANGE); } else { if (map[row][col] ==
+				 * Codes.pacdot) { g.setColor(getColor(Codes.path));
+				 * g.fillRect(x, y, width, width); width = tileWidth / 4; x
+				 * += (Main.tilePadWidth - width) / 2 + Main.padding; y +=
+				 * (Main.tilePadWidth - width) / 2 + Main.padding; }
+				 * g.setColor(getColor(map[row][col])); }
+				 */
 				try {
-					/*
-					 * if (pacman.getrow() == row && pacman.getcol() == col) {
-					 * g.setColor(Color.YELLOW); } else if (blinky.getrow() ==
-					 * row && blinky.getcol() == col) { g.setColor(Color.RED); }
-					 * else if (pinky.getrow() == row && pinky.getcol() == col)
-					 * { g.setColor(Color.PINK); } else if (inky.getrow() == row
-					 * && inky.getcol() == col) { g.setColor(Color.CYAN); } else
-					 * if (clyde.getrow() == row && clyde.getcol() == col) {
-					 * g.setColor(Color.ORANGE); } else { if (map[row][col] ==
-					 * Codes.pacdot) { g.setColor(getColor(Codes.path));
-					 * g.fillRect(x, y, width, width); width = tileWidth / 4; x
-					 * += (tilePadWidth - width) / 2 + padding; y +=
-					 * (tilePadWidth - width) / 2 + padding; }
-					 * g.setColor(getColor(map[row][col])); }
-					 */
 					if (map[row][col] == Codes.pacdot) {
 						g.setColor(getColor(Codes.path));
 						g.fillRect(x, y, width, width);
-						width = tileWidth / 4;
-						x += (tilePadWidth - width) / 2 + padding;
-						y += (tilePadWidth - width) / 2 + padding;
+						width = Main.tileWidth / 4;
+						x += (Main.tilePadWidth - width) / 2 + Main.padding;
+						y += (Main.tilePadWidth - width) / 2 + Main.padding;
 					}
 					g.setColor(getColor(map[row][col]));
 				} catch (NullPointerException e) {
-					blankMap();
-					return;
+					g.setColor(getColor(Codes.path));
 				}
 				g.fillRect(x, y, width, width);
 			}
@@ -135,22 +136,22 @@ public class DrawPanel extends JPanel implements ActionListener {
 	}
 
 	/*
-	 * Draw padding guides at every row and column (forming a visual grid)
+	 * Draw Main.padding guides at every row and column (forming a visual grid)
 	 */
 	private void drawGrid(Graphics g) {
 		// Draw horizontal guides
 		g.setColor(Color.green);
-		g.fillRect(0, 0, mapWidth, padding);
+		g.fillRect(0, 0, Main.mapWidth, Main.padding);
 		for (int row = 1; row <= map.length; row++) {
-			int y = row * tilePadWidth;
-			g.fillRect(0, y, mapWidth, padding);
+			int y = row * Main.tilePadWidth;
+			g.fillRect(0, y, Main.mapWidth, Main.padding);
 		}
 
 		// Draw vertical guides
-		g.fillRect(0, 0, padding, mapHeight);
+		g.fillRect(0, 0, Main.padding, Main.mapHeight);
 		for (int col = 1; col <= map[0].length; col++) {
-			int x = col * tilePadWidth;
-			g.fillRect(x, 0, padding, mapHeight);
+			int x = col * Main.tilePadWidth;
+			g.fillRect(x, 0, Main.padding, Main.mapHeight);
 		}
 	}
 
@@ -159,9 +160,50 @@ public class DrawPanel extends JPanel implements ActionListener {
 	 * and sets the element to a specified code
 	 */
 	void setTile(MouseEvent e, Codes code) {
-		int col = e.getX() / tilePadWidth;
-		int row = e.getY() / tilePadWidth;
-		map[row][col] = code;
+		int row = e.getY() / Main.tilePadWidth;
+		int col = e.getX() / Main.tilePadWidth;
+		if (row >= 0 && row < map.length && col >= 0 && col < map[0].length) {
+			map[row][col] = code;
+		}
+	}
+	
+	/*
+	 * Looks for 'default map.txt' in current directory and uploads it to map
+	 */
+	void defaultMap() {
+		// Generate file from path 'default map.txt'
+		ArrayList<String> lines = new ArrayList<String>();
+		File file = new File("default map.txt");
+		BufferedReader reader = null;
+
+		// Read each line as string and add to ArrayList of strings
+		try {
+			reader = new BufferedReader(new FileReader(file));
+			String line = null;
+
+			while ((line = reader.readLine()) != null) {
+				lines.add(line);
+			}
+		} catch (FileNotFoundException e1) {
+			JOptionPane.showMessageDialog(parent, "'default map.txt' not found.", "File not found",
+					JOptionPane.ERROR_MESSAGE);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} finally {
+			try {
+				if (reader != null) {
+					reader.close();
+				}
+			} catch (IOException e1) {
+
+			}
+		}
+
+		// upload ArrayList of strings to map array
+		if (!uploadMap(lines)) {
+			JOptionPane.showMessageDialog(parent, "Invalid text file structure and/or codes", "Invalid Map",
+					JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	/*
@@ -170,34 +212,25 @@ public class DrawPanel extends JPanel implements ActionListener {
 	 */
 	boolean uploadMap(ArrayList<String> lines) {
 		try {
+			ghosts = new ArrayList<Ghost>();
 			for (int row = 0; row < map.length; row++) {
 				String[] line = lines.get(row).split(" ");
 				for (int col = 0; col < map[row].length; col++) {
 					int tile = Integer.parseInt(line[col]);
 					if (tile == Codes.pacman.getCode()) {
-						// pacman
-						pacman.setRow(row);
-						pacman.setCol(col);
+						pacman = new Pacman(this, Directions.left, row, col, 1);
 						map[row][col] = Codes.path;
 					} else if (tile == Codes.blinky.getCode()) {
-						// blinky
-						blinky.setRow(row);
-						blinky.setCol(col);
+						ghosts.add(new Ghost(Directions.left, row, col, 1, Color.red));
 						map[row][col] = Codes.path;
 					} else if (tile == Codes.pinky.getCode()) {
-						// pinky
-						pinky.setRow(row);
-						pinky.setCol(col);
+						ghosts.add(new Ghost(Directions.left, row, col, 1, Color.pink));
 						map[row][col] = Codes.path;
 					} else if (tile == Codes.inky.getCode()) {
-						// inky
-						inky.setRow(row);
-						inky.setCol(col);
+						ghosts.add(new Ghost(Directions.left, row, col, 1, Color.cyan));
 						map[row][col] = Codes.path;
 					} else if (tile == Codes.clyde.getCode()) {
-						// clyde
-						clyde.setRow(row);
-						clyde.setCol(col);
+						ghosts.add(new Ghost(Directions.left, row, col, 1, Color.orange));
 						map[row][col] = Codes.path;
 					} else {
 						map[row][col] = Codes.lookupByValue(tile);
@@ -205,6 +238,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 		return true;
@@ -226,10 +260,9 @@ public class DrawPanel extends JPanel implements ActionListener {
 		// respawn pacman
 		// DO NOT respawn pacdots and power pellets
 		pacman.respawn();
-		blinky.respawn();
-		pinky.respawn();
-		inky.respawn();
-		clyde.respawn();
+		for (Ghost ghost : ghosts) {
+			ghost.respawn();
+		}
 	}
 
 	void end() {
@@ -241,11 +274,18 @@ public class DrawPanel extends JPanel implements ActionListener {
 	 * 
 	 */
 	void setGhostsEdible() {
-		blinky.setEdible(true);
-		pinky.setEdible(true);
-		inky.setEdible(true);
-		clyde.setEdible(true);
+		for (Ghost ghost : ghosts) {
+			ghost.setEdible(true);
+		}
 		// reset edible timer of each ghost
+	}
+	
+	Pacman getPacman() {
+		return pacman;
+	}
+	
+	ArrayList<Ghost> getGhosts() {
+		return ghosts;
 	}
 
 	int getScore() {

@@ -1,5 +1,6 @@
 package pacman;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.io.BufferedReader;
@@ -89,11 +90,6 @@ public class Main {
 	static Codes[][] map = new Codes[31][28];
 
 	static Game game;
-	static Pacman pacman = new Pacman(Directions.left, 23, 14, 1);
-	static Ghost blinky = new Ghost(Directions.left, 11, 14, 1);
-	static Ghost pinky = new Ghost(Directions.left, 14, 14, 1);
-	static Ghost inky = new Ghost(Directions.left, 14, 12, 1);
-	static Ghost clyde = new Ghost(Directions.left, 14, 16, 1);
 
 	static final int tileWidth = 10;
 	static final int padding = 1;
@@ -113,45 +109,6 @@ public class Main {
 				}
 			}
 		});
-	}
-
-	/*
-	 * Looks for 'default map.txt' in current directory and uploads it to map
-	 */
-	static void defaultMap(Component parent, DrawPanel canvas) {
-		// Generate file from path 'default map.txt'
-		ArrayList<String> lines = new ArrayList<String>();
-		File file = new File("default map.txt");
-		BufferedReader reader = null;
-
-		// Read each line as string and add to ArrayList of strings
-		try {
-			reader = new BufferedReader(new FileReader(file));
-			String line = null;
-
-			while ((line = reader.readLine()) != null) {
-				lines.add(line);
-			}
-		} catch (FileNotFoundException e1) {
-			JOptionPane.showMessageDialog(parent, "'default map.txt' not found.", "File not found",
-					JOptionPane.ERROR_MESSAGE);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		} finally {
-			try {
-				if (reader != null) {
-					reader.close();
-				}
-			} catch (IOException e1) {
-
-			}
-		}
-
-		// upload ArrayList of strings to map array
-		if (!canvas.uploadMap(lines)) {
-			JOptionPane.showMessageDialog(parent, "Invalid text file structure and/or codes", "Invalid Map",
-					JOptionPane.ERROR_MESSAGE);
-		}
 	}
 
 }

@@ -1,5 +1,6 @@
 package pacman;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 import pacman.Main.Codes;
@@ -11,10 +12,15 @@ public class Character {
 
 	protected Directions dir;
 
+	protected Color color;
+
 	// speed in tiles/sec
-	protected int rowSpawn, colSpawn, row, col, x, y, width, height, speed;
+	protected int rowSpawn, colSpawn, row, col, x, y, speed;
 
 	void draw(Graphics g) {
+		g.setColor(color);
+		g.fillRect(x, y, Main.tilePadWidth, Main.tilePadWidth);
+		/*
 		switch (dir) {
 		case left:
 			if (checkTile(row, col - 1)) {
@@ -37,6 +43,7 @@ public class Character {
 			}
 			break;
 		}
+		*/
 	}
 
 	protected boolean checkTile(int row, int col) {
@@ -47,7 +54,6 @@ public class Character {
 			// wall
 			return false;
 		} else {
-			// path
 			return true;
 		}
 	}

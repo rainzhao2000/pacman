@@ -1,26 +1,32 @@
 package pacman;
 
+import java.awt.Color;
+import java.util.ArrayList;
+
 import pacman.Main.Codes;
 import pacman.Main.Directions;
 
 public class Pacman extends Character {
-	// For the direction variable:
-	// 1 represents left, 2 represents right, 3 represents up, 4 represents
-	// down.
-	// For the coordinate variables:
-	// the first row is row 0 and the first column is col 0
+
+	private DrawPanel canvas;
+	private ArrayList<Ghost> ghosts;
+
 	private int eatCounter, lives;
-	// refresh timer
 
 	// Pacman constructor
-	public Pacman(Directions dir, int row, int col, int speed) {
+	public Pacman(DrawPanel canvas, Directions dir, int row, int col, int speed) {
+		this.canvas = canvas;
+		ghosts = canvas.getGhosts();
 		this.dir = dir;
 		this.rowSpawn = row;
 		this.colSpawn = col;
 		this.row = row;
 		this.col = col;
+		x = col * Main.tilePadWidth;
+		y = row * Main.tilePadWidth;
 		this.speed = speed;
-		this.lives = 3;
+		color = Color.yellow;
+		lives = 3;
 	}
 
 	// return lives
@@ -39,92 +45,41 @@ public class Pacman extends Character {
 		if (row < 0 || row >= map.length || col < 0 || col >= map[0].length) {
 			// exceed boundary
 			return false;
-		} else if (Main.blinky.getRow() == row && Main.blinky.getCol() == col) {
-			// instead of checking ghost in array, we have to check ghost's
-			// position
-			// edible & ghost, points++ and re-spawn ghost
-			// in-edible & ghost, alive = false & restart game
-
-			if (Main.blinky.getEdible()) {
-				// edible
-				// add score
-				// respawn ghost
-				Main.game.getCanvas()
-						.setScore(Main.game.getCanvas().getScore() + (int) (Math.pow(2, eatCounter) * 200));
-				Main.blinky.respawn();
-				eatCounter++;
-				return true;
-			} else {
-				// lose life
-				lives--;
-				return false;
+		}
+		for (Ghost ghost : ghosts) {
+			if (ghost.getRow() == row && ghost.getCol() == col) {
+				if (ghost.getEdible()) {
+					canvas.setScore(canvas.getScore() + (int) (Math.pow(2, eatCounter) * 200));
+					ghost.respawn();
+					eatCounter++;
+					return true;
+				} else {
+					lives--;
+					return false;
+				}
 			}
-		} else if (Main.inky.getRow() == row && Main.inky.getCol() == col) {
-
-			if (Main.inky.getEdible()) {
-				// edible
-				// add score
-				Main.game.getCanvas()
-						.setScore(Main.game.getCanvas().getScore() + (int) (Math.pow(2, eatCounter) * 200));
-				Main.inky.respawn();
-				eatCounter++;
-				return true;
-			} else {
-				// lose life
-				lives--;
-				return false;
-			}
-		} else if (Main.pinky.getRow() == row && Main.pinky.getCol() == col) {
-			if (Main.pinky.getEdible()) {
-				// edible
-				// add score
-				Main.game.getCanvas()
-						.setScore(Main.game.getCanvas().getScore() + (int) (Math.pow(2, eatCounter) * 200));
-				Main.pinky.respawn();
-				eatCounter++;
-				return true;
-			} else {
-				// lose life
-				lives--;
-				return false;
-			}
-		} else if (Main.clyde.getRow() == row && Main.clyde.getCol() == col) {
-			if (Main.clyde.getEdible()) {
-				// edible
-				// add score
-				Main.game.getCanvas()
-						.setScore(Main.game.getCanvas().getScore() + (int) (Math.pow(2, eatCounter) * 200));
-				Main.clyde.respawn();
-				eatCounter++;
-				return true;
-			} else {
-				// lose life
-				lives--;
-				return false;
-			}
-		} else if (map[row][col] == Codes.wall) {
-			// wall
+		}
+		Codes tile = map[row][col];
+		switch (tile) {
+		case wall:
 			return false;
-		} else if (map[row][col] == Codes.pacdot) {
-			// pacdot
-			map[row][col] = Codes.path;
-			Main.game.getCanvas().setScore(Main.game.getCanvas().getScore() + 10);
+		case pacdot:
+			tile = Codes.path;
+			canvas.setScore(canvas.getScore() + 10);
 			return true;
-		} else if (map[row][col] == Codes.powerPellet) {
-			// power pellet
-			map[row][col] = Codes.path;
-			Main.game.getCanvas().setGhostsEdible();
-			Main.game.getCanvas().setScore(Main.game.getCanvas().getScore() + 50);
+		case powerPellet:
+			tile = Codes.path;
+			canvas.setGhostsEdible();
+			canvas.setScore(canvas.getScore() + 50);
 			eatCounter = 0;
+		case fruit:
+			tile = Codes.path;
+			canvas.setScore(canvas.getScore() + 100);
 			return true;
-		} else if (map[row][col] == Codes.fruit) {
-			// fruit
-			map[row][col] = Codes.path;
-			Main.game.getCanvas().setScore(Main.game.getCanvas().getScore() + 100);
-			return true;
-		} else {
+		default:
 			// path
 			return true;
 		}
 	}
+	
 }

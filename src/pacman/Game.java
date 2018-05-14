@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import pacman.Main.Directions;
+import sun.swing.text.html.FrameEditorPaneTag;
 
 public class Game implements KeyListener {
 
@@ -27,11 +28,7 @@ public class Game implements KeyListener {
 	private DrawPanel canvas;
 	private JLabel lblScore;
 	private MapCreator mapCreatorWindow = null;
-	private Pacman pacman = Main.pacman;
-
-	private int mapWidth = Main.mapWidth;
-	private int mapHeight = Main.mapHeight;
-	private int framerate = Main.framerate;
+	private Pacman pacman;
 
 	private final Action mapCreatorAction = new MapCreatorAction();
 	private final Action toggleGridAction = new ToggleGridAction();
@@ -65,8 +62,8 @@ public class Game implements KeyListener {
 		lblScore.setBounds(14, 24, 280, 16);
 		frmGame.getContentPane().add(lblScore);
 
-		canvas = new DrawPanel(false, framerate);
-		canvas.setBounds(0, 50, mapWidth, mapHeight);
+		canvas = new DrawPanel(frmGame, false, Main.framerate);
+		canvas.setBounds(0, 50, Main.mapWidth, Main.mapHeight);
 		frmGame.getContentPane().add(canvas);
 
 		JPanel infoPanel = new JPanel();
@@ -90,7 +87,7 @@ public class Game implements KeyListener {
 		btnToggleGrid.setAction(toggleGridAction);
 		debugPanel.add(btnToggleGrid, BorderLayout.EAST);
 
-		Main.defaultMap(frmGame, canvas);
+		pacman = canvas.getPacman();
 	}
 
 	JFrame getFrame() {

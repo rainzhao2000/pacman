@@ -1,5 +1,7 @@
 package pacman;
 
+import java.awt.Color;
+
 import pacman.Main.Directions;
 
 public class Ghost extends Character {
@@ -10,12 +12,15 @@ public class Ghost extends Character {
 	// refresh timer
 	// etc
 
-	public Ghost(Directions dir, int row, int col, int speed) {
+	public Ghost(Directions dir, int row, int col, int speed, Color color) {
 		this.dir = dir;
 		this.row = row;
 		this.col = col;
+		x = col * Main.tilePadWidth;
+		y = row * Main.tilePadWidth;
 		this.speed = speed;
-		this.edible = false;
+		this.color = color;
+		edible = false;
 	}
 
 	boolean getEdible() {

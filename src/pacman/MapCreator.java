@@ -38,10 +38,6 @@ public class MapCreator {
 	private DrawPanel gameCanvas = Main.game.getCanvas();
 	private JTextField txtFieldFileName;
 
-	private int mapWidth = Main.mapWidth;
-	private int mapHeight = Main.mapHeight;
-	private int framerate = Main.framerate;
-
 	private final Action pathSelect = new PathSelect();
 	private final Action wallSelect = new WallSelect();
 	private final Action pacdotSelect = new PacdotSelect();
@@ -83,7 +79,7 @@ public class MapCreator {
 		frmMapCreator.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmMapCreator.getContentPane().setLayout(null);
 
-		canvas = new DrawPanel(true, framerate);
+		canvas = new DrawPanel(frmMapCreator, true, Main.framerate);
 		canvas.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
@@ -96,7 +92,7 @@ public class MapCreator {
 				canvas.setTile(e, currentObject);
 			}
 		});
-		canvas.setBounds(0, 0, mapWidth, mapHeight);
+		canvas.setBounds(0, 0, Main.mapWidth, Main.mapHeight);
 		frmMapCreator.getContentPane().add(canvas);
 
 		JButton btnPath = new JButton("path");
@@ -307,7 +303,7 @@ public class MapCreator {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			Main.defaultMap(frmMapCreator, canvas);
+			canvas.defaultMap();
 		}
 	}
 
