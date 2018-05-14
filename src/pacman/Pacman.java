@@ -94,7 +94,7 @@ public class Pacman implements ActionListener {
 	// Repaints the panel at the conditions of the timer
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == refreshTimer) {
+		if (e.getSource() == refreshTimer && !Main.game.getCanvas().getPaused()) {
 			update();
 		}
 	}
