@@ -29,14 +29,14 @@ import pacman.Main.Codes;
 
 public class MapCreator {
 
+	private Codes[][] map = Main.map;
+	private Codes currentObject = Codes.path;
+	
 	private JFrame frmMapCreator;
 	private JFrame frmPacman = Main.game.getFrame();
 	private DrawPanel canvas;
 	private DrawPanel gameCanvas = Main.game.getCanvas();
 	private JTextField txtFieldFileName;
-
-	private Codes[][] map = Main.map;
-	private Codes currentObject = Codes.path;
 
 	private int mapWidth = Main.mapWidth;
 	private int mapHeight = Main.mapHeight;

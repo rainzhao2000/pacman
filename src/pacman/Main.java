@@ -59,22 +59,21 @@ public class Main {
 
 	}
 
-	static Game game;
-
 	static Codes[][] map = new Codes[31][28];
 
+	static Game game;
+	static Pacman pacman = new Pacman(23, 14, 5, 1);
+	static Ghost blinky = new Ghost(11, 14, 5);
+	static Ghost pinky = new Ghost(14, 14, 5);
+	static Ghost inky = new Ghost(14, 12, 5);
+	static Ghost clyde = new Ghost(14, 16, 5);
+	
 	static final int tileWidth = 10;
 	static final int padding = 1;
 	static final int tilePadWidth = tileWidth + padding;
 	static final int mapWidth = map[0].length * tileWidth + (map[0].length + 1) * padding;
 	static final int mapHeight = map.length * tileWidth + (map.length + 1) * padding;
 	static final int framerate = 60;
-
-	static Pacman pacman = new Pacman(23, 14, 5, 1);
-	static Ghost blinky = new Ghost(11, 14, 5);
-	static Ghost pinky = new Ghost(14, 14, 5);
-	static Ghost inky = new Ghost(14, 12, 5);
-	static Ghost clyde = new Ghost(14, 16, 5);
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {

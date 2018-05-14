@@ -25,6 +25,7 @@ public class Game implements KeyListener {
 	private DrawPanel canvas;
 	private JLabel lblScore;
 	private MapCreator mapCreatorWindow = null;
+	private Pacman pacman = Main.pacman;
 
 	private int mapWidth = Main.mapWidth;
 	private int mapHeight = Main.mapHeight;
@@ -106,16 +107,16 @@ public class Game implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 		if (code == KeyEvent.VK_DOWN) {
-			Main.pacman.down();
+			pacman.down();
 		}
 		if (code == KeyEvent.VK_UP) {
-			Main.pacman.up();
+			pacman.up();
 		}
 		if (code == KeyEvent.VK_LEFT) {
-			Main.pacman.left();
+			pacman.left();
 		}
 		if (code == KeyEvent.VK_RIGHT) {
-			Main.pacman.right();
+			pacman.right();
 		}
 	}
 
