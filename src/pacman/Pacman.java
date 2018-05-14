@@ -40,6 +40,7 @@ public class Pacman extends Character {
 		g.setColor(color);
 		g.fillRect(x, y, Main.tilePadWidth, Main.tilePadWidth);
 		checkSurrounding();
+		checkCurrent();
 	}
 
 	private void checkSurrounding() {
@@ -76,19 +77,6 @@ public class Pacman extends Character {
 			// exceed boundary
 			return false;
 		}
-		for (Ghost ghost : ghosts) {
-			if (ghost.getRow() == row && ghost.getCol() == col) {
-				if (ghost.getEdible()) {
-					canvas.setScore(canvas.getScore() + (int) (Math.pow(2, eatCounter) * 200));
-					ghost.respawn();
-					eatCounter++;
-					return true;
-				} else {
-					lives--;
-					return false;
-				}
-			}
-		}
 		switch (map[row][col]) {
 		case wall:
 			return false;
@@ -108,6 +96,22 @@ public class Pacman extends Character {
 		default:
 			// path
 			return true;
+		}
+	}
+	
+	@Override
+	protected void checkCurrent() {
+		for (Ghost ghost : ghosts) {
+			if (ghost.getRow() == row && ghost.getCol() == col) {
+				if (ghost.getEdible()) {
+					canvas.setScore(canvas.getScore() + (int) (Math.pow(2, eatCounter) * 200));
+					ghost.respawn();
+					eatCounter++;
+				} else {
+					lives--;
+					respawn();
+				}
+			}
 		}
 	}
 

@@ -25,6 +25,10 @@ public class Character {
 		return false;
 	}
 
+	protected void checkCurrent() {
+		
+	}
+	
 	void respawn() {
 		row = rowSpawn;
 		col = colSpawn;
