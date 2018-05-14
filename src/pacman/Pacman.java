@@ -99,8 +99,7 @@ public class Pacman extends Character {
 		}
 	}
 	
-	@Override
-	protected void checkCurrent() {
+	private void checkCurrent() {
 		for (Ghost ghost : ghosts) {
 			if (ghost.getRow() == row && ghost.getCol() == col) {
 				if (ghost.getEdible()) {

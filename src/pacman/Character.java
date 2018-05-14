@@ -24,10 +24,6 @@ public class Character {
 	protected boolean checkTile(int row, int col) {
 		return false;
 	}
-
-	protected void checkCurrent() {
-		
-	}
 	
 	void respawn() {
 		row = rowSpawn;
