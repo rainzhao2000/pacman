@@ -2,10 +2,7 @@ package pacman;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-
-import javax.swing.Timer;
 
 import pacman.Main.Code;
 import pacman.Main.Direction;
@@ -30,45 +27,27 @@ public class Pacman extends Character {
 		this.colSpawn = col;
 		this.row = row;
 		this.col = col;
-		x = col * Main.tilePadWidth;
-		y = row * Main.tilePadWidth;
+		x0 = col * Main.tilePadWidth;
+		y0 = row * Main.tilePadWidth;
+		x = x0 + centerOffset;
+		y = y0 + centerOffset;
 		speed = 5;
+		displacement = speed * Main.tilePadWidth / canvas.getFramerate();
 		color = Color.yellow;
 		lives = 3;
-		timer = new Timer((int) (1000 / speed), this);
-		timer.start();
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		checkSurrounding();
-		checkCurrent();
 	}
 
 	@Override
 	void draw(Graphics g) {
-		g.setColor(color);
-		g.fillRect((int) x, (int) y, Main.tilePadWidth, Main.tilePadWidth);
-		double displacement = speed * Main.tilePadWidth / canvas.getFramerate();
-		if (dir != null) {
-			switch (dir) {
-			case left:
-				x -= displacement;
-				break;
-			case right:
-				x += displacement;
-				break;
-			case up:
-				y -= displacement;
-				break;
-			case down:
-				y += displacement;
-				break;
-			}
+		animate(g);
+		if (row >= 0 && row < map.length && col >= 0 && col < map[0].length) {
+			checkSurrounding();
+			checkCurrent();
 		}
 	}
 
 	private void checkSurrounding() {
+		doAnimate = true;
 		left = checkTile(row, col - 1);
 		right = checkTile(row, col + 1);
 		up = checkTile(row - 1, col);
@@ -94,7 +73,7 @@ public class Pacman extends Character {
 		} else if (dir == Direction.down && down) {
 			row++;
 		} else {
-			dir = null;
+			doAnimate = false;
 		}
 	}
 
@@ -112,7 +91,7 @@ public class Pacman extends Character {
 
 	private void checkCurrent() {
 		for (Ghost ghost : ghosts) {
-			if (ghost.getRow() == row && ghost.getCol() == col) {
+			if (ghost.getX() == x && ghost.getY() == y) {
 				if (ghost.getEdible()) {
 					canvas.setScore(canvas.getScore() + (int) (Math.pow(2, eatCounter) * 200));
 					ghost.respawn();

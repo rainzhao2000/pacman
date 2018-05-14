@@ -12,25 +12,24 @@ public class Ghost extends Character {
 
 	private boolean edible;
 
-	public Ghost(Direction dir, int row, int col, Color color) {
+	public Ghost(DrawPanel canvas, Direction dir, int row, int col, Color color) {
+		this.canvas = canvas;
 		this.dir = dir;
 		this.row = row;
 		this.col = col;
-		x = col * Main.tilePadWidth;
-		y = row * Main.tilePadWidth;
+		x0 = col * Main.tilePadWidth;
+		y0 = row * Main.tilePadWidth;
+		x = x0 + centerOffset;
+		y = y0 + centerOffset;
 		speed = 5;
+		displacement = speed * Main.tilePadWidth / canvas.getFramerate();
 		this.color = color;
 		edible = false;
-		timer = new Timer((int) (1 / speed), this);
-		timer.start();
 	}
 
 	@Override
 	void draw(Graphics g) {
-		x = col * Main.tilePadWidth;
-		y = row * Main.tilePadWidth;
-		g.setColor(color);
-		g.fillRect((int) x, (int) y, Main.tilePadWidth, Main.tilePadWidth);
+		animate(g);
 	}
 
 	@Override

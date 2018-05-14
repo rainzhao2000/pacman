@@ -208,16 +208,16 @@ public class DrawPanel extends JPanel implements ActionListener {
 						pacman = new Pacman(this, Direction.left, row, col);
 						map[row][col] = Code.path;
 					} else if (tile == Code.blinky.getCode()) {
-						ghosts.add(new Ghost(Direction.left, row, col, Color.red));
+						ghosts.add(new Ghost(this, Direction.left, row, col, Color.red));
 						map[row][col] = Code.path;
 					} else if (tile == Code.pinky.getCode()) {
-						ghosts.add(new Ghost(Direction.left, row, col, Color.pink));
+						ghosts.add(new Ghost(this, Direction.left, row, col, Color.pink));
 						map[row][col] = Code.path;
 					} else if (tile == Code.inky.getCode()) {
-						ghosts.add(new Ghost(Direction.left, row, col, Color.cyan));
+						ghosts.add(new Ghost(this, Direction.left, row, col, Color.cyan));
 						map[row][col] = Code.path;
 					} else if (tile == Code.clyde.getCode()) {
-						ghosts.add(new Ghost(Direction.left, row, col, Color.orange));
+						ghosts.add(new Ghost(this, Direction.left, row, col, Color.orange));
 						map[row][col] = Code.path;
 					} else {
 						map[row][col] = Code.lookupByValue(tile);
