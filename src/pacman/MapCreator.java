@@ -25,12 +25,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import pacman.Main.Codes;
+import pacman.Main.Code;
 
 public class MapCreator {
 
-	private Codes[][] map = Main.map;
-	private Codes currentObject = Codes.path;
+	private Code[][] map = Main.map;
+	private Code currentObject = Code.path;
 
 	private JFrame frmMapCreator;
 	private JFrame frmPacman = Main.game.getFrame();
@@ -189,7 +189,7 @@ public class MapCreator {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			currentObject = Codes.path;
+			currentObject = Code.path;
 			System.out.println(currentObject + " selected");
 		}
 	}
@@ -200,7 +200,7 @@ public class MapCreator {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			currentObject = Codes.wall;
+			currentObject = Code.wall;
 			System.out.println(currentObject + " selected");
 		}
 	}
@@ -211,7 +211,7 @@ public class MapCreator {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			currentObject = Codes.pacdot;
+			currentObject = Code.pacdot;
 			System.out.println(currentObject + " selected");
 		}
 	}
@@ -222,7 +222,7 @@ public class MapCreator {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			currentObject = Codes.powerPellet;
+			currentObject = Code.powerPellet;
 			System.out.println(currentObject + " selected");
 		}
 	}
@@ -233,7 +233,7 @@ public class MapCreator {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			currentObject = Codes.fruit;
+			currentObject = Code.fruit;
 			System.out.println(currentObject + " selected");
 		}
 	}
@@ -244,7 +244,7 @@ public class MapCreator {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			currentObject = Codes.pacman;
+			currentObject = Code.pacman;
 			System.out.println(currentObject + " selected");
 		}
 	}
@@ -255,7 +255,7 @@ public class MapCreator {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			currentObject = Codes.blinky;
+			currentObject = Code.blinky;
 			System.out.println(currentObject + " selected");
 		}
 	}
@@ -266,7 +266,7 @@ public class MapCreator {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			currentObject = Codes.pinky;
+			currentObject = Code.pinky;
 			System.out.println(currentObject + " selected");
 		}
 	}
@@ -277,7 +277,7 @@ public class MapCreator {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			currentObject = Codes.inky;
+			currentObject = Code.inky;
 			System.out.println(currentObject + " selected");
 		}
 	}
@@ -288,7 +288,7 @@ public class MapCreator {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			currentObject = Codes.clyde;
+			currentObject = Code.clyde;
 			System.out.println(currentObject + " selected");
 		}
 	}

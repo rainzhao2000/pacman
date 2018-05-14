@@ -3,14 +3,14 @@ package pacman;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import pacman.Main.Codes;
-import pacman.Main.Directions;
+import pacman.Main.Code;
+import pacman.Main.Direction;
 
 public class Character {
 
-	protected Codes[][] map = Main.map;
+	protected Code[][] map = Main.map;
 
-	protected Directions dir;
+	protected Direction dir;
 
 	protected Color color;
 
@@ -18,44 +18,11 @@ public class Character {
 	protected int rowSpawn, colSpawn, row, col, x, y, speed;
 
 	void draw(Graphics g) {
-		g.setColor(color);
-		g.fillRect(x, y, Main.tilePadWidth, Main.tilePadWidth);
-		/*
-		switch (dir) {
-		case left:
-			if (checkTile(row, col - 1)) {
-				col--;
-			}
-			break;
-		case right:
-			if (checkTile(row, col + 1)) {
-				col++;
-			}
-			break;
-		case up:
-			if (checkTile(row - 1, col)) {
-				row--;
-			}
-			break;
-		case down:
-			if (checkTile(row + 1, col)) {
-				row++;
-			}
-			break;
-		}
-		*/
+		
 	}
-
+	
 	protected boolean checkTile(int row, int col) {
-		if (row < 0 || row >= map.length || col < 0 || col >= map[0].length) {
-			// exceed boundary
-			return false;
-		} else if (map[row][col] == Codes.wall) {
-			// wall
-			return false;
-		} else {
-			return true;
-		}
+		return false;
 	}
 
 	void respawn() {
@@ -79,11 +46,11 @@ public class Character {
 		this.col = col;
 	}
 
-	Directions getDir() {
+	Direction getDir() {
 		return dir;
 	}
 
-	void setDir(Directions dir) {
+	void setDir(Direction dir) {
 		this.dir = dir;
 	}
 

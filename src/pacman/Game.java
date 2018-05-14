@@ -19,7 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import pacman.Main.Directions;
+import pacman.Main.Direction;
 import sun.swing.text.html.FrameEditorPaneTag;
 
 public class Game implements KeyListener {
@@ -106,16 +106,16 @@ public class Game implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 		if (code == KeyEvent.VK_LEFT) {
-			pacman.setDir(Directions.left);
+			pacman.logDir(Direction.left);
 		}
 		if (code == KeyEvent.VK_RIGHT) {
-			pacman.setDir(Directions.right);
+			pacman.logDir(Direction.right);
 		}
 		if (code == KeyEvent.VK_UP) {
-			pacman.setDir(Directions.up);
+			pacman.logDir(Direction.up);
 		}
 		if (code == KeyEvent.VK_DOWN) {
-			pacman.setDir(Directions.down);
+			pacman.logDir(Direction.down);
 		}
 	}
 

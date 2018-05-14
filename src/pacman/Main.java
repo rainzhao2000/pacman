@@ -20,19 +20,19 @@ public class Main {
 	 * Enumerator handles codes of elements that will be referenced from map
 	 * array
 	 */
-	static enum Codes {
+	static enum Code {
 
 		path(0), wall(1), pacdot(2), powerPellet(3), fruit(4), pacman(5), blinky(6), pinky(7), inky(8), clyde(9);
 
 		private final int code;
-		private static final Map<Integer, Codes> codeIndex = new HashMap<Integer, Codes>();
+		private static final Map<Integer, Code> codeIndex = new HashMap<Integer, Code>();
 
 		/*
 		 * Make a HashMap to hold references to Codes objects by reference of
 		 * their values
 		 */
 		static {
-			for (Codes code : Codes.values()) {
+			for (Code code : Code.values()) {
 				codeIndex.put(code.getCode(), code);
 			}
 		}
@@ -40,7 +40,7 @@ public class Main {
 		/*
 		 * Enum constructor
 		 */
-		Codes(int code) {
+		Code(int code) {
 			this.code = code;
 		}
 
@@ -54,26 +54,26 @@ public class Main {
 		/*
 		 * Returns the Codes object of a code value
 		 */
-		static Codes lookupByValue(int code) {
+		static Code lookupByValue(int code) {
 			return codeIndex.get(code);
 		}
 
 	}
 
-	static enum Directions {
+	static enum Direction {
 
 		left(1), right(2), up(3), down(4);
 
 		private final int dir;
-		private static final Map<Integer, Directions> dirIndex = new HashMap<Integer, Directions>();
+		private static final Map<Integer, Direction> dirIndex = new HashMap<Integer, Direction>();
 
 		static {
-			for (Directions dir : Directions.values()) {
+			for (Direction dir : Direction.values()) {
 				dirIndex.put(dir.getDir(), dir);
 			}
 		}
 
-		Directions(int dir) {
+		Direction(int dir) {
 			this.dir = dir;
 		}
 
@@ -81,13 +81,13 @@ public class Main {
 			return dir;
 		}
 
-		static Directions lookupByValue(int dir) {
+		static Direction lookupByValue(int dir) {
 			return dirIndex.get(dir);
 		}
 
 	}
 
-	static Codes[][] map = new Codes[31][28];
+	static Code[][] map = new Code[31][28];
 
 	static Game game;
 
@@ -96,7 +96,7 @@ public class Main {
 	static final int tilePadWidth = tileWidth + padding;
 	static final int mapWidth = map[0].length * tileWidth + (map[0].length + 1) * padding;
 	static final int mapHeight = map.length * tileWidth + (map.length + 1) * padding;
-	static final int framerate = 60;
+	static final int framerate = 5;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {

@@ -1,44 +1,74 @@
 package pacman;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
 
-import pacman.Main.Codes;
-import pacman.Main.Directions;
+import pacman.Main.Code;
+import pacman.Main.Direction;
 
 public class Pacman extends Character {
+
+	private Direction intendedDir;
 
 	private DrawPanel canvas;
 	private ArrayList<Ghost> ghosts;
 
 	private int eatCounter, lives;
 
+	private boolean left, right, up, down;
+
 	// Pacman constructor
-	public Pacman(DrawPanel canvas, Directions dir, int row, int col, int speed) {
+	public Pacman(DrawPanel canvas, Direction dir, int row, int col, int speed) {
 		this.canvas = canvas;
 		ghosts = canvas.getGhosts();
 		this.dir = dir;
+		this.intendedDir = dir;
 		this.rowSpawn = row;
 		this.colSpawn = col;
 		this.row = row;
 		this.col = col;
-		x = col * Main.tilePadWidth;
-		y = row * Main.tilePadWidth;
 		this.speed = speed;
 		color = Color.yellow;
 		lives = 3;
 	}
 
-	// return lives
-	int getLives() {
-		return lives;
+	@Override
+	void draw(Graphics g) {
+		x = col * Main.tilePadWidth;
+		y = row * Main.tilePadWidth;
+		g.setColor(color);
+		g.fillRect(x, y, Main.tilePadWidth, Main.tilePadWidth);
+		checkSurrounding();
 	}
 
-	// return true if the block at r and c is not a wall
-	// return false if the block at r and c is a wall
-	// set alive to false if the block at r and c is a ghost
-
-	// reassign pacdot and powerpellet when refreshing?
+	private void checkSurrounding() {
+		left = checkTile(row, col - 1);
+		right = checkTile(row, col + 1);
+		up = checkTile(row - 1, col);
+		down = checkTile(row + 1, col);
+		if (intendedDir == Direction.left && left) {
+			dir = intendedDir;
+			col--;
+		} else if (intendedDir == Direction.right && right) {
+			dir = intendedDir;
+			col++;
+		} else if (intendedDir == Direction.up && up) {
+			dir = intendedDir;
+			row--;
+		} else if (intendedDir == Direction.down && down) {
+			dir = intendedDir;
+			row++;
+		} else if (dir == Direction.left && left) {
+			col--;
+		} else if (dir == Direction.right && right) {
+			col++;
+		} else if (dir == Direction.up && up) {
+			row--;
+		} else if (dir == Direction.down && down) {
+			row++;
+		}
+	}
 
 	@Override
 	protected boolean checkTile(int row, int col) {
@@ -59,21 +89,20 @@ public class Pacman extends Character {
 				}
 			}
 		}
-		Codes tile = map[row][col];
-		switch (tile) {
+		switch (map[row][col]) {
 		case wall:
 			return false;
 		case pacdot:
-			tile = Codes.path;
+			map[row][col] = Code.path;
 			canvas.setScore(canvas.getScore() + 10);
 			return true;
 		case powerPellet:
-			tile = Codes.path;
+			map[row][col] = Code.path;
 			canvas.setGhostsEdible();
 			canvas.setScore(canvas.getScore() + 50);
 			eatCounter = 0;
 		case fruit:
-			tile = Codes.path;
+			map[row][col] = Code.path;
 			canvas.setScore(canvas.getScore() + 100);
 			return true;
 		default:
@@ -81,5 +110,14 @@ public class Pacman extends Character {
 			return true;
 		}
 	}
-	
+
+	// return lives
+	int getLives() {
+		return lives;
+	}
+
+	void logDir(Direction intendedDir) {
+		this.intendedDir = intendedDir;
+	}
+
 }

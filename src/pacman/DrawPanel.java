@@ -17,12 +17,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import pacman.Main.Codes;
-import pacman.Main.Directions;
+import pacman.Main.Code;
+import pacman.Main.Direction;
 
 public class DrawPanel extends JPanel implements ActionListener {
 
-	private Codes[][] map = Main.map;
+	private Code[][] map = Main.map;
 
 	private Pacman pacman;
 	private ArrayList<Ghost> ghosts;
@@ -83,24 +83,9 @@ public class DrawPanel extends JPanel implements ActionListener {
 				int x = col * Main.tilePadWidth;
 				int y = row * Main.tilePadWidth;
 				int width = Main.tilePadWidth;
-				/*
-				 * if (pacman.getrow() == row && pacman.getcol() == col) {
-				 * g.setColor(Color.YELLOW); } else if (blinky.getrow() ==
-				 * row && blinky.getcol() == col) { g.setColor(Color.RED); }
-				 * else if (pinky.getrow() == row && pinky.getcol() == col)
-				 * { g.setColor(Color.PINK); } else if (inky.getrow() == row
-				 * && inky.getcol() == col) { g.setColor(Color.CYAN); } else
-				 * if (clyde.getrow() == row && clyde.getcol() == col) {
-				 * g.setColor(Color.ORANGE); } else { if (map[row][col] ==
-				 * Codes.pacdot) { g.setColor(getColor(Codes.path));
-				 * g.fillRect(x, y, width, width); width = tileWidth / 4; x
-				 * += (Main.tilePadWidth - width) / 2 + Main.padding; y +=
-				 * (Main.tilePadWidth - width) / 2 + Main.padding; }
-				 * g.setColor(getColor(map[row][col])); }
-				 */
 				try {
-					if (map[row][col] == Codes.pacdot) {
-						g.setColor(getColor(Codes.path));
+					if (map[row][col] == Code.pacdot) {
+						g.setColor(getColor(Code.path));
 						g.fillRect(x, y, width, width);
 						width = Main.tileWidth / 4;
 						x += (Main.tilePadWidth - width) / 2 + Main.padding;
@@ -108,7 +93,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 					}
 					g.setColor(getColor(map[row][col]));
 				} catch (NullPointerException e) {
-					g.setColor(getColor(Codes.path));
+					g.setColor(getColor(Code.path));
 				}
 				g.fillRect(x, y, width, width);
 			}
@@ -118,7 +103,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 	/*
 	 * Temporary color getter
 	 */
-	static Color getColor(Codes code) {
+	static Color getColor(Code code) {
 		switch (code) {
 		case path:
 			return Color.black;
@@ -159,7 +144,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 	 * Finds the element in map array corresponding to position of mouse cursor
 	 * and sets the element to a specified code
 	 */
-	void setTile(MouseEvent e, Codes code) {
+	void setTile(MouseEvent e, Code code) {
 		int row = e.getY() / Main.tilePadWidth;
 		int col = e.getX() / Main.tilePadWidth;
 		if (row >= 0 && row < map.length && col >= 0 && col < map[0].length) {
@@ -217,23 +202,23 @@ public class DrawPanel extends JPanel implements ActionListener {
 				String[] line = lines.get(row).split(" ");
 				for (int col = 0; col < map[row].length; col++) {
 					int tile = Integer.parseInt(line[col]);
-					if (tile == Codes.pacman.getCode()) {
-						pacman = new Pacman(this, Directions.left, row, col, 1);
-						map[row][col] = Codes.path;
-					} else if (tile == Codes.blinky.getCode()) {
-						ghosts.add(new Ghost(Directions.left, row, col, 1, Color.red));
-						map[row][col] = Codes.path;
-					} else if (tile == Codes.pinky.getCode()) {
-						ghosts.add(new Ghost(Directions.left, row, col, 1, Color.pink));
-						map[row][col] = Codes.path;
-					} else if (tile == Codes.inky.getCode()) {
-						ghosts.add(new Ghost(Directions.left, row, col, 1, Color.cyan));
-						map[row][col] = Codes.path;
-					} else if (tile == Codes.clyde.getCode()) {
-						ghosts.add(new Ghost(Directions.left, row, col, 1, Color.orange));
-						map[row][col] = Codes.path;
+					if (tile == Code.pacman.getCode()) {
+						pacman = new Pacman(this, Direction.left, row, col, 1);
+						map[row][col] = Code.path;
+					} else if (tile == Code.blinky.getCode()) {
+						ghosts.add(new Ghost(Direction.left, row, col, 1, Color.red));
+						map[row][col] = Code.path;
+					} else if (tile == Code.pinky.getCode()) {
+						ghosts.add(new Ghost(Direction.left, row, col, 1, Color.pink));
+						map[row][col] = Code.path;
+					} else if (tile == Code.inky.getCode()) {
+						ghosts.add(new Ghost(Direction.left, row, col, 1, Color.cyan));
+						map[row][col] = Code.path;
+					} else if (tile == Code.clyde.getCode()) {
+						ghosts.add(new Ghost(Direction.left, row, col, 1, Color.orange));
+						map[row][col] = Code.path;
 					} else {
-						map[row][col] = Codes.lookupByValue(tile);
+						map[row][col] = Code.lookupByValue(tile);
 					}
 				}
 			}
@@ -250,7 +235,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 	void blankMap() {
 		for (int row = 0; row < map.length; row++) {
 			for (int col = 0; col < map[row].length; col++) {
-				map[row][col] = Codes.path;
+				map[row][col] = Code.path;
 			}
 		}
 	}
