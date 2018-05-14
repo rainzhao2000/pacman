@@ -53,8 +53,35 @@ public class Main {
 		/*
 		 * Returns the Codes object of a code value
 		 */
-		static Codes lookupByName(int code) {
+		static Codes lookupByValue(int code) {
 			return codeIndex.get(code);
+		}
+
+	}
+
+	static enum Directions {
+
+		left(1), right(2), up(3), down(4);
+
+		private final int dir;
+		private static final Map<Integer, Directions> dirIndex = new HashMap<Integer, Directions>();
+
+		static {
+			for (Directions dir : Directions.values()) {
+				dirIndex.put(dir.getDir(), dir);
+			}
+		}
+
+		Directions(int dir) {
+			this.dir = dir;
+		}
+
+		int getDir() {
+			return dir;
+		}
+
+		static Directions lookupByValue(int dir) {
+			return dirIndex.get(dir);
 		}
 
 	}
@@ -62,12 +89,12 @@ public class Main {
 	static Codes[][] map = new Codes[31][28];
 
 	static Game game;
-	static Pacman pacman = new Pacman(23, 14, 5, 1);
-	static Ghost blinky = new Ghost(11, 14, 5);
-	static Ghost pinky = new Ghost(14, 14, 5);
-	static Ghost inky = new Ghost(14, 12, 5);
-	static Ghost clyde = new Ghost(14, 16, 5);
-	
+	static Pacman pacman = new Pacman(Directions.left, 23, 14, 1);
+	static Ghost blinky = new Ghost(Directions.left, 11, 14, 1);
+	static Ghost pinky = new Ghost(Directions.left, 14, 14, 1);
+	static Ghost inky = new Ghost(Directions.left, 14, 12, 1);
+	static Ghost clyde = new Ghost(Directions.left, 14, 16, 1);
+
 	static final int tileWidth = 10;
 	static final int padding = 1;
 	static final int tilePadWidth = tileWidth + padding;

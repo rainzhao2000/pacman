@@ -31,7 +31,7 @@ public class MapCreator {
 
 	private Codes[][] map = Main.map;
 	private Codes currentObject = Codes.path;
-	
+
 	private JFrame frmMapCreator;
 	private JFrame frmPacman = Main.game.getFrame();
 	private DrawPanel canvas;

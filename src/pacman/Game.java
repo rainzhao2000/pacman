@@ -19,6 +19,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import pacman.Main.Directions;
+
 public class Game implements KeyListener {
 
 	private JFrame frmGame;
@@ -106,17 +108,17 @@ public class Game implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
-		if (code == KeyEvent.VK_DOWN) {
-			pacman.down();
-		}
-		if (code == KeyEvent.VK_UP) {
-			pacman.up();
-		}
 		if (code == KeyEvent.VK_LEFT) {
-			pacman.left();
+			pacman.setDir(Directions.left);
 		}
 		if (code == KeyEvent.VK_RIGHT) {
-			pacman.right();
+			pacman.setDir(Directions.right);
+		}
+		if (code == KeyEvent.VK_UP) {
+			pacman.setDir(Directions.up);
+		}
+		if (code == KeyEvent.VK_DOWN) {
+			pacman.setDir(Directions.down);
 		}
 	}
 

@@ -49,52 +49,12 @@ public class DrawPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == timer && !paused) {
 			Main.game.getScoreLabel().setText(Integer.toString(score));
-			if (!pacman.getState()) {
-				if (pacman.getLives() == 0) {
-					// game over
-					end();
-				} else {
-					respawn();
-				}
-			}
+			/*
+			 * if (!pacman.getVitality()) { if (pacman.getLives() == 0) { //
+			 * game over end(); } else { respawn(); } }
+			 */
 			repaint();
-			// debug
-			// print();
-			// System.out.println(pacman.getDirection());
 		}
-	}
-
-	// debug
-	void print() {
-		Codes[][] map = Main.map;
-		for (int i = 0; i < map.length; i++) {
-			for (int j = 0; j < map[i].length; j++) {
-				if (map[i][j] == Codes.wall) {
-					System.out.print("/");
-				} else if (map[i][j] == Codes.pacdot) {
-					System.out.print(".");
-				} else if (map[i][j] == Codes.powerPellet) {
-					System.out.print(",");
-				} else if (map[i][j] == Codes.path) {
-					System.out.print(" ");
-				} else {
-					if (blinky.getrow() == i && blinky.getcol() == j) {
-						System.out.print("B");
-					} else if (pinky.getrow() == i && pinky.getcol() == j) {
-						System.out.print("P");
-					} else if (inky.getrow() == i && inky.getcol() == j) {
-						System.out.print("I");
-					} else if (clyde.getrow() == i && clyde.getcol() == j) {
-						System.out.print("C");
-					} else if (pacman.getrow() == i && pacman.getcol() == j) {
-						System.out.print("?");
-					}
-				}
-			}
-			System.out.println();
-		}
-		System.out.println();
-		System.out.println();
 	}
 
 	/*
@@ -105,6 +65,11 @@ public class DrawPanel extends JPanel implements ActionListener {
 		if (doDrawGrid) {
 			drawGrid(g);
 		}
+		pacman.draw(g);
+		blinky.draw(g);
+		pinky.draw(g);
+		inky.draw(g);
+		clyde.draw(g);
 	}
 
 	/*
@@ -117,26 +82,29 @@ public class DrawPanel extends JPanel implements ActionListener {
 				int y = row * tilePadWidth;
 				int width = tilePadWidth;
 				try {
-					if (pacman.getrow() == row && pacman.getcol() == col) {
-						g.setColor(Color.YELLOW);
-					} else if (blinky.getrow() == row && blinky.getcol() == col) {
-						g.setColor(Color.RED);
-					} else if (pinky.getrow() == row && pinky.getcol() == col) {
-						g.setColor(Color.PINK);
-					} else if (inky.getrow() == row && inky.getcol() == col) {
-						g.setColor(Color.CYAN);
-					} else if (clyde.getrow() == row && clyde.getcol() == col) {
-						g.setColor(Color.ORANGE);
-					} else {
-						if (map[row][col] == Codes.pacdot) {
-							g.setColor(getColor(Codes.path));
-							g.fillRect(x, y, width, width);
-							width = tileWidth / 4;
-							x += (tilePadWidth - width) / 2 + padding;
-							y += (tilePadWidth - width) / 2 + padding;
-						}
-						g.setColor(getColor(map[row][col]));
+					/*
+					 * if (pacman.getrow() == row && pacman.getcol() == col) {
+					 * g.setColor(Color.YELLOW); } else if (blinky.getrow() ==
+					 * row && blinky.getcol() == col) { g.setColor(Color.RED); }
+					 * else if (pinky.getrow() == row && pinky.getcol() == col)
+					 * { g.setColor(Color.PINK); } else if (inky.getrow() == row
+					 * && inky.getcol() == col) { g.setColor(Color.CYAN); } else
+					 * if (clyde.getrow() == row && clyde.getcol() == col) {
+					 * g.setColor(Color.ORANGE); } else { if (map[row][col] ==
+					 * Codes.pacdot) { g.setColor(getColor(Codes.path));
+					 * g.fillRect(x, y, width, width); width = tileWidth / 4; x
+					 * += (tilePadWidth - width) / 2 + padding; y +=
+					 * (tilePadWidth - width) / 2 + padding; }
+					 * g.setColor(getColor(map[row][col])); }
+					 */
+					if (map[row][col] == Codes.pacdot) {
+						g.setColor(getColor(Codes.path));
+						g.fillRect(x, y, width, width);
+						width = tileWidth / 4;
+						x += (tilePadWidth - width) / 2 + padding;
+						y += (tilePadWidth - width) / 2 + padding;
 					}
+					g.setColor(getColor(map[row][col]));
 				} catch (NullPointerException e) {
 					blankMap();
 					return;
@@ -210,29 +178,29 @@ public class DrawPanel extends JPanel implements ActionListener {
 						// pacman
 						pacman.setRow(row);
 						pacman.setCol(col);
-						map[row][col] = Codes.lookupByName(0);
+						map[row][col] = Codes.path;
 					} else if (tile == Codes.blinky.getCode()) {
 						// blinky
 						blinky.setRow(row);
 						blinky.setCol(col);
-						map[row][col] = Codes.lookupByName(0);
+						map[row][col] = Codes.path;
 					} else if (tile == Codes.pinky.getCode()) {
 						// pinky
 						pinky.setRow(row);
 						pinky.setCol(col);
-						map[row][col] = Codes.lookupByName(0);
+						map[row][col] = Codes.path;
 					} else if (tile == Codes.inky.getCode()) {
 						// inky
 						inky.setRow(row);
 						inky.setCol(col);
-						map[row][col] = Codes.lookupByName(0);
+						map[row][col] = Codes.path;
 					} else if (tile == Codes.clyde.getCode()) {
 						// clyde
 						clyde.setRow(row);
 						clyde.setCol(col);
-						map[row][col] = Codes.lookupByName(0);
+						map[row][col] = Codes.path;
 					} else {
-						map[row][col] = Codes.lookupByName(tile);
+						map[row][col] = Codes.lookupByValue(tile);
 					}
 				}
 			}
@@ -273,10 +241,10 @@ public class DrawPanel extends JPanel implements ActionListener {
 	 * 
 	 */
 	void setGhostsEdible() {
-		blinky.changeState(true);
-		pinky.changeState(true);
-		inky.changeState(true);
-		clyde.changeState(true);
+		blinky.setEdible(true);
+		pinky.setEdible(true);
+		inky.setEdible(true);
+		clyde.setEdible(true);
 		// reset edible timer of each ghost
 	}
 
