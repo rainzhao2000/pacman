@@ -95,7 +95,7 @@ public class Character {
 	}
 
 	protected boolean checkTile(int row, int col) {
-		if (row < 0 || row >= map.length || col < 0 || col >= map[0].length) {
+		if (!inBounds(row, col)) {
 			// exceed boundary
 			return false;
 		}
@@ -103,6 +103,10 @@ public class Character {
 			return false;
 		}
 		return true;
+	}
+
+	protected boolean inBounds(int row, int col) {
+		return row >= 0 && row < map.length && col >= 0 && col < map[0].length;
 	}
 
 	void respawn() {
