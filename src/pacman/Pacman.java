@@ -9,17 +9,13 @@ import pacman.Main.Direction;
 
 public class Pacman extends Character {
 
-	private Direction intendedDir;
-
 	private ArrayList<Ghost> ghosts;
 
 	private int eatCounter, lives;
 
-	private boolean left, right, up, down;
-
 	// Pacman constructor
-	public Pacman(DrawPanel canvas, Direction dir, int row, int col) {
-		super(canvas, dir, row, col, 5, Color.yellow);
+	public Pacman(DrawPanel canvas, Direction dir, int row, int col, boolean isFixed) {
+		super(canvas, dir, row, col, 5, Color.yellow, isFixed);
 		ghosts = canvas.getGhosts();
 		this.intendedDir = dir;
 		lives = 3;
@@ -28,39 +24,10 @@ public class Pacman extends Character {
 	@Override
 	void draw(Graphics g) {
 		animate(g);
-		if (row >= 0 && row < map.length && col >= 0 && col < map[0].length) {
+		if (row >= 0 && row < map.length && col >= 0 && col < map[0].length && !isFixed) {
 			checkSurrounding();
 			checkCurrent();
 		}
-	}
-
-	private void checkSurrounding() {
-		doAnimate = true;
-		left = checkTile(row, col - 1);
-		right = checkTile(row, col + 1);
-		up = checkTile(row - 1, col);
-		down = checkTile(row + 1, col);
-		if (x0 == col * Main.tilePadWidth && y0 == row * Main.tilePadWidth) {
-			if (intendedDir == Direction.left && left || intendedDir == Direction.right && right
-					|| intendedDir == Direction.up && up || intendedDir == Direction.down && down) {
-				dir = intendedDir;
-			} else if (!(dir == Direction.left && left) && !(dir == Direction.right && right)
-					&& !(dir == Direction.up && up) && !(dir == Direction.down && down)) {
-				doAnimate = false;
-			}
-		}
-	}
-
-	@Override
-	protected boolean checkTile(int row, int col) {
-		if (row < 0 || row >= map.length || col < 0 || col >= map[0].length) {
-			// exceed boundary
-			return false;
-		}
-		if (map[row][col] == Code.wall) {
-			return false;
-		}
-		return true;
 	}
 
 	private void checkCurrent() {

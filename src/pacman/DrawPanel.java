@@ -25,7 +25,9 @@ public class DrawPanel extends JPanel implements ActionListener {
 	private Code[][] map = Main.map;
 
 	private Pacman pacman;
+	private Pacman tempPacman;
 	private ArrayList<Ghost> ghosts;
+	private ArrayList<Ghost> tempGhosts;
 	private Component parent;
 	private Timer timer;
 
@@ -34,16 +36,18 @@ public class DrawPanel extends JPanel implements ActionListener {
 
 	private boolean paused = false;
 	private boolean doDrawGrid;
+	private boolean isFixed;
 
 	/*
 	 * DrawPanel constructor sets paused and timer states
 	 */
-	public DrawPanel(Component parent, boolean doDrawGrid, int framerate) {
+	public DrawPanel(Component parent, boolean doDrawGrid, boolean isFixed, int framerate) {
 		this.parent = parent;
 		this.doDrawGrid = doDrawGrid;
+		this.isFixed = isFixed;
 		this.framerate = framerate;
-		score = 0;
 		defaultMap();
+		reset();
 		timer = new Timer(1000 / framerate, this);
 		timer.start();
 	}
@@ -54,10 +58,6 @@ public class DrawPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == timer && !paused) {
 			Main.game.getScoreLabel().setText(Integer.toString(score));
-			/*
-			 * if (!pacman.getVitality()) { if (pacman.getLives() == 0) { //
-			 * game over end(); } else { respawn(); } }
-			 */
 			repaint();
 		}
 	}
@@ -70,9 +70,19 @@ public class DrawPanel extends JPanel implements ActionListener {
 		if (doDrawGrid) {
 			drawGrid(g);
 		}
-		pacman.draw(g);
-		for (Ghost ghost : ghosts) {
-			ghost.draw(g);
+		try {
+			pacman.draw(g);
+		} catch (NullPointerException e) {
+			tempPacman.draw(g);
+		}
+		try {
+			for (Ghost ghost : ghosts) {
+				ghost.draw(g);
+			}
+		} catch (NullPointerException e) {
+			for (Ghost tempGhost : tempGhosts) {
+				tempGhost.draw(g);
+			}
 		}
 	}
 
@@ -105,7 +115,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 	/*
 	 * Temporary color getter
 	 */
-	static Color getColor(Code code) {
+	private Color getColor(Code code) {
 		switch (code) {
 		case path:
 			return Color.black;
@@ -199,25 +209,25 @@ public class DrawPanel extends JPanel implements ActionListener {
 	 */
 	boolean uploadMap(ArrayList<String> lines) {
 		try {
-			ghosts = new ArrayList<Ghost>();
+			tempGhosts = new ArrayList<Ghost>();
 			for (int row = 0; row < map.length; row++) {
 				String[] line = lines.get(row).split(" ");
 				for (int col = 0; col < map[row].length; col++) {
 					int tile = Integer.parseInt(line[col]);
 					if (tile == Code.pacman.getCode()) {
-						pacman = new Pacman(this, Direction.left, row, col);
+						tempPacman = new Pacman(this, Direction.left, row, col, true);
 						map[row][col] = Code.path;
 					} else if (tile == Code.blinky.getCode()) {
-						ghosts.add(new Ghost(this, Direction.left, row, col, Color.red));
+						tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.red, true));
 						map[row][col] = Code.path;
 					} else if (tile == Code.pinky.getCode()) {
-						ghosts.add(new Ghost(this, Direction.left, row, col, Color.pink));
+						tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.pink, true));
 						map[row][col] = Code.path;
 					} else if (tile == Code.inky.getCode()) {
-						ghosts.add(new Ghost(this, Direction.left, row, col, Color.cyan));
+						tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.cyan, true));
 						map[row][col] = Code.path;
 					} else if (tile == Code.clyde.getCode()) {
-						ghosts.add(new Ghost(this, Direction.left, row, col, Color.orange));
+						tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.orange, true));
 						map[row][col] = Code.path;
 					} else {
 						map[row][col] = Code.lookupByValue(tile);
@@ -242,10 +252,24 @@ public class DrawPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	void reset() {
+		score = 0;
+		if (!isFixed) {
+			initCharacters();
+		}
+		setPaused(false);
+	}
+
+	private void initCharacters() {
+		ghosts = new ArrayList<Ghost>();
+		for (Ghost tempGhost : tempGhosts) {
+			ghosts.add(new Ghost(this, Direction.left, tempGhost.getRow(), tempGhost.getCol(), tempGhost.getColor(),
+					false));
+		}
+		pacman = new Pacman(this, Direction.left, tempPacman.getRow(), tempPacman.getCol(), false);
+	}
+
 	void respawn() {
-		// respawn all ghosts
-		// respawn pacman
-		// DO NOT respawn pacdots and power pellets
 		pacman.respawn();
 		for (Ghost ghost : ghosts) {
 			ghost.respawn();
@@ -257,6 +281,10 @@ public class DrawPanel extends JPanel implements ActionListener {
 		// go back to beginning
 	}
 
+	void close() {
+		timer.stop();
+	}
+	
 	/*
 	 * 
 	 */
@@ -285,10 +313,6 @@ public class DrawPanel extends JPanel implements ActionListener {
 
 	void setScore(int score) {
 		this.score = score;
-	}
-
-	boolean getPaused() {
-		return paused;
 	}
 
 	void setPaused(boolean state) {

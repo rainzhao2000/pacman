@@ -34,9 +34,9 @@ public class MapCreator {
 
 	private JFrame frmMapCreator;
 	private JFrame frmGame = Main.game.getFrame();
+	private JTextField txtFieldFileName;
 	private DrawPanel canvas;
 	private DrawPanel gameCanvas = Main.game.getCanvas();
-	private JTextField txtFieldFileName;
 
 	private final Action pathSelect = new PathSelect();
 	private final Action wallSelect = new WallSelect();
@@ -61,9 +61,10 @@ public class MapCreator {
 		// Unpause the canvas rendering in Game on close of MapCreator
 		frmMapCreator.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(WindowEvent winEvt) {
-				gameCanvas.setPaused(false);
+				canvas.close();
+				gameCanvas.reset();
 				frmGame.requestFocusInWindow();
-				System.out.println("Game Unpaused");
+				System.out.println("Game Reset");
 			}
 		});
 	}
@@ -80,7 +81,7 @@ public class MapCreator {
 		frmMapCreator.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmMapCreator.getContentPane().setLayout(null);
 
-		canvas = new DrawPanel(frmMapCreator, true, Main.framerate);
+		canvas = new DrawPanel(frmMapCreator, true, true, Main.framerate);
 		canvas.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
@@ -180,6 +181,10 @@ public class MapCreator {
 		return frmMapCreator;
 	}
 
+	DrawPanel getCanvas() {
+		return canvas;
+	}
+	
 	/*
 	 * The following classes are Actions attributed to button components in the
 	 * frame and sets the currentObject

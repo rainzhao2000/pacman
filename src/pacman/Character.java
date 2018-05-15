@@ -11,6 +11,7 @@ public class Character {
 	protected Code[][] map = Main.map;
 
 	protected Direction dir;
+	protected Direction intendedDir;
 
 	protected DrawPanel canvas;
 	protected Color color;
@@ -20,10 +21,12 @@ public class Character {
 	protected double x, y, speed, displacement; // speed in tiles/sec
 	protected double centerOffset = Main.tilePadWidth / 2.0;
 
+	protected boolean isFixed;
 	protected boolean doAnimate;
 	protected boolean doShowPos = false;
+	protected boolean left, right, up, down;
 
-	protected Character(DrawPanel canvas, Direction dir, int row, int col, double speed, Color color) {
+	protected Character(DrawPanel canvas, Direction dir, int row, int col, double speed, Color color, boolean isFixed) {
 		this.canvas = canvas;
 		this.dir = dir;
 		this.rowSpawn = row;
@@ -37,6 +40,8 @@ public class Character {
 		this.speed = speed;
 		displacement = speed * Main.tilePadWidth / canvas.getFramerate();
 		this.color = color;
+		this.isFixed = isFixed;
+		this.doAnimate = !isFixed;
 	}
 
 	void draw(Graphics g) {
@@ -72,8 +77,32 @@ public class Character {
 		col = (int) Math.rint((double) x0 / Main.tilePadWidth);
 	}
 
+	protected void checkSurrounding() {
+		doAnimate = true;
+		left = checkTile(row, col - 1);
+		right = checkTile(row, col + 1);
+		up = checkTile(row - 1, col);
+		down = checkTile(row + 1, col);
+		if (x0 == col * Main.tilePadWidth && y0 == row * Main.tilePadWidth) {
+			if (intendedDir == Direction.left && left || intendedDir == Direction.right && right
+					|| intendedDir == Direction.up && up || intendedDir == Direction.down && down) {
+				dir = intendedDir;
+			} else if (!(dir == Direction.left && left) && !(dir == Direction.right && right)
+					&& !(dir == Direction.up && up) && !(dir == Direction.down && down)) {
+				doAnimate = false;
+			}
+		}
+	}
+
 	protected boolean checkTile(int row, int col) {
-		return false;
+		if (row < 0 || row >= map.length || col < 0 || col >= map[0].length) {
+			// exceed boundary
+			return false;
+		}
+		if (map[row][col] == Code.wall) {
+			return false;
+		}
+		return true;
 	}
 
 	void respawn() {
@@ -115,6 +144,10 @@ public class Character {
 
 	double getY() {
 		return y;
+	}
+
+	Color getColor() {
+		return color;
 	}
 
 	boolean getDoShowPos() {
