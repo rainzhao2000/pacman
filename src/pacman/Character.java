@@ -16,11 +16,12 @@ public class Character {
 	protected Color color;
 
 	protected int rowSpawn, colSpawn, row, col, x0, y0;
-	
+
 	protected double x, y, speed, displacement; // speed in tiles/sec
 	protected double centerOffset = Main.tilePadWidth / 2.0;
-	
+
 	protected boolean doAnimate;
+	protected boolean doShowPos = false;
 
 	protected Character(DrawPanel canvas, Direction dir, int row, int col, double speed, Color color) {
 		this.canvas = canvas;
@@ -37,16 +38,16 @@ public class Character {
 		displacement = speed * Main.tilePadWidth / canvas.getFramerate();
 		this.color = color;
 	}
-	
+
 	void draw(Graphics g) {
 
 	}
 
 	protected void animate(Graphics g) {
-		// debug
-		g.setColor(Color.GREEN);
-		g.fillRect(col * Main.tilePadWidth, row * Main.tilePadWidth, Main.tilePadWidth, Main.tilePadWidth);
-
+		if (doShowPos) {
+			g.setColor(Color.GREEN);
+			g.fillRect(col * Main.tilePadWidth, row * Main.tilePadWidth, Main.tilePadWidth, Main.tilePadWidth);
+		}
 		g.setColor(color);
 		g.fillRect(x0, y0, Main.tilePadWidth, Main.tilePadWidth);
 		if (doAnimate) {
@@ -70,7 +71,7 @@ public class Character {
 		row = y0 / Main.tilePadWidth;
 		col = x0 / Main.tilePadWidth;
 	}
-	
+
 	protected boolean checkTile(int row, int col) {
 		return false;
 	}
@@ -111,9 +112,17 @@ public class Character {
 	double getX() {
 		return x;
 	}
-	
+
 	double getY() {
 		return y;
 	}
-	
+
+	boolean getDoShowPos() {
+		return doShowPos;
+	}
+
+	void setDoShowPos(boolean state) {
+		doShowPos = state;
+	}
+
 }

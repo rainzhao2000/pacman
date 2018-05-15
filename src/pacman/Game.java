@@ -27,9 +27,9 @@ public class Game implements KeyListener {
 	private DrawPanel canvas;
 	private JLabel lblScore;
 	private MapCreator mapCreatorWindow = null;
-	private Pacman pacman;
 
 	private final Action mapCreatorAction = new MapCreatorAction();
+	private final Action togglePosAction = new TogglePosAction();
 	private final Action toggleGridAction = new ToggleGridAction();
 
 	/**
@@ -47,34 +47,35 @@ public class Game implements KeyListener {
 		frmGame = new JFrame();
 		frmGame.setResizable(false);
 		frmGame.setTitle("Pac-Man");
-		frmGame.setBounds(400, 100, 309, 500);
+		frmGame.setBounds(400, 100, 349, 500);
 		frmGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmGame.getContentPane().setLayout(null);
 		frmGame.addKeyListener(this);
 		frmGame.setFocusable(true);
+		frmGame.requestFocusInWindow();
 
 		JLabel lblHighScore = new JLabel("High Score:");
-		lblHighScore.setBounds(118, 6, 72, 16);
+		lblHighScore.setBounds(128, 6, 92, 16);
 		frmGame.getContentPane().add(lblHighScore);
 
 		lblScore = new JLabel("0");
-		lblScore.setBounds(14, 24, 280, 16);
+		lblScore.setBounds(24, 24, 300, 16);
 		frmGame.getContentPane().add(lblScore);
 
 		canvas = new DrawPanel(frmGame, false, Main.framerate);
-		canvas.setBounds(0, 50, Main.mapWidth, Main.mapHeight);
+		canvas.setBounds(20, 50, Main.mapWidth, Main.mapHeight);
 		frmGame.getContentPane().add(canvas);
 
 		JPanel infoPanel = new JPanel();
-		infoPanel.setBounds(14, 392, 280, 40);
+		infoPanel.setBounds(24, 392, 300, 40);
 		frmGame.getContentPane().add(infoPanel);
 
 		JLabel lblDebugControls = new JLabel("Debug Controls");
-		lblDebugControls.setBounds(105, 434, 99, 16);
+		lblDebugControls.setBounds(125, 434, 99, 16);
 		frmGame.getContentPane().add(lblDebugControls);
 
 		JPanel debugPanel = new JPanel();
-		debugPanel.setBounds(0, 450, 309, 28);
+		debugPanel.setBounds(0, 450, 349, 28);
 		frmGame.getContentPane().add(debugPanel);
 		debugPanel.setLayout(new BorderLayout(0, 0));
 
@@ -82,11 +83,13 @@ public class Game implements KeyListener {
 		debugPanel.add(btnMapCreator, BorderLayout.WEST);
 		btnMapCreator.setAction(mapCreatorAction);
 
+		JButton btnTogglePos = new JButton("Toggle Pos");
+		debugPanel.add(btnTogglePos, BorderLayout.CENTER);
+		btnTogglePos.setAction(togglePosAction);
+
 		JButton btnToggleGrid = new JButton("Toggle Grid");
 		btnToggleGrid.setAction(toggleGridAction);
 		debugPanel.add(btnToggleGrid, BorderLayout.EAST);
-
-		pacman = canvas.getPacman();
 	}
 
 	JFrame getFrame() {
@@ -105,16 +108,16 @@ public class Game implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 		if (code == KeyEvent.VK_LEFT) {
-			pacman.logDir(Direction.left);
+			canvas.getPacman().logDir(Direction.left);
 		}
 		if (code == KeyEvent.VK_RIGHT) {
-			pacman.logDir(Direction.right);
+			canvas.getPacman().logDir(Direction.right);
 		}
 		if (code == KeyEvent.VK_UP) {
-			pacman.logDir(Direction.up);
+			canvas.getPacman().logDir(Direction.up);
 		}
 		if (code == KeyEvent.VK_DOWN) {
-			pacman.logDir(Direction.down);
+			canvas.getPacman().logDir(Direction.down);
 		}
 	}
 
@@ -160,6 +163,21 @@ public class Game implements KeyListener {
 		}
 	}
 
+	private class TogglePosAction extends AbstractAction {
+		public TogglePosAction() {
+			putValue(NAME, "Toggle Pos");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			canvas.getPacman().setDoShowPos(!canvas.getPacman().getDoShowPos());
+			for (Ghost ghost : canvas.getGhosts()) {
+				ghost.setDoShowPos(!ghost.getDoShowPos());
+			}
+			frmGame.requestFocusInWindow();
+		}
+	}
+
 	private class ToggleGridAction extends AbstractAction {
 		public ToggleGridAction() {
 			putValue(NAME, "Toggle Grid");
@@ -168,6 +186,7 @@ public class Game implements KeyListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			canvas.setDoDrawGrid(!canvas.getDoDrawGrid());
+			frmGame.requestFocusInWindow();
 		}
 	}
 }

@@ -33,7 +33,7 @@ public class MapCreator {
 	private Code currentObject = Code.path;
 
 	private JFrame frmMapCreator;
-	private JFrame frmPacman = Main.game.getFrame();
+	private JFrame frmGame = Main.game.getFrame();
 	private DrawPanel canvas;
 	private DrawPanel gameCanvas = Main.game.getCanvas();
 	private JTextField txtFieldFileName;
@@ -62,6 +62,7 @@ public class MapCreator {
 		frmMapCreator.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(WindowEvent winEvt) {
 				gameCanvas.setPaused(false);
+				frmGame.requestFocusInWindow();
 				System.out.println("Game Unpaused");
 			}
 		});
@@ -75,7 +76,7 @@ public class MapCreator {
 		frmMapCreator = new JFrame();
 		frmMapCreator.setResizable(false);
 		frmMapCreator.setTitle("Pac-Man Map Creator");
-		frmMapCreator.setBounds(frmPacman.getX() + frmPacman.getWidth(), frmPacman.getY(), 450, 498);
+		frmMapCreator.setBounds(frmGame.getX() + frmGame.getWidth(), frmGame.getY(), 450, 498);
 		frmMapCreator.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmMapCreator.getContentPane().setLayout(null);
 
