@@ -143,8 +143,10 @@ public class Game implements KeyListener {
 		 * MapCreator canvas), then try to close any existing open MapCreator
 		 * window and instantiate a new MapCreator window
 		 */
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			EventQueue.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					canvas.setPaused(true);
 					System.out.println("Game Paused");
@@ -163,6 +165,7 @@ public class Game implements KeyListener {
 			putValue(NAME, "Toggle Grid");
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			canvas.setDoDrawGrid(!canvas.getDoDrawGrid());
 		}
