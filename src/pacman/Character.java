@@ -54,7 +54,6 @@ public class Character {
 			g.fillRect(col * Main.tilePadWidth, row * Main.tilePadWidth, Main.tilePadWidth, Main.tilePadWidth);
 		}
 		g.setColor(color);
-		// g.fillRect(x0, y0, Main.tilePadWidth, Main.tilePadWidth);
 		g.fillOval(x0, y0, Main.tilePadWidth, Main.tilePadWidth);
 		if (doAnimate) {
 			switch (dir) {
