@@ -34,53 +34,53 @@ public class Ghost extends Character {
 	}
 
 	@Override
-	protected void checkSurrounding() {
-		left = checkTile(row, col - 1);
-		right = checkTile(row, col + 1);
-		up = checkTile(row - 1, col);
-		down = checkTile(row + 1, col);
-		ArrayList<Direction> avaliableDir = new ArrayList<>();
-		if (dir == Direction.up) {
-			// discard down
-			down = false;
-		} else if (dir == Direction.down) {
-			// discard up
-			up = false;
-		} else if (dir == Direction.left) {
-			// discard right
+	protected void selectDir() {
+		ArrayList<Direction> availableDir = new ArrayList<>();
+		switch (dir) {
+		case left:
 			right = false;
-		} else if (dir == Direction.right) {
-			// discard left
+			break;
+		case right:
 			left = false;
+			break;
+		case up:
+			down = false;
+			break;
+		case down:
+			up = false;
+			break;
 		}
-
 		if (left) {
-			avaliableDir.add(Direction.left);
+			availableDir.add(Direction.left);
 		}
 		if (right) {
-			avaliableDir.add(Direction.right);
+			availableDir.add(Direction.right);
 		}
 		if (up) {
-			avaliableDir.add(Direction.up);
+			availableDir.add(Direction.up);
 		}
 		if (down) {
-			avaliableDir.add(Direction.down);
+			availableDir.add(Direction.down);
 		}
-
-		if (avaliableDir.size() == 0) {
+		if (availableDir.size() == 0) {
 			// turn around at dead end
-			if (dir == Direction.left) {
+			switch (dir) {
+			case left:
 				dir = Direction.right;
-			} else if (dir == Direction.right) {
+				break;
+			case right:
 				dir = Direction.left;
-			} else if (dir == Direction.up) {
+				break;
+			case up:
 				dir = Direction.down;
-			} else if (dir == Direction.down) {
+				break;
+			case down:
 				dir = Direction.up;
+				break;
 			}
 		} else {
-			int randomIndex = (int) (Math.random() * avaliableDir.size());
-			dir = avaliableDir.get(randomIndex);
+			int randomIndex = (int) (Math.random() * availableDir.size());
+			dir = availableDir.get(randomIndex);
 		}
 
 	}

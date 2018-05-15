@@ -9,6 +9,8 @@ import pacman.Main.Direction;
 
 public class Pacman extends Character {
 
+	private Direction intendedDir;
+	
 	private ArrayList<Ghost> ghosts;
 
 	private int eatCounter, lives;
@@ -24,12 +26,23 @@ public class Pacman extends Character {
 	@Override
 	void draw(Graphics g) {
 		animate(g);
-		if (row >= 0 && row < map.length && col >= 0 && col < map[0].length && !isFixed) {
+		if (inBounds(row, col) && !isFixed) {
 			checkSurrounding();
 			checkCurrent();
 		}
 	}
 
+	@Override
+	protected void selectDir() {
+		if (intendedDir == Direction.left && left || intendedDir == Direction.right && right
+				|| intendedDir == Direction.up && up || intendedDir == Direction.down && down) {
+			dir = intendedDir;
+		} else if (!(dir == Direction.left && left) && !(dir == Direction.right && right)
+				&& !(dir == Direction.up && up) && !(dir == Direction.down && down)) {
+			doAnimate = false;
+		}
+	}
+	
 	private void checkCurrent() {
 		for (Ghost ghost : ghosts) {
 			if (ghost.getRow() == row && ghost.getCol() == col) {

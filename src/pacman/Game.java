@@ -7,6 +7,8 @@
 package pacman;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -18,6 +20,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 import pacman.Main.Direction;
 
@@ -25,12 +29,14 @@ public class Game implements KeyListener {
 
 	private JFrame frmGame;
 	private JLabel lblScore;
+	private JSpinner speedMultiplierSpinner;
 	private DrawPanel canvas;
 	private MapCreator mapCreatorWindow = null;
 
 	private final Action mapCreatorAction = new MapCreatorAction();
 	private final Action togglePosAction = new TogglePosAction();
 	private final Action toggleGridAction = new ToggleGridAction();
+	private final Action resetAction = new ResetAction();
 
 	/**
 	 * Create the application.
@@ -47,7 +53,7 @@ public class Game implements KeyListener {
 		frmGame = new JFrame();
 		frmGame.setResizable(false);
 		frmGame.setTitle("Pac-Man");
-		frmGame.setBounds(400, 100, 349, 510);
+		frmGame.setBounds(400, 100, 349, 550);
 		frmGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmGame.getContentPane().setLayout(null);
 		frmGame.addKeyListener(this);
@@ -75,9 +81,10 @@ public class Game implements KeyListener {
 		frmGame.getContentPane().add(lblDebugControls);
 
 		JPanel debugPanel = new JPanel();
-		debugPanel.setBounds(0, 450, 349, 28);
-		frmGame.getContentPane().add(debugPanel);
+		debugPanel.setBounds(0, 450, 349, 78);
 		debugPanel.setLayout(new BorderLayout(0, 0));
+		debugPanel.setBackground(Color.lightGray);
+		frmGame.getContentPane().add(debugPanel);
 
 		JButton btnMapCreator = new JButton("Map Creator");
 		debugPanel.add(btnMapCreator, BorderLayout.WEST);
@@ -90,6 +97,24 @@ public class Game implements KeyListener {
 		JButton btnToggleGrid = new JButton("Toggle Grid");
 		btnToggleGrid.setAction(toggleGridAction);
 		debugPanel.add(btnToggleGrid, BorderLayout.EAST);
+
+		JPanel debugPanel2 = new JPanel();
+		debugPanel2.setBackground(Color.LIGHT_GRAY);
+		debugPanel.add(debugPanel2, BorderLayout.SOUTH);
+
+		JLabel lblSpeedMultiplier = new JLabel("Speed multiplier:");
+		debugPanel2.add(lblSpeedMultiplier);
+
+		speedMultiplierSpinner = new JSpinner(new SpinnerNumberModel(1, 0, 10, 0.1));
+		Component[] comps = speedMultiplierSpinner.getEditor().getComponents();
+		for (Component component : comps) {
+			component.setFocusable(false);
+		}
+		debugPanel2.add(speedMultiplierSpinner);
+		
+		JButton btnReset = new JButton("Reset Game");
+		btnReset.setAction(resetAction);
+		debugPanel2.add(btnReset);
 	}
 
 	JFrame getFrame() {
@@ -104,24 +129,24 @@ public class Game implements KeyListener {
 		return lblScore;
 	}
 
+	JSpinner getSpeedMultiplierSpinner() {
+		return speedMultiplierSpinner;
+	}
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 		if (code == KeyEvent.VK_LEFT) {
 			canvas.getPacman().logDir(Direction.left);
-			System.out.println("left");
 		}
 		if (code == KeyEvent.VK_RIGHT) {
 			canvas.getPacman().logDir(Direction.right);
-			System.out.println("right");
 		}
 		if (code == KeyEvent.VK_UP) {
 			canvas.getPacman().logDir(Direction.up);
-			System.out.println("up");
 		}
 		if (code == KeyEvent.VK_DOWN) {
 			canvas.getPacman().logDir(Direction.down);
-			System.out.println("down");
 		}
 	}
 
@@ -145,10 +170,10 @@ public class Game implements KeyListener {
 		}
 
 		/*
-		 * When the component this action is attached to is triggered, pause the current
-		 * canvas rendering (so that resources can be allocated to the MapCreator
-		 * canvas), then try to close any existing open MapCreator window and
-		 * instantiate a new MapCreator window
+		 * When the component this action is attached to is triggered, pause the
+		 * current canvas rendering (so that resources can be allocated to the
+		 * MapCreator canvas), then try to close any existing open MapCreator
+		 * window and instantiate a new MapCreator window
 		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -191,6 +216,15 @@ public class Game implements KeyListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			canvas.setDoDrawGrid(!canvas.getDoDrawGrid());
+			frmGame.requestFocusInWindow();
+		}
+	}
+	private class ResetAction extends AbstractAction {
+		public ResetAction() {
+			putValue(NAME, "Reset Game");
+		}
+		public void actionPerformed(ActionEvent e) {
+			canvas.reset(false);
 			frmGame.requestFocusInWindow();
 		}
 	}

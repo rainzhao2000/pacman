@@ -62,7 +62,7 @@ public class MapCreator {
 		frmMapCreator.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(WindowEvent winEvt) {
 				canvas.close();
-				gameCanvas.reset();
+				gameCanvas.reset(true);
 				frmGame.requestFocusInWindow();
 				System.out.println("Game Reset");
 			}

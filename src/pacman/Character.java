@@ -11,7 +11,6 @@ public class Character {
 	protected Code[][] map = Main.map;
 
 	protected Direction dir;
-	protected Direction intendedDir;
 
 	protected DrawPanel canvas;
 	protected Color color;
@@ -38,7 +37,6 @@ public class Character {
 		x = x0 + centerOffset;
 		y = y0 + centerOffset;
 		this.speed = speed;
-		displacement = speed * Main.tilePadWidth / canvas.getFramerate();
 		this.color = color;
 		this.isFixed = isFixed;
 		this.doAnimate = !isFixed;
@@ -49,6 +47,12 @@ public class Character {
 	}
 
 	protected void animate(Graphics g) {
+		Object value = Main.game.getSpeedMultiplierSpinner().getValue();
+		try {
+			displacement = speed * (double) value * Main.tilePadWidth / canvas.getFramerate();
+		} catch (ClassCastException cce) {
+			displacement = speed * (int) value * Main.tilePadWidth / canvas.getFramerate();
+		}
 		if (doShowPos) {
 			g.setColor(Color.GREEN);
 			g.fillRect(col * Main.tilePadWidth, row * Main.tilePadWidth, Main.tilePadWidth, Main.tilePadWidth);
@@ -84,14 +88,12 @@ public class Character {
 		up = checkTile(row - 1, col);
 		down = checkTile(row + 1, col);
 		if (x0 == col * Main.tilePadWidth && y0 == row * Main.tilePadWidth) {
-			if (intendedDir == Direction.left && left || intendedDir == Direction.right && right
-					|| intendedDir == Direction.up && up || intendedDir == Direction.down && down) {
-				dir = intendedDir;
-			} else if (!(dir == Direction.left && left) && !(dir == Direction.right && right)
-					&& !(dir == Direction.up && up) && !(dir == Direction.down && down)) {
-				doAnimate = false;
-			}
+			selectDir();
 		}
+	}
+
+	protected void selectDir() {
+
 	}
 
 	protected boolean checkTile(int row, int col) {
