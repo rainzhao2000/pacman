@@ -7,7 +7,8 @@ import java.util.Map;
 public class Main {
 
 	/*
-	 * Enumerator handles codes of elements that will be referenced from map array
+	 * Enumerator handles codes of elements that will be referenced from map
+	 * array
 	 */
 	static enum Code {
 
@@ -17,8 +18,8 @@ public class Main {
 		private static final Map<Integer, Code> codeIndex = new HashMap<Integer, Code>();
 
 		/*
-		 * Make a HashMap to hold references to Codes objects by reference of their
-		 * values
+		 * Make a HashMap to hold references to Codes objects by reference of
+		 * their values
 		 */
 		static {
 			for (Code code : Code.values()) {

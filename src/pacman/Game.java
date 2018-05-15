@@ -111,7 +111,7 @@ public class Game implements KeyListener {
 			component.setFocusable(false);
 		}
 		debugPanel2.add(speedMultiplierSpinner);
-		
+
 		JButton btnReset = new JButton("Reset Game");
 		btnReset.setAction(resetAction);
 		debugPanel2.add(btnReset);
@@ -219,10 +219,12 @@ public class Game implements KeyListener {
 			frmGame.requestFocusInWindow();
 		}
 	}
+
 	private class ResetAction extends AbstractAction {
 		public ResetAction() {
 			putValue(NAME, "Reset Game");
 		}
+
 		public void actionPerformed(ActionEvent e) {
 			canvas.reset(false);
 			frmGame.requestFocusInWindow();
