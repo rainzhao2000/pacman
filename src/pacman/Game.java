@@ -20,7 +20,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import pacman.Main.Direction;
-import sun.swing.text.html.FrameEditorPaneTag;
 
 public class Game implements KeyListener {
 

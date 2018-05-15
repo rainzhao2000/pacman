@@ -3,8 +3,6 @@ package pacman;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import javax.swing.Timer;
-
 import pacman.Main.Code;
 import pacman.Main.Direction;
 

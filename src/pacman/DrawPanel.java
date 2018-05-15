@@ -153,7 +153,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 			map[row][col] = code;
 		}
 	}
-	
+
 	/*
 	 * Looks for 'default map.txt' in current directory and uploads it to map
 	 */
@@ -266,11 +266,11 @@ public class DrawPanel extends JPanel implements ActionListener {
 		}
 		// reset edible timer of each ghost
 	}
-	
+
 	Pacman getPacman() {
 		return pacman;
 	}
-	
+
 	ArrayList<Ghost> getGhosts() {
 		return ghosts;
 	}
@@ -278,7 +278,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 	int getFramerate() {
 		return framerate;
 	}
-	
+
 	int getScore() {
 		return score;
 	}
