@@ -96,18 +96,28 @@ public class DrawPanel extends JPanel implements ActionListener {
 				int y = row * Main.tilePadWidth;
 				int width = Main.tilePadWidth;
 				try {
-					if (map[row][col] == Code.pacdot) {
+					if (map[row][col] == Code.pacdot || map[row][col] == Code.powerPellet) {
 						g.setColor(getColor(Code.path));
 						g.fillRect(x, y, width, width);
-						width = Main.tileWidth / 4;
+						if (map[row][col] == Code.pacdot) {
+							width = Main.tileWidth / 4;
+						} else {
+							width = Main.tilePadWidth / 2;
+						}
 						x += (Main.tilePadWidth - width) / 2 + Main.padding;
 						y += (Main.tilePadWidth - width) / 2 + Main.padding;
 					}
 					g.setColor(getColor(map[row][col]));
+					if (map[row][col] == Code.pacdot || map[row][col] == Code.powerPellet
+							|| map[row][col] == Code.fruit) {
+						g.fillOval(x, y, width, width);
+					} else {
+						g.fillRect(x, y, width, width);
+					}
 				} catch (NullPointerException e) {
 					g.setColor(getColor(Code.path));
+					g.fillRect(x, y, width, width);
 				}
-				g.fillRect(x, y, width, width);
 			}
 		}
 	}
@@ -284,7 +294,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 	void close() {
 		timer.stop();
 	}
-	
+
 	/*
 	 * 
 	 */
