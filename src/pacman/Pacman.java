@@ -41,15 +41,11 @@ public class Pacman extends Character {
 		up = checkTile(row - 1, col);
 		down = checkTile(row + 1, col);
 		if (x0 == col * Main.tilePadWidth && y0 == row * Main.tilePadWidth) {
-			if (intendedDir == Direction.left && left) {
+			if (intendedDir == Direction.left && left || intendedDir == Direction.right && right
+					|| intendedDir == Direction.up && up || intendedDir == Direction.down && down) {
 				dir = intendedDir;
-			} else if (intendedDir == Direction.right && right) {
-				dir = intendedDir;
-			} else if (intendedDir == Direction.up && up) {
-				dir = intendedDir;
-			} else if (intendedDir == Direction.down && down) {
-				dir = intendedDir;
-			} else {
+			} else if (!(dir == Direction.left && left) && !(dir == Direction.right && right)
+					&& !(dir == Direction.up && up) && !(dir == Direction.down && down)) {
 				doAnimate = false;
 			}
 		}
