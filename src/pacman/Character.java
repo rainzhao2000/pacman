@@ -68,8 +68,8 @@ public class Character {
 			x0 = (int) (x - centerOffset);
 			y0 = (int) (y - centerOffset);
 		}
-		row = y0 / Main.tilePadWidth;
-		col = x0 / Main.tilePadWidth;
+		row = (int) Math.rint((double) y0 / Main.tilePadWidth);
+		col = (int) Math.rint((double) x0 / Main.tilePadWidth);
 	}
 
 	protected boolean checkTile(int row, int col) {

@@ -387,7 +387,6 @@ public class MapCreator {
 				for (int row = 0; row < map.length; row++) {
 					StringBuilder line = new StringBuilder();
 					for (int col = 0; col < map[row].length; col++) {
-						System.out.println(map[row][col].getCode());
 						line.append(map[row][col].getCode() + " ");
 					}
 					lines.add(line.toString());

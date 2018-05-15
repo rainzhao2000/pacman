@@ -43,24 +43,12 @@ public class Pacman extends Character {
 		if (x0 == col * Main.tilePadWidth && y0 == row * Main.tilePadWidth) {
 			if (intendedDir == Direction.left && left) {
 				dir = intendedDir;
-				col--;
 			} else if (intendedDir == Direction.right && right) {
 				dir = intendedDir;
-				col++;
 			} else if (intendedDir == Direction.up && up) {
 				dir = intendedDir;
-				row--;
 			} else if (intendedDir == Direction.down && down) {
 				dir = intendedDir;
-				row++;
-			} else if (dir == Direction.left && left) {
-				col--;
-			} else if (dir == Direction.right && right) {
-				col++;
-			} else if (dir == Direction.up && up) {
-				row--;
-			} else if (dir == Direction.down && down) {
-				row++;
 			} else {
 				doAnimate = false;
 			}
