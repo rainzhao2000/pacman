@@ -96,7 +96,8 @@ public class DrawPanel extends JPanel implements ActionListener {
 				int y = row * Main.tilePadWidth;
 				int width = Main.tilePadWidth;
 				try {
-					if (map[row][col] == Code.pacdot || map[row][col] == Code.powerPellet) {
+					if (map[row][col] == Code.pacdot || map[row][col] == Code.powerPellet
+							|| map[row][col] == Code.fruit) {
 						g.setColor(getColor(Code.path));
 						g.fillRect(x, y, width, width);
 						if (map[row][col] == Code.pacdot) {
@@ -106,12 +107,10 @@ public class DrawPanel extends JPanel implements ActionListener {
 						}
 						x += (Main.tilePadWidth - width) / 2 + Main.padding;
 						y += (Main.tilePadWidth - width) / 2 + Main.padding;
-					}
-					g.setColor(getColor(map[row][col]));
-					if (map[row][col] == Code.pacdot || map[row][col] == Code.powerPellet
-							|| map[row][col] == Code.fruit) {
+						g.setColor(getColor(map[row][col]));
 						g.fillOval(x, y, width, width);
 					} else {
+						g.setColor(getColor(map[row][col]));
 						g.fillRect(x, y, width, width);
 					}
 				} catch (NullPointerException e) {
@@ -163,8 +162,8 @@ public class DrawPanel extends JPanel implements ActionListener {
 	}
 
 	/*
-	 * Finds the element in map array corresponding to position of mouse cursor
-	 * and sets the element to a specified code
+	 * Finds the element in map array corresponding to position of mouse cursor and
+	 * sets the element to a specified code
 	 */
 	void setTile(MouseEvent e, Code code) {
 		int row = e.getY() / Main.tilePadWidth;
@@ -214,8 +213,8 @@ public class DrawPanel extends JPanel implements ActionListener {
 	}
 
 	/*
-	 * Looks up an ArrayList of strings and adds the Codes objects obtained from
-	 * the code values to the map array
+	 * Looks up an ArrayList of strings and adds the Codes objects obtained from the
+	 * code values to the map array
 	 */
 	boolean uploadMap(ArrayList<String> lines) {
 		try {

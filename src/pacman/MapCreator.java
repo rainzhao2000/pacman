@@ -184,7 +184,7 @@ public class MapCreator {
 	DrawPanel getCanvas() {
 		return canvas;
 	}
-	
+
 	/*
 	 * The following classes are Actions attributed to button components in the
 	 * frame and sets the currentObject
@@ -196,7 +196,6 @@ public class MapCreator {
 
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Code.path;
-			System.out.println(currentObject + " selected");
 		}
 	}
 
@@ -207,7 +206,6 @@ public class MapCreator {
 
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Code.wall;
-			System.out.println(currentObject + " selected");
 		}
 	}
 
@@ -218,7 +216,6 @@ public class MapCreator {
 
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Code.pacdot;
-			System.out.println(currentObject + " selected");
 		}
 	}
 
@@ -229,7 +226,6 @@ public class MapCreator {
 
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Code.powerPellet;
-			System.out.println(currentObject + " selected");
 		}
 	}
 
@@ -240,7 +236,6 @@ public class MapCreator {
 
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Code.fruit;
-			System.out.println(currentObject + " selected");
 		}
 	}
 
@@ -251,7 +246,6 @@ public class MapCreator {
 
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Code.pacman;
-			System.out.println(currentObject + " selected");
 		}
 	}
 
@@ -262,7 +256,6 @@ public class MapCreator {
 
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Code.blinky;
-			System.out.println(currentObject + " selected");
 		}
 	}
 
@@ -273,7 +266,6 @@ public class MapCreator {
 
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Code.pinky;
-			System.out.println(currentObject + " selected");
 		}
 	}
 
@@ -284,7 +276,6 @@ public class MapCreator {
 
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Code.inky;
-			System.out.println(currentObject + " selected");
 		}
 	}
 
@@ -295,13 +286,12 @@ public class MapCreator {
 
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Code.clyde;
-			System.out.println(currentObject + " selected");
 		}
 	}
 
 	/*
-	 * The following classes are actions attributed to the buttons that handle
-	 * map selection, saving and loading
+	 * The following classes are actions attributed to the buttons that handle map
+	 * selection, saving and loading
 	 */
 	private class DefaultMapSelect extends AbstractAction {
 		public DefaultMapSelect() {

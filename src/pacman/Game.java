@@ -109,15 +109,19 @@ public class Game implements KeyListener {
 		int code = e.getKeyCode();
 		if (code == KeyEvent.VK_LEFT) {
 			canvas.getPacman().logDir(Direction.left);
+			System.out.println("left");
 		}
 		if (code == KeyEvent.VK_RIGHT) {
 			canvas.getPacman().logDir(Direction.right);
+			System.out.println("right");
 		}
 		if (code == KeyEvent.VK_UP) {
 			canvas.getPacman().logDir(Direction.up);
+			System.out.println("up");
 		}
 		if (code == KeyEvent.VK_DOWN) {
 			canvas.getPacman().logDir(Direction.down);
+			System.out.println("down");
 		}
 	}
 
@@ -141,10 +145,10 @@ public class Game implements KeyListener {
 		}
 
 		/*
-		 * When the component this action is attached to is triggered, pause the
-		 * current canvas rendering (so that resources can be allocated to the
-		 * MapCreator canvas), then try to close any existing open MapCreator
-		 * window and instantiate a new MapCreator window
+		 * When the component this action is attached to is triggered, pause the current
+		 * canvas rendering (so that resources can be allocated to the MapCreator
+		 * canvas), then try to close any existing open MapCreator window and
+		 * instantiate a new MapCreator window
 		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
