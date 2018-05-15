@@ -13,17 +13,7 @@ public class Ghost extends Character {
 	private boolean edible;
 
 	public Ghost(DrawPanel canvas, Direction dir, int row, int col, Color color) {
-		this.canvas = canvas;
-		this.dir = dir;
-		this.row = row;
-		this.col = col;
-		x0 = col * Main.tilePadWidth;
-		y0 = row * Main.tilePadWidth;
-		x = x0 + centerOffset;
-		y = y0 + centerOffset;
-		speed = 5;
-		displacement = speed * Main.tilePadWidth / canvas.getFramerate();
-		this.color = color;
+		super(canvas, dir, row, col, 5, color);
 		edible = false;
 	}
 

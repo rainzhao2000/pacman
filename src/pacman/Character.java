@@ -22,14 +22,34 @@ public class Character {
 	
 	protected boolean doAnimate;
 
+	protected Character(DrawPanel canvas, Direction dir, int row, int col, double speed, Color color) {
+		this.canvas = canvas;
+		this.dir = dir;
+		this.rowSpawn = row;
+		this.colSpawn = col;
+		this.row = row;
+		this.col = col;
+		x0 = col * Main.tilePadWidth;
+		y0 = row * Main.tilePadWidth;
+		x = x0 + centerOffset;
+		y = y0 + centerOffset;
+		this.speed = speed;
+		displacement = speed * Main.tilePadWidth / canvas.getFramerate();
+		this.color = color;
+	}
+	
 	void draw(Graphics g) {
 
 	}
 
 	protected void animate(Graphics g) {
+		// debug
+		g.setColor(Color.GREEN);
+		g.fillRect(col * Main.tilePadWidth, row * Main.tilePadWidth, Main.tilePadWidth, Main.tilePadWidth);
+
 		g.setColor(color);
+		g.fillRect(x0, y0, Main.tilePadWidth, Main.tilePadWidth);
 		if (doAnimate) {
-			g.fillRect(x0, y0, Main.tilePadWidth, Main.tilePadWidth);
 			switch (dir) {
 			case left:
 				x -= displacement;
@@ -46,8 +66,6 @@ public class Character {
 			}
 			x0 = (int) (x - centerOffset);
 			y0 = (int) (y - centerOffset);
-		} else {
-			g.fillRect(x0, y0, Main.tilePadWidth, Main.tilePadWidth);
 		}
 		row = y0 / Main.tilePadWidth;
 		col = x0 / Main.tilePadWidth;

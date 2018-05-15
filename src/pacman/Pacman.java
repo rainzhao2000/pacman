@@ -19,21 +19,9 @@ public class Pacman extends Character {
 
 	// Pacman constructor
 	public Pacman(DrawPanel canvas, Direction dir, int row, int col) {
-		this.canvas = canvas;
+		super(canvas, dir, row, col, 5, Color.yellow);
 		ghosts = canvas.getGhosts();
-		this.dir = dir;
 		this.intendedDir = dir;
-		this.rowSpawn = row;
-		this.colSpawn = col;
-		this.row = row;
-		this.col = col;
-		x0 = col * Main.tilePadWidth;
-		y0 = row * Main.tilePadWidth;
-		x = x0 + centerOffset;
-		y = y0 + centerOffset;
-		speed = 5;
-		displacement = speed * Main.tilePadWidth / canvas.getFramerate();
-		color = Color.yellow;
 		lives = 3;
 	}
 
@@ -52,28 +40,30 @@ public class Pacman extends Character {
 		right = checkTile(row, col + 1);
 		up = checkTile(row - 1, col);
 		down = checkTile(row + 1, col);
-		if (intendedDir == Direction.left && left) {
-			dir = intendedDir;
-			col--;
-		} else if (intendedDir == Direction.right && right) {
-			dir = intendedDir;
-			col++;
-		} else if (intendedDir == Direction.up && up) {
-			dir = intendedDir;
-			row--;
-		} else if (intendedDir == Direction.down && down) {
-			dir = intendedDir;
-			row++;
-		} else if (dir == Direction.left && left) {
-			col--;
-		} else if (dir == Direction.right && right) {
-			col++;
-		} else if (dir == Direction.up && up) {
-			row--;
-		} else if (dir == Direction.down && down) {
-			row++;
-		} else {
-			doAnimate = false;
+		if (x0 == col * Main.tilePadWidth && y0 == row * Main.tilePadWidth) {
+			if (intendedDir == Direction.left && left) {
+				dir = intendedDir;
+				col--;
+			} else if (intendedDir == Direction.right && right) {
+				dir = intendedDir;
+				col++;
+			} else if (intendedDir == Direction.up && up) {
+				dir = intendedDir;
+				row--;
+			} else if (intendedDir == Direction.down && down) {
+				dir = intendedDir;
+				row++;
+			} else if (dir == Direction.left && left) {
+				col--;
+			} else if (dir == Direction.right && right) {
+				col++;
+			} else if (dir == Direction.up && up) {
+				row--;
+			} else if (dir == Direction.down && down) {
+				row++;
+			} else {
+				doAnimate = false;
+			}
 		}
 	}
 
@@ -91,7 +81,7 @@ public class Pacman extends Character {
 
 	private void checkCurrent() {
 		for (Ghost ghost : ghosts) {
-			if (ghost.getX() == x && ghost.getY() == y) {
+			if (ghost.getRow() == row && ghost.getCol() == col) {
 				if (ghost.getEdible()) {
 					canvas.setScore(canvas.getScore() + (int) (Math.pow(2, eatCounter) * 200));
 					ghost.respawn();
