@@ -125,6 +125,23 @@ public class Ghost extends Character {
 		}
 	}
 
+	@Override
+	void turnAround() {
+		checkSurrounding();
+		if (reverseDir(dir) == Direction.left && left) {
+			dir = reverseDir(dir);
+		} else if (reverseDir(dir) == Direction.right && right) {
+			dir = reverseDir(dir);
+		} else if (reverseDir(dir) == Direction.up && up) {
+			dir = reverseDir(dir);
+		} else {
+			// down
+			if (down) {
+				dir = reverseDir(dir);
+			}
+		}
+	}
+
 	// return true if pacman is in sight
 	// otherwise return false
 	boolean rayTrace(Direction d) {

@@ -61,7 +61,7 @@ public class Character {
 			g.fillRect(col * Main.tilePadWidth, row * Main.tilePadWidth, Main.tilePadWidth, Main.tilePadWidth);
 		}
 		if (edible) {
-			g.setColor(new Color(0, 100, 255));
+			g.setColor(new Color(97, 0, 255));
 		} else {
 			g.setColor(color);
 		}
@@ -157,6 +157,11 @@ public class Character {
 
 	protected void setEdible(boolean state) {
 		this.edible = state;
+		turnAround();
+	}
+
+	void turnAround() {
+
 	}
 
 }
