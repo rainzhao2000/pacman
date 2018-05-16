@@ -52,14 +52,19 @@ public class Ghost extends Character {
 		if (availableDir.contains(reverseDir(lastDir)))
 			availableDir.remove(availableDir.indexOf(reverseDir(lastDir)));
 
+		boolean seesPacman = false;
+		Direction temp = null;
+
 		for (Direction d : availableDir) {
 			if (rayTrace(d)) {
 				if (edible) {
-					dir = reverseDir(d);
+					temp = reverseDir(d);
+					availableDir.remove(availableDir.indexOf(d));
 				} else {
-					dir = d;
+					temp = d;
 				}
-				return;
+				seesPacman = true;
+				break;
 			}
 		}
 
@@ -79,10 +84,32 @@ public class Ghost extends Character {
 				dir = Direction.up;
 				break;
 			}
+		} else if (seesPacman && !edible) {
+			dir = temp;
+		} else if (seesPacman && edible) {
+			boolean escapeAvaliable = false;
+			if (temp == Direction.left) {
+				escapeAvaliable = left;
+			} else if (temp == Direction.right) {
+				escapeAvaliable = right;
+			} else if (temp == Direction.up) {
+				escapeAvaliable = up;
+			} else {
+				escapeAvaliable = down;
+			}
+
+			if (escapeAvaliable) {
+				dir = temp;
+			} else {
+				int randomIndex = (int) (Math.random() * availableDir.size());
+				dir = availableDir.get(randomIndex);
+			}
 		} else {
 			int randomIndex = (int) (Math.random() * availableDir.size());
 			dir = availableDir.get(randomIndex);
 		}
+
+		System.out.println(dir);
 
 	}
 
