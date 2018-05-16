@@ -8,11 +8,14 @@ import pacman.Main.Code;
 import pacman.Main.Direction;
 
 public class Ghost extends Character {
-	private Direction pacmanDir;
+	private Direction lastDir;
+	private int lastR, lastC;
 
 	public Ghost(DrawPanel canvas, Direction dir, int row, int col, Color color, boolean isFixed) {
 		super(canvas, dir, row, col, color, isFixed);
-		pacmanDir = null;
+		lastDir = dir;
+		lastR = -1;
+		lastC = -1;
 	}
 
 	@Override
@@ -25,26 +28,13 @@ public class Ghost extends Character {
 
 	@Override
 	protected void selectDir() {
+		lastDir = dir;
 		ArrayList<Direction> availableDir = new ArrayList<>();
-
-		// if (pacmanDir != null) {
-		// dir = pacmanDir;
-		// return;
-		// }
-
-		switch (dir) {
-		case left:
-			right = false;
-			break;
-		case right:
-			left = false;
-			break;
-		case up:
-			down = false;
-			break;
-		case down:
-			up = false;
-			break;
+		if (lastR == row && lastC == col) {
+			return;
+		} else {
+			lastR = row;
+			lastC = col;
 		}
 
 		if (left) {
@@ -59,12 +49,16 @@ public class Ghost extends Character {
 		if (down) {
 			availableDir.add(Direction.down);
 		}
+		if (availableDir.contains(reverseDir(lastDir)))
+			availableDir.remove(availableDir.indexOf(reverseDir(lastDir)));
 
 		for (Direction d : availableDir) {
 			if (rayTrace(d)) {
-				// pacmanDir = d;
-				dir = d;
-				// System.out.println("*********************************************");
+				if (edible) {
+					dir = reverseDir(d);
+				} else {
+					dir = d;
+				}
 				return;
 			}
 		}
@@ -90,6 +84,20 @@ public class Ghost extends Character {
 			dir = availableDir.get(randomIndex);
 		}
 
+	}
+
+	// return the reverse direction
+	private Direction reverseDir(Direction d) {
+		if (d == Direction.left) {
+			return Direction.right;
+		} else if (d == Direction.right) {
+			return Direction.left;
+		} else if (d == Direction.up) {
+			return Direction.down;
+		} else {
+			// down
+			return Direction.up;
+		}
 	}
 
 	// return true if pacman is in sight
