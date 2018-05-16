@@ -49,6 +49,7 @@ public class Ghost extends Character {
 		if (down) {
 			availableDir.add(Direction.down);
 		}
+
 		if (availableDir.contains(reverseDir(lastDir)))
 			availableDir.remove(availableDir.indexOf(reverseDir(lastDir)));
 
@@ -87,18 +88,18 @@ public class Ghost extends Character {
 		} else if (seesPacman && !edible) {
 			dir = temp;
 		} else if (seesPacman && edible) {
-			boolean escapeAvaliable = false;
+			boolean escapeAvailable = false;
 			if (temp == Direction.left) {
-				escapeAvaliable = left;
+				escapeAvailable = left;
 			} else if (temp == Direction.right) {
-				escapeAvaliable = right;
+				escapeAvailable = right;
 			} else if (temp == Direction.up) {
-				escapeAvaliable = up;
+				escapeAvailable = up;
 			} else {
-				escapeAvaliable = down;
+				escapeAvailable = down;
 			}
 
-			if (escapeAvaliable) {
+			if (escapeAvailable) {
 				dir = temp;
 			} else {
 				int randomIndex = (int) (Math.random() * availableDir.size());
@@ -108,9 +109,6 @@ public class Ghost extends Character {
 			int randomIndex = (int) (Math.random() * availableDir.size());
 			dir = availableDir.get(randomIndex);
 		}
-
-		System.out.println(dir);
-
 	}
 
 	// return the reverse direction
