@@ -44,11 +44,16 @@ public class Pacman extends Character {
 			if (ghost.getRow() == row && ghost.getCol() == col) {
 				if (ghost.getEdible()) {
 					canvas.setScore(canvas.getScore() + (int) (Math.pow(2, eatCounter) * 200));
+					ghost.setEdible(false);
 					ghost.respawn();
 					eatCounter++;
 				} else {
 					lives--;
 					respawn();
+					for (Ghost g : Main.ghosts) {
+						g.respawn();
+					}
+					break;
 				}
 			}
 		}
@@ -59,8 +64,8 @@ public class Pacman extends Character {
 			break;
 		case powerPellet:
 			map[row][col] = Code.path;
-			canvas.setGhostsEdible();
 			canvas.setScore(canvas.getScore() + 50);
+			canvas.setGhostsEdible();
 			eatCounter = 0;
 			break;
 		case fruit:

@@ -301,18 +301,6 @@ public class DrawPanel extends JPanel implements ActionListener {
 		Main.pacman = new Pacman(this, Direction.left, Main.tempPacman.getRow(), Main.tempPacman.getCol(), false);
 	}
 
-	void respawn() {
-		Main.pacman.respawn();
-		for (Ghost ghost : Main.ghosts) {
-			ghost.respawn();
-		}
-	}
-
-	void end() {
-		// display ending
-		// go back to beginning
-	}
-
 	void close() {
 		timer.stop();
 	}

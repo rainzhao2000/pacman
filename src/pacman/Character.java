@@ -24,6 +24,7 @@ public class Character {
 	protected boolean doAnimate;
 	protected boolean doShowPos = false;
 	protected boolean left, right, up, down;
+	protected boolean edible;
 
 	protected Character(DrawPanel canvas, Direction dir, int row, int col, double speed, Color color, boolean isFixed) {
 		this.canvas = canvas;
@@ -40,6 +41,7 @@ public class Character {
 		this.color = color;
 		this.isFixed = isFixed;
 		this.doAnimate = !isFixed;
+		this.edible = false;
 	}
 
 	void draw(Graphics g) {
@@ -57,7 +59,11 @@ public class Character {
 			g.setColor(Color.GREEN);
 			g.fillRect(col * Main.tilePadWidth, row * Main.tilePadWidth, Main.tilePadWidth, Main.tilePadWidth);
 		}
-		g.setColor(color);
+		if (edible) {
+			g.setColor(new Color(0, 100, 255));
+		} else {
+			g.setColor(color);
+		}
 		g.fillOval(x0, y0, Main.tilePadWidth, Main.tilePadWidth);
 		if (doAnimate) {
 			switch (dir) {
@@ -96,7 +102,7 @@ public class Character {
 
 	}
 
-	protected boolean checkTile(int row, int col) {
+	private boolean checkTile(int row, int col) {
 		if (!canvas.inBounds(row, col)) {
 			// exceed boundary
 			return false;
@@ -120,32 +126,8 @@ public class Character {
 		return row;
 	}
 
-	void setRow(int row) {
-		this.row = row;
-	}
-
 	int getCol() {
 		return col;
-	}
-
-	void setCol(int col) {
-		this.col = col;
-	}
-
-	Direction getDir() {
-		return dir;
-	}
-
-	void setDir(Direction dir) {
-		this.dir = dir;
-	}
-
-	double getX() {
-		return x;
-	}
-
-	double getY() {
-		return y;
 	}
 
 	Color getColor() {
@@ -158,6 +140,14 @@ public class Character {
 
 	void setDoShowPos(boolean state) {
 		doShowPos = state;
+	}
+
+	protected boolean getEdible() {
+		return edible;
+	}
+
+	protected void setEdible(boolean state) {
+		this.edible = state;
 	}
 
 }

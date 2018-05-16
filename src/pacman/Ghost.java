@@ -9,11 +9,8 @@ import pacman.Main.Direction;
 
 public class Ghost extends Character {
 
-	private boolean edible;
-
 	public Ghost(DrawPanel canvas, Direction dir, int row, int col, Color color, boolean isFixed) {
 		super(canvas, dir, row, col, 5, color, isFixed);
-		edible = false;
 	}
 
 	@Override
@@ -22,15 +19,6 @@ public class Ghost extends Character {
 			checkSurrounding();
 		}
 		animate(g);
-	}
-
-	boolean getEdible() {
-		return edible;
-	}
-
-	// modifier method for the edible variable of the ghost
-	void setEdible(boolean state) {
-		this.edible = state;
 	}
 
 	@Override
