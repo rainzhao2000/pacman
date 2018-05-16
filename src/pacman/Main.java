@@ -1,6 +1,7 @@
 package pacman;
 
 import java.awt.EventQueue;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -80,6 +81,10 @@ public class Main {
 	static Code[][] map = new Code[31][28];
 
 	static Game game;
+	static Pacman pacman;
+	static Pacman tempPacman;
+	static ArrayList<Ghost> ghosts;
+	static ArrayList<Ghost> tempGhosts;
 
 	static final int tileWidth = 10;
 	static final int padding = 1;

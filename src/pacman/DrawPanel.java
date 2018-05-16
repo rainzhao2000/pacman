@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -24,10 +25,6 @@ public class DrawPanel extends JPanel implements ActionListener {
 
 	private Code[][] map = Main.map;
 
-	private Pacman pacman;
-	private Pacman tempPacman;
-	private ArrayList<Ghost> ghosts;
-	private ArrayList<Ghost> tempGhosts;
 	private Component parent;
 	private Timer timer;
 
@@ -51,6 +48,21 @@ public class DrawPanel extends JPanel implements ActionListener {
 		timer.start();
 	}
 
+	void reset(boolean newMap) {
+		if (!isFixed) {
+			// Game.canvas
+			if (!newMap) {
+				defaultMap();
+			}
+			initCharacters();
+		} else {
+			// MapCreator.canvas
+			defaultMap();
+		}
+		score = 0;
+		setPaused(false);
+	}
+
 	/*
 	 * Repaints the panel at the conditions of the timer
 	 */
@@ -69,18 +81,15 @@ public class DrawPanel extends JPanel implements ActionListener {
 		if (doDrawGrid) {
 			drawGrid(g);
 		}
-		try {
-			pacman.draw(g);
-		} catch (NullPointerException e) {
-			tempPacman.draw(g);
-		}
-		try {
-			for (Ghost ghost : ghosts) {
-				ghost.draw(g);
-			}
-		} catch (NullPointerException e) {
-			for (Ghost tempGhost : tempGhosts) {
+		if (isFixed) {
+			Main.tempPacman.draw(g);
+			for (Ghost tempGhost : Main.tempGhosts) {
 				tempGhost.draw(g);
+			}
+		} else {
+			Main.pacman.draw(g);
+			for (Ghost ghost : Main.ghosts) {
+				ghost.draw(g);
 			}
 		}
 	}
@@ -135,6 +144,16 @@ public class DrawPanel extends JPanel implements ActionListener {
 			return Color.white;
 		case fruit:
 			return Color.magenta;
+		case pacman:
+			return Color.black;
+		case blinky:
+			return Color.black;
+		case pinky:
+			return Color.black;
+		case inky:
+			return Color.black;
+		case clyde:
+			return Color.black;
 		default:
 			return new Color(150, 100, 100);
 		}
@@ -161,14 +180,14 @@ public class DrawPanel extends JPanel implements ActionListener {
 	}
 
 	/*
-	 * Finds the element in map array corresponding to position of mouse cursor
-	 * and sets the element to a specified code
+	 * Reset all elements in map array to path
 	 */
-	void setTile(MouseEvent e, Code code) {
-		int row = e.getY() / Main.tilePadWidth;
-		int col = e.getX() / Main.tilePadWidth;
-		if (row >= 0 && row < map.length && col >= 0 && col < map[0].length) {
-			map[row][col] = code;
+	void blankMap() {
+		Main.tempGhosts = new ArrayList<Ghost>();
+		for (int row = 0; row < map.length; row++) {
+			for (int col = 0; col < map[row].length; col++) {
+				map[row][col] = Code.path;
+			}
 		}
 	}
 
@@ -217,29 +236,11 @@ public class DrawPanel extends JPanel implements ActionListener {
 	 */
 	boolean uploadMap(ArrayList<String> lines) {
 		try {
-			tempGhosts = new ArrayList<Ghost>();
+			Main.tempGhosts = new ArrayList<Ghost>();
 			for (int row = 0; row < map.length; row++) {
 				String[] line = lines.get(row).split(" ");
 				for (int col = 0; col < map[row].length; col++) {
-					int tile = Integer.parseInt(line[col]);
-					if (tile == Code.pacman.getCode()) {
-						tempPacman = new Pacman(this, Direction.left, row, col, true);
-						map[row][col] = Code.path;
-					} else if (tile == Code.blinky.getCode()) {
-						tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.red, true));
-						map[row][col] = Code.path;
-					} else if (tile == Code.pinky.getCode()) {
-						tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.pink, true));
-						map[row][col] = Code.path;
-					} else if (tile == Code.inky.getCode()) {
-						tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.cyan, true));
-						map[row][col] = Code.path;
-					} else if (tile == Code.clyde.getCode()) {
-						tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.orange, true));
-						map[row][col] = Code.path;
-					} else {
-						map[row][col] = Code.lookupByValue(tile);
-					}
+					uploadTile(Code.lookupByValue(Integer.parseInt(line[col])), row, col);
 				}
 			}
 		} catch (Exception e) {
@@ -249,40 +250,60 @@ public class DrawPanel extends JPanel implements ActionListener {
 		return true;
 	}
 
-	/*
-	 * Reset all elements in map array to path
-	 */
-	void blankMap() {
-		for (int row = 0; row < map.length; row++) {
-			for (int col = 0; col < map[row].length; col++) {
-				map[row][col] = Code.path;
+	private void uploadTile(Code code, int row, int col) {
+		removeOccupiedGhostSpawn(row, col);
+		if (code == Code.pacman) {
+			try {
+				map[Main.tempPacman.getRow()][Main.tempPacman.getCol()] = Code.path;
+			} catch (NullPointerException e) {
+				System.out.println("tempPacman first init");
 			}
+			Main.tempPacman = new Pacman(this, Direction.left, row, col, true);
+		} else if (code == Code.blinky) {
+			Main.tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.red, true));
+		} else if (code == Code.pinky) {
+			Main.tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.pink, true));
+		} else if (code == Code.inky) {
+			Main.tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.cyan, true));
+		} else if (code == Code.clyde) {
+			Main.tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.orange, true));
+		}
+		map[row][col] = code;
+	}
+
+	private void removeOccupiedGhostSpawn(int row, int col) {
+		Iterator<Ghost> iter = Main.tempGhosts.iterator();
+		while (iter.hasNext()) {
+			Ghost tempGhost = iter.next();
+			if (tempGhost.getRow() == row && tempGhost.getCol() == col)
+				iter.remove();
 		}
 	}
 
-	void reset(boolean newMap) {
-		if (!newMap) {
-			defaultMap();
+	/*
+	 * Finds the element in map array corresponding to position of mouse cursor
+	 * and sets the element to a specified code
+	 */
+	void setTile(MouseEvent e, Code code) {
+		int row = e.getY() / Main.tilePadWidth;
+		int col = e.getX() / Main.tilePadWidth;
+		if (inBounds(row, col)) {
+			uploadTile(code, row, col);
 		}
-		score = 0;
-		if (!isFixed) {
-			initCharacters();
-		}
-		setPaused(false);
 	}
 
 	private void initCharacters() {
-		ghosts = new ArrayList<Ghost>();
-		for (Ghost tempGhost : tempGhosts) {
-			ghosts.add(new Ghost(this, Direction.left, tempGhost.getRow(), tempGhost.getCol(), tempGhost.getColor(),
-					false));
+		Main.ghosts = new ArrayList<Ghost>();
+		for (Ghost tempGhost : Main.tempGhosts) {
+			Main.ghosts.add(new Ghost(this, Direction.left, tempGhost.getRow(), tempGhost.getCol(),
+					tempGhost.getColor(), false));
 		}
-		pacman = new Pacman(this, Direction.left, tempPacman.getRow(), tempPacman.getCol(), false);
+		Main.pacman = new Pacman(this, Direction.left, Main.tempPacman.getRow(), Main.tempPacman.getCol(), false);
 	}
 
 	void respawn() {
-		pacman.respawn();
-		for (Ghost ghost : ghosts) {
+		Main.pacman.respawn();
+		for (Ghost ghost : Main.ghosts) {
 			ghost.respawn();
 		}
 	}
@@ -300,18 +321,14 @@ public class DrawPanel extends JPanel implements ActionListener {
 	 * 
 	 */
 	void setGhostsEdible() {
-		for (Ghost ghost : ghosts) {
+		for (Ghost ghost : Main.ghosts) {
 			ghost.setEdible(true);
 		}
 		// reset edible timer of each ghost
 	}
 
-	Pacman getPacman() {
-		return pacman;
-	}
-
-	ArrayList<Ghost> getGhosts() {
-		return ghosts;
+	boolean inBounds(int row, int col) {
+		return row >= 0 && row < map.length && col >= 0 && col < map[0].length;
 	}
 
 	int getFramerate() {

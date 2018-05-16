@@ -19,7 +19,7 @@ public class Ghost extends Character {
 	@Override
 	void draw(Graphics g) {
 		animate(g);
-		if (inBounds(row, col) && !isFixed) {
+		if (canvas.inBounds(row, col) && !isFixed) {
 			checkSurrounding();
 		}
 	}
@@ -93,10 +93,10 @@ public class Ghost extends Character {
 			int tempR = row;
 			int tempC = col;
 			while (true) {
-				if (inBounds(tempR, tempC)) {
+				if (canvas.inBounds(tempR, tempC)) {
 					if (map[tempR][tempC] == Code.wall) {
 						return false;
-					} else if (canvas.getPacman().row == row && canvas.getPacman().col == col) {
+					} else if (Main.pacman.getRow() == row && Main.pacman.getCol() == col) {
 						return true;
 					} else {
 						tempC--;
@@ -109,10 +109,10 @@ public class Ghost extends Character {
 			tempR = row;
 			tempC = col;
 			while (true) {
-				if (inBounds(tempR, tempC)) {
+				if (canvas.inBounds(tempR, tempC)) {
 					if (map[tempR][tempC] == Code.wall) {
 						return false;
-					} else if (canvas.getPacman().row == row && canvas.getPacman().col == col) {
+					} else if (Main.pacman.getRow() == row && Main.pacman.getCol() == col) {
 						return true;
 					} else {
 						tempC++;
@@ -125,10 +125,10 @@ public class Ghost extends Character {
 			tempR = row;
 			tempC = col;
 			while (true) {
-				if (inBounds(tempR, tempC)) {
+				if (canvas.inBounds(tempR, tempC)) {
 					if (map[tempR][tempC] == Code.wall) {
 						return false;
-					} else if (canvas.getPacman().row == row && canvas.getPacman().col == col) {
+					} else if (Main.pacman.getRow() == row && Main.pacman.getCol() == col) {
 						return true;
 					} else {
 						tempR--;
@@ -141,10 +141,10 @@ public class Ghost extends Character {
 			tempR = row;
 			tempC = col;
 			while (true) {
-				if (inBounds(tempR, tempC)) {
+				if (canvas.inBounds(tempR, tempC)) {
 					if (map[tempR][tempC] == Code.wall) {
 						return false;
-					} else if (canvas.getPacman().row == row && canvas.getPacman().col == col) {
+					} else if (Main.pacman.getRow() == row && Main.pacman.getCol() == col) {
 						return true;
 					} else {
 						tempR++;

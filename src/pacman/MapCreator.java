@@ -23,6 +23,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import pacman.Main.Code;
@@ -50,7 +51,7 @@ public class MapCreator {
 	private final Action clydeSelect = new ClydeSelect();
 	private final Action defaultMapSelect = new DefaultMapSelect();
 	private final Action blankMapSelect = new BlankMapSelect();
-	private final Action loadMapSelect = new LoadMapSelect();
+	private final Action openMapSelect = new OpenMapSelect();
 	private final Action saveMapSelect = new SaveMapSelect();
 
 	/**
@@ -157,10 +158,10 @@ public class MapCreator {
 		btnBlankMap.setBounds(129, 354, 117, 29);
 		frmMapCreator.getContentPane().add(btnBlankMap);
 
-		JButton btnLoadMap = new JButton("load map");
-		btnLoadMap.setAction(loadMapSelect);
-		btnLoadMap.setBounds(0, 393, 117, 29);
-		frmMapCreator.getContentPane().add(btnLoadMap);
+		JButton btnOpenMap = new JButton("open map");
+		btnOpenMap.setAction(openMapSelect);
+		btnOpenMap.setBounds(0, 393, 117, 29);
+		frmMapCreator.getContentPane().add(btnOpenMap);
 
 		JButton btnSaveMap = new JButton("save map");
 		btnSaveMap.setAction(saveMapSelect);
@@ -175,6 +176,12 @@ public class MapCreator {
 		JLabel lblSaveAsFile = new JLabel("Save As File Name:");
 		lblSaveAsFile.setBounds(10, 440, 123, 16);
 		frmMapCreator.getContentPane().add(lblSaveAsFile);
+
+		JTextArea txtAreaHint = new JTextArea();
+		txtAreaHint.setLineWrap(true);
+		txtAreaHint.setText("Close Map Creator to apply changes");
+		txtAreaHint.setBounds(315, 416, 117, 32);
+		frmMapCreator.getContentPane().add(txtAreaHint);
 	}
 
 	JFrame getFrame() {
@@ -313,9 +320,9 @@ public class MapCreator {
 		}
 	}
 
-	private class LoadMapSelect extends AbstractAction {
-		public LoadMapSelect() {
-			putValue(NAME, "load map");
+	private class OpenMapSelect extends AbstractAction {
+		public OpenMapSelect() {
+			putValue(NAME, "open map");
 		}
 
 		/*

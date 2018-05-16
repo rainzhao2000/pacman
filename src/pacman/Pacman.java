@@ -2,7 +2,6 @@ package pacman;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.ArrayList;
 
 import pacman.Main.Code;
 import pacman.Main.Direction;
@@ -10,15 +9,12 @@ import pacman.Main.Direction;
 public class Pacman extends Character {
 
 	private Direction intendedDir;
-	
-	private ArrayList<Ghost> ghosts;
 
 	private int eatCounter, lives;
 
 	// Pacman constructor
 	public Pacman(DrawPanel canvas, Direction dir, int row, int col, boolean isFixed) {
 		super(canvas, dir, row, col, 5, Color.yellow, isFixed);
-		ghosts = canvas.getGhosts();
 		this.intendedDir = dir;
 		lives = 3;
 	}
@@ -26,7 +22,7 @@ public class Pacman extends Character {
 	@Override
 	void draw(Graphics g) {
 		animate(g);
-		if (inBounds(row, col) && !isFixed) {
+		if (canvas.inBounds(row, col) && !isFixed) {
 			checkSurrounding();
 			checkCurrent();
 		}
@@ -44,7 +40,7 @@ public class Pacman extends Character {
 	}
 	
 	private void checkCurrent() {
-		for (Ghost ghost : ghosts) {
+		for (Ghost ghost : Main.ghosts) {
 			if (ghost.getRow() == row && ghost.getCol() == col) {
 				if (ghost.getEdible()) {
 					canvas.setScore(canvas.getScore() + (int) (Math.pow(2, eatCounter) * 200));

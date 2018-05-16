@@ -97,7 +97,7 @@ public class Character {
 	}
 
 	protected boolean checkTile(int row, int col) {
-		if (!inBounds(row, col)) {
+		if (!canvas.inBounds(row, col)) {
 			// exceed boundary
 			return false;
 		}
@@ -105,10 +105,6 @@ public class Character {
 			return false;
 		}
 		return true;
-	}
-
-	protected boolean inBounds(int row, int col) {
-		return row >= 0 && row < map.length && col >= 0 && col < map[0].length;
 	}
 
 	void respawn() {

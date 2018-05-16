@@ -137,16 +137,16 @@ public class Game implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 		if (code == KeyEvent.VK_LEFT) {
-			canvas.getPacman().logDir(Direction.left);
+			Main.pacman.logDir(Direction.left);
 		}
 		if (code == KeyEvent.VK_RIGHT) {
-			canvas.getPacman().logDir(Direction.right);
+			Main.pacman.logDir(Direction.right);
 		}
 		if (code == KeyEvent.VK_UP) {
-			canvas.getPacman().logDir(Direction.up);
+			Main.pacman.logDir(Direction.up);
 		}
 		if (code == KeyEvent.VK_DOWN) {
-			canvas.getPacman().logDir(Direction.down);
+			Main.pacman.logDir(Direction.down);
 		}
 	}
 
@@ -200,8 +200,8 @@ public class Game implements KeyListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			canvas.getPacman().setDoShowPos(!canvas.getPacman().getDoShowPos());
-			for (Ghost ghost : canvas.getGhosts()) {
+			Main.pacman.setDoShowPos(!Main.pacman.getDoShowPos());
+			for (Ghost ghost : Main.ghosts) {
 				ghost.setDoShowPos(!ghost.getDoShowPos());
 			}
 			frmGame.requestFocusInWindow();
