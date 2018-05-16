@@ -8,9 +8,11 @@ import pacman.Main.Code;
 import pacman.Main.Direction;
 
 public class Ghost extends Character {
+	private Direction pacmanDir;
 
 	public Ghost(DrawPanel canvas, Direction dir, int row, int col, Color color, boolean isFixed) {
 		super(canvas, dir, row, col, color, isFixed);
+		pacmanDir = null;
 	}
 
 	@Override
@@ -24,6 +26,12 @@ public class Ghost extends Character {
 	@Override
 	protected void selectDir() {
 		ArrayList<Direction> availableDir = new ArrayList<>();
+
+		// if (pacmanDir != null) {
+		// dir = pacmanDir;
+		// return;
+		// }
+
 		switch (dir) {
 		case left:
 			right = false;
@@ -38,6 +46,7 @@ public class Ghost extends Character {
 			up = false;
 			break;
 		}
+
 		if (left) {
 			availableDir.add(Direction.left);
 		}
@@ -50,6 +59,16 @@ public class Ghost extends Character {
 		if (down) {
 			availableDir.add(Direction.down);
 		}
+
+		for (Direction d : availableDir) {
+			if (rayTrace(d)) {
+				// pacmanDir = d;
+				dir = d;
+				// System.out.println("*********************************************");
+				return;
+			}
+		}
+
 		if (availableDir.size() == 0) {
 			// turn around at dead end
 			switch (dir) {
@@ -75,74 +94,27 @@ public class Ghost extends Character {
 
 	// return true if pacman is in sight
 	// otherwise return false
-	boolean rayTrace() {
-		switch (dir) {
-		case left:
-			int tempR = row;
-			int tempC = col;
-			while (true) {
-				if (canvas.inBounds(tempR, tempC)) {
-					if (map[tempR][tempC] == Code.wall) {
-						return false;
-					} else if (Main.pacman.getRow() == row && Main.pacman.getCol() == col) {
-						return true;
-					} else {
-						tempC--;
-					}
-				} else {
-					return false;
-				}
+	boolean rayTrace(Direction d) {
+		int tempR = row;
+		int tempC = col;
+		while (canvas.inBounds(tempR, tempC)) {
+			if (map[tempR][tempC] == Code.wall) {
+				return false;
 			}
-		case right:
-			tempR = row;
-			tempC = col;
-			while (true) {
-				if (canvas.inBounds(tempR, tempC)) {
-					if (map[tempR][tempC] == Code.wall) {
-						return false;
-					} else if (Main.pacman.getRow() == row && Main.pacman.getCol() == col) {
-						return true;
-					} else {
-						tempC++;
-					}
-				} else {
-					return false;
-				}
+			if (tempR == Main.pacman.row && tempC == Main.pacman.col) {
+				return true;
 			}
-		case up:
-			tempR = row;
-			tempC = col;
-			while (true) {
-				if (canvas.inBounds(tempR, tempC)) {
-					if (map[tempR][tempC] == Code.wall) {
-						return false;
-					} else if (Main.pacman.getRow() == row && Main.pacman.getCol() == col) {
-						return true;
-					} else {
-						tempR--;
-					}
-				} else {
-					return false;
-				}
-			}
-		case down:
-			tempR = row;
-			tempC = col;
-			while (true) {
-				if (canvas.inBounds(tempR, tempC)) {
-					if (map[tempR][tempC] == Code.wall) {
-						return false;
-					} else if (Main.pacman.getRow() == row && Main.pacman.getCol() == col) {
-						return true;
-					} else {
-						tempR++;
-					}
-				} else {
-					return false;
-				}
+			if (d == Direction.left) {
+				tempC--;
+			} else if (d == Direction.right) {
+				tempC++;
+			} else if (d == Direction.up) {
+				tempR--;
+			} else {
+				// down
+				tempR++;
 			}
 		}
-
 		return false;
 	}
 

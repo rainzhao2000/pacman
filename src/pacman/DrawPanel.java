@@ -232,8 +232,8 @@ public class DrawPanel extends JPanel implements ActionListener {
 	}
 
 	/*
-	 * Looks up an ArrayList of strings and adds the Codes objects obtained from
-	 * the code values to the map array
+	 * Looks up an ArrayList of strings and adds the Codes objects obtained from the
+	 * code values to the map array
 	 */
 	boolean uploadMap(ArrayList<String> lines) {
 		try {
@@ -282,8 +282,8 @@ public class DrawPanel extends JPanel implements ActionListener {
 	}
 
 	/*
-	 * Finds the element in map array corresponding to position of mouse cursor
-	 * and sets the element to a specified code
+	 * Finds the element in map array corresponding to position of mouse cursor and
+	 * sets the element to a specified code
 	 */
 	void setTile(MouseEvent e, Code code) {
 		int row = e.getY() / Main.tilePadWidth;

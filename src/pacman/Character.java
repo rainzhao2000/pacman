@@ -134,11 +134,11 @@ public class Character {
 	double getSpeed() {
 		return speed;
 	}
-	
+
 	void setSpeed(double speed) {
 		this.speed = speed;
 	}
-	
+
 	Color getColor() {
 		return color;
 	}
