@@ -22,11 +22,11 @@ public class Character {
 
 	protected boolean isFixed;
 	protected boolean doAnimate;
-	protected boolean doShowPos = false;
+	protected boolean doShowPos;
 	protected boolean left, right, up, down;
 	protected boolean edible;
 
-	protected Character(DrawPanel canvas, Direction dir, int row, int col, double speed, Color color, boolean isFixed) {
+	protected Character(DrawPanel canvas, Direction dir, int row, int col, Color color, boolean isFixed) {
 		this.canvas = canvas;
 		this.dir = dir;
 		this.rowSpawn = row;
@@ -37,10 +37,11 @@ public class Character {
 		y0 = row * Main.tilePadWidth;
 		x = x0 + centerOffset;
 		y = y0 + centerOffset;
-		this.speed = speed;
+		speed = 5;
 		this.color = color;
 		this.isFixed = isFixed;
 		this.doAnimate = !isFixed;
+		doShowPos = false;
 		this.edible = false;
 	}
 
@@ -130,6 +131,14 @@ public class Character {
 		return col;
 	}
 
+	double getSpeed() {
+		return speed;
+	}
+	
+	void setSpeed(double speed) {
+		this.speed = speed;
+	}
+	
 	Color getColor() {
 		return color;
 	}

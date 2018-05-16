@@ -31,7 +31,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 	private int framerate;
 	private int score;
 
-	private boolean paused = false;
+	private boolean paused;
 	private boolean doDrawGrid;
 	private boolean isFixed;
 
@@ -40,6 +40,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 	 */
 	public DrawPanel(Component parent, boolean doDrawGrid, boolean isFixed, int framerate) {
 		this.parent = parent;
+		paused = false;
 		this.doDrawGrid = doDrawGrid;
 		this.isFixed = isFixed;
 		this.framerate = framerate;
@@ -311,6 +312,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 	void setGhostsEdible() {
 		for (Ghost ghost : Main.ghosts) {
 			ghost.setEdible(true);
+			ghost.setSpeed(ghost.getSpeed() * 0.6);
 		}
 		// reset edible timer of each ghost
 	}

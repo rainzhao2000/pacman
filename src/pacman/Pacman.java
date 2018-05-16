@@ -14,7 +14,7 @@ public class Pacman extends Character {
 
 	// Pacman constructor
 	public Pacman(DrawPanel canvas, Direction dir, int row, int col, boolean isFixed) {
-		super(canvas, dir, row, col, 5, Color.yellow, isFixed);
+		super(canvas, dir, row, col, Color.yellow, isFixed);
 		this.intendedDir = dir;
 		lives = 3;
 	}
@@ -45,6 +45,7 @@ public class Pacman extends Character {
 				if (ghost.getEdible()) {
 					canvas.setScore(canvas.getScore() + (int) (Math.pow(2, eatCounter) * 200));
 					ghost.setEdible(false);
+					ghost.setSpeed(speed);
 					ghost.respawn();
 					eatCounter++;
 				} else {
@@ -53,6 +54,7 @@ public class Pacman extends Character {
 					for (Ghost g : Main.ghosts) {
 						g.respawn();
 					}
+					doAnimate = false;
 					break;
 				}
 			}
