@@ -21,11 +21,11 @@ public class Pacman extends Character {
 
 	@Override
 	void draw(Graphics g) {
-		animate(g);
 		if (canvas.inBounds(row, col) && !isFixed) {
 			checkSurrounding();
 			checkCurrent();
 		}
+		animate(g);
 	}
 
 	@Override

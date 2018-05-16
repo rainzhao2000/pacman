@@ -18,10 +18,10 @@ public class Ghost extends Character {
 
 	@Override
 	void draw(Graphics g) {
-		animate(g);
 		if (canvas.inBounds(row, col) && !isFixed) {
 			checkSurrounding();
 		}
+		animate(g);
 	}
 
 	boolean getEdible() {
