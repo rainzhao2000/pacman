@@ -10,12 +10,14 @@ import pacman.Main.Direction;
 public class Ghost extends Character {
 	private Direction lastDir;
 	private int lastR, lastC;
+	private double probability;
 
-	public Ghost(DrawPanel canvas, Direction dir, int row, int col, Color color, boolean isFixed) {
+	public Ghost(DrawPanel canvas, Direction dir, int row, int col, Color color, boolean isFixed, double probability) {
 		super(canvas, dir, row, col, color, isFixed);
 		lastDir = dir;
 		lastR = -1;
 		lastC = -1;
+		this.probability = probability;
 	}
 
 	@Override
@@ -28,6 +30,7 @@ public class Ghost extends Character {
 
 	@Override
 	protected void selectDir() {
+
 		lastDir = dir;
 		ArrayList<Direction> availableDir = new ArrayList<>();
 		int dirCounter = 0;
@@ -37,6 +40,7 @@ public class Ghost extends Character {
 			lastR = row;
 			lastC = col;
 		}
+		double randVal = Math.random();
 
 		if (left) {
 			availableDir.add(Direction.left);
@@ -73,6 +77,7 @@ public class Ghost extends Character {
 				break;
 			}
 		}
+
 		if (dirCounter == 0) {
 			// dont move
 			move = false;
@@ -93,7 +98,9 @@ public class Ghost extends Character {
 				break;
 			}
 		} else if (seesPacman && !edible) {
-			dir = temp;
+			if (probability >= randVal) {
+				dir = temp;
+			}
 		} else if (seesPacman && edible) {
 			boolean escapeAvailable = false;
 			if (temp == Direction.left) {
@@ -107,7 +114,12 @@ public class Ghost extends Character {
 			}
 
 			if (escapeAvailable) {
-				dir = temp;
+				if (probability >= randVal) {
+					dir = temp;
+				} else {
+					int randomIndex = (int) (Math.random() * availableDir.size());
+					dir = availableDir.get(randomIndex);
+				}
 			} else {
 				int randomIndex = (int) (Math.random() * availableDir.size());
 				dir = availableDir.get(randomIndex);
@@ -176,6 +188,10 @@ public class Ghost extends Character {
 			}
 		}
 		return false;
+	}
+
+	double getProb() {
+		return this.probability;
 	}
 
 }

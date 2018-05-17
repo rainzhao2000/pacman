@@ -138,7 +138,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 		case path:
 			return Color.black;
 		case wall:
-			return Color.blue;
+			return new Color(68, 63, 175);
 		case pacdot:
 			return Color.white;
 		case powerPellet:
@@ -261,13 +261,13 @@ public class DrawPanel extends JPanel implements ActionListener {
 			}
 			Main.tempPacman = new Pacman(this, Direction.left, row, col, true);
 		} else if (code == Code.blinky) {
-			Main.tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.red, true));
+			Main.tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.red, true, 1));
 		} else if (code == Code.pinky) {
-			Main.tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.pink, true));
+			Main.tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.pink, true, 0.75));
 		} else if (code == Code.inky) {
-			Main.tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.cyan, true));
+			Main.tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.cyan, true, 0.50));
 		} else if (code == Code.clyde) {
-			Main.tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.orange, true));
+			Main.tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.orange, true, 0.25));
 		}
 		map[row][col] = code;
 	}
@@ -297,7 +297,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 		Main.ghosts = new ArrayList<Ghost>();
 		for (Ghost tempGhost : Main.tempGhosts) {
 			Main.ghosts.add(new Ghost(this, Direction.left, tempGhost.getRow(), tempGhost.getCol(),
-					tempGhost.getColor(), false));
+					tempGhost.getColor(), false, tempGhost.getProb()));
 		}
 		Main.pacman = new Pacman(this, Direction.left, Main.tempPacman.getRow(), Main.tempPacman.getCol(), false);
 	}

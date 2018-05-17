@@ -73,7 +73,7 @@ public class Character implements ActionListener {
 			g.fillRect(col * Main.tilePadWidth, row * Main.tilePadWidth, Main.tilePadWidth, Main.tilePadWidth);
 		}
 		if (edible) {
-			g.setColor(new Color(97, 0, 255));
+			g.setColor(new Color(166, 124, 255));
 		} else {
 			g.setColor(color);
 		}

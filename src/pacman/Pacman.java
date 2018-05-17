@@ -44,7 +44,6 @@ public class Pacman extends Character {
 			if (ghost.getRow() == row && ghost.getCol() == col) {
 				if (ghost.getEdible()) {
 					canvas.setScore(canvas.getScore() + (int) (Math.pow(2, eatCounter) * 200));
-					System.out.println((int) (Math.pow(2, eatCounter) * 200));
 					ghost.setEdible(false);
 					ghost.setSpeed(speed);
 					ghost.respawn();
