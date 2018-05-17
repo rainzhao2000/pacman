@@ -311,10 +311,8 @@ public class DrawPanel extends JPanel implements ActionListener {
 	 */
 	void setGhostsEdible() {
 		for (Ghost ghost : Main.ghosts) {
-			if (!ghost.edible) {
-				ghost.setEdible(true);
-				ghost.setSpeed(ghost.getStdSpeed() * 0.6);
-			}
+			ghost.setEdible(true);
+			ghost.setSpeed(ghost.getStdSpeed() * 0.6);
 		}
 		// reset edible timer of each ghost
 	}

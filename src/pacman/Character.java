@@ -181,6 +181,9 @@ public class Character implements ActionListener {
 			this.firstEdible = true;
 			edibleTimer = new Timer(edibleTime, this);
 			edibleTimer.start();
+		} else {
+			edibleTimer.stop();
+			this.speed = stdSpeed;
 		}
 	}
 
@@ -196,9 +199,6 @@ public class Character implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == edibleTimer) {
 			this.setEdible(false);
-			// edibleTime *= 0.9;
-			edibleTimer.stop();
-			this.speed = stdSpeed;
 		}
 
 	}

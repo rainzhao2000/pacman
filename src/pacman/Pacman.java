@@ -38,12 +38,13 @@ public class Pacman extends Character {
 			doAnimate = false;
 		}
 	}
-	
+
 	private void checkCurrent() {
 		for (Ghost ghost : Main.ghosts) {
 			if (ghost.getRow() == row && ghost.getCol() == col) {
 				if (ghost.getEdible()) {
 					canvas.setScore(canvas.getScore() + (int) (Math.pow(2, eatCounter) * 200));
+					System.out.println((int) (Math.pow(2, eatCounter) * 200));
 					ghost.setEdible(false);
 					ghost.setSpeed(speed);
 					ghost.respawn();
