@@ -176,15 +176,18 @@ public class Character implements ActionListener {
 	}
 
 	protected void setEdible(boolean state) {
-		this.edible = state;
+		// this.edible = state;
 		if (state) {
-			this.firstEdible = true;
+			if (!this.edible) {
+				this.firstEdible = true;
+			}
 			edibleTimer = new Timer(edibleTime, this);
 			edibleTimer.start();
 		} else {
 			edibleTimer.stop();
 			this.speed = stdSpeed;
 		}
+		this.edible = state;
 	}
 
 	boolean turnAround() {
