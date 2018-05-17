@@ -100,6 +100,9 @@ public class Ghost extends Character {
 		} else if (seesPacman && !edible) {
 			if (probability >= randVal) {
 				dir = temp;
+			} else {
+				int randomIndex = (int) (Math.random() * availableDir.size());
+				dir = availableDir.get(randomIndex);
 			}
 		} else if (seesPacman && edible) {
 			boolean escapeAvailable = false;
