@@ -9,14 +9,14 @@ import pacman.Main.Direction;
 
 public class Ghost extends Character {
 	private Direction lastDir;
-	private int lastR, lastC;
+	private int lastRow, lastCol;
 	private double probability;
 
 	public Ghost(DrawPanel canvas, Direction dir, int row, int col, Color color, boolean isFixed, double probability) {
 		super(canvas, dir, row, col, color, isFixed);
 		lastDir = dir;
-		lastR = -1;
-		lastC = -1;
+		lastRow = -1;
+		lastCol = -1;
 		this.probability = probability;
 	}
 
@@ -34,11 +34,11 @@ public class Ghost extends Character {
 		lastDir = dir;
 		ArrayList<Direction> availableDir = new ArrayList<>();
 		int dirCounter = 0;
-		if (lastR == row && lastC == col) {
+		if (lastRow == row && lastCol == col) {
 			return;
 		} else {
-			lastR = row;
-			lastC = col;
+			lastRow = row;
+			lastCol = col;
 		}
 		double randVal = Math.random();
 
@@ -195,6 +195,12 @@ public class Ghost extends Character {
 
 	double getProb() {
 		return this.probability;
+	}
+
+	@Override
+	void respawn() {
+		this.setEdible(false);
+		super.respawn();
 	}
 
 }
