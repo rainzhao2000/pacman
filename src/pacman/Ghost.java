@@ -30,6 +30,7 @@ public class Ghost extends Character {
 	protected void selectDir() {
 		lastDir = dir;
 		ArrayList<Direction> availableDir = new ArrayList<>();
+		int dirCounter = 0;
 		if (lastR == row && lastC == col) {
 			return;
 		} else {
@@ -39,15 +40,19 @@ public class Ghost extends Character {
 
 		if (left) {
 			availableDir.add(Direction.left);
+			dirCounter++;
 		}
 		if (right) {
 			availableDir.add(Direction.right);
+			dirCounter++;
 		}
 		if (up) {
 			availableDir.add(Direction.up);
+			dirCounter++;
 		}
 		if (down) {
 			availableDir.add(Direction.down);
+			dirCounter++;
 		}
 
 		if (availableDir.contains(reverseDir(lastDir)))
@@ -68,8 +73,10 @@ public class Ghost extends Character {
 				break;
 			}
 		}
-
-		if (availableDir.size() == 0) {
+		if (dirCounter == 0) {
+			// dont move
+			move = false;
+		} else if (availableDir.size() == 0) {
 			// turn around at dead end
 			switch (dir) {
 			case left:
@@ -126,20 +133,23 @@ public class Ghost extends Character {
 	}
 
 	@Override
-	void turnAround() {
-		checkSurrounding();
+	boolean turnAround() {
 		if (reverseDir(dir) == Direction.left && left) {
 			dir = reverseDir(dir);
+			return true;
 		} else if (reverseDir(dir) == Direction.right && right) {
 			dir = reverseDir(dir);
+			return true;
 		} else if (reverseDir(dir) == Direction.up && up) {
 			dir = reverseDir(dir);
-		} else {
-			// down
-			if (down) {
-				dir = reverseDir(dir);
-			}
+			return true;
+		} else if (reverseDir(dir) == Direction.down && down) {
+			dir = reverseDir(dir);
+			return true;
 		}
+
+		return false;
+
 	}
 
 	// return true if pacman is in sight

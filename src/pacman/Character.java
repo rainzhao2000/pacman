@@ -2,29 +2,37 @@ package pacman;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
 
 import pacman.Main.Code;
 import pacman.Main.Direction;
 
-public class Character {
+public class Character implements ActionListener {
 
 	protected Code[][] map = Main.map;
 
 	protected Direction dir;
 
+	protected Timer edibleTimer;
+
 	protected DrawPanel canvas;
 	protected Color color;
 
-	protected int rowSpawn, colSpawn, row, col, x0, y0;
+	protected int rowSpawn, colSpawn, row, col, x0, y0, edibleTime;
+	protected final double stdSpeed = 5;
 
 	protected double x, y, speed, displacement; // speed in tiles/sec
 	protected double centerOffset = Main.tilePadWidth / 2.0;
 
 	protected boolean isFixed;
 	protected boolean doAnimate;
+	protected boolean move;
 	protected boolean doShowPos;
 	protected boolean left, right, up, down;
-	protected boolean edible;
+	protected boolean edible, firstEdible;
 
 	protected Character(DrawPanel canvas, Direction dir, int row, int col, Color color, boolean isFixed) {
 		this.canvas = canvas;
@@ -43,6 +51,9 @@ public class Character {
 		this.doAnimate = !isFixed;
 		doShowPos = false;
 		this.edible = false;
+		this.firstEdible = false;
+		this.edibleTime = 10000;
+		move = true;
 	}
 
 	void draw(Graphics g) {
@@ -50,6 +61,7 @@ public class Character {
 	}
 
 	protected void animate(Graphics g) {
+
 		Object value = Main.game.getSpeedMultiplierSpinner().getValue();
 		try {
 			displacement = speed * (double) value * Main.tilePadWidth / canvas.getFramerate();
@@ -66,26 +78,28 @@ public class Character {
 			g.setColor(color);
 		}
 		g.fillOval(x0, y0, Main.tilePadWidth, Main.tilePadWidth);
-		if (doAnimate) {
-			switch (dir) {
-			case left:
-				x -= displacement;
-				break;
-			case right:
-				x += displacement;
-				break;
-			case up:
-				y -= displacement;
-				break;
-			case down:
-				y += displacement;
-				break;
+		if (move) {
+			if (doAnimate) {
+				switch (dir) {
+				case left:
+					x -= displacement;
+					break;
+				case right:
+					x += displacement;
+					break;
+				case up:
+					y -= displacement;
+					break;
+				case down:
+					y += displacement;
+					break;
+				}
+				x0 = (int) (x - centerOffset);
+				y0 = (int) (y - centerOffset);
 			}
-			x0 = (int) (x - centerOffset);
-			y0 = (int) (y - centerOffset);
+			row = (int) Math.rint((double) y0 / Main.tilePadWidth);
+			col = (int) Math.rint((double) x0 / Main.tilePadWidth);
 		}
-		row = (int) Math.rint((double) y0 / Main.tilePadWidth);
-		col = (int) Math.rint((double) x0 / Main.tilePadWidth);
 	}
 
 	protected void checkSurrounding() {
@@ -95,7 +109,13 @@ public class Character {
 		up = checkTile(row - 1, col);
 		down = checkTile(row + 1, col);
 		if (x0 == col * Main.tilePadWidth && y0 == row * Main.tilePadWidth) {
-			selectDir();
+			if (firstEdible) {
+				firstEdible = false;
+				turnAround();
+				selectDir();
+			} else {
+				selectDir();
+			}
 		}
 	}
 
@@ -157,10 +177,29 @@ public class Character {
 
 	protected void setEdible(boolean state) {
 		this.edible = state;
-		turnAround();
+		if (state) {
+			this.firstEdible = true;
+			edibleTimer = new Timer(edibleTime, this);
+			edibleTimer.start();
+		}
 	}
 
-	void turnAround() {
+	boolean turnAround() {
+		return true;
+	}
+
+	double getStdSpeed() {
+		return stdSpeed;
+	}
+
+	// turn into inedible state when time comes
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == edibleTimer) {
+			this.setEdible(false);
+			// edibleTime *= 0.9;
+			edibleTimer.stop();
+			this.speed = stdSpeed;
+		}
 
 	}
 
