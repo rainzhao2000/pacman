@@ -12,8 +12,6 @@ public class Pacman extends Character {
 
 	private int eatCounter, lives;
 
-	boolean livesChanged = false;
-
 	// Pacman constructor
 	public Pacman(DrawPanel canvas, Direction dir, int row, int col, boolean isFixed, int initialLives) {
 		super(canvas, dir, row, col, Color.yellow, isFixed);
@@ -28,8 +26,6 @@ public class Pacman extends Character {
 			checkCurrent();
 		}
 		animate(g);
-		if (livesChanged)
-			System.out.println(Integer.toString(Main.pacman.getLives()));
 	}
 
 	@Override
@@ -90,7 +86,6 @@ public class Pacman extends Character {
 
 	void setLives(int lives) {
 		this.lives = lives;
-		livesChanged = true;
 	}
 
 	void logDir(Direction intendedDir) {
