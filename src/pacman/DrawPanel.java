@@ -75,8 +75,9 @@ public class DrawPanel extends JPanel implements ActionListener {
 				System.out.println("GAME OVER");
 			} else {
 				Main.game.getCurrentLivesLabel().setText(Integer.toString(Main.pacman.getLives()));
-				repaint();
 			}
+			repaint();
+
 		}
 	}
 
@@ -305,7 +306,8 @@ public class DrawPanel extends JPanel implements ActionListener {
 			Main.ghosts.add(new Ghost(this, Direction.left, tempGhost.getRow(), tempGhost.getCol(),
 					tempGhost.getColor(), false, tempGhost.getProb()));
 		}
-		Main.pacman = new Pacman(this, Direction.left, Main.tempPacman.getRow(), Main.tempPacman.getCol(), false, 3);
+		Main.pacman = new Pacman(this, Direction.left, Main.tempPacman.getRow(), Main.tempPacman.getCol(), false,
+				Main.pacmanLives);
 	}
 
 	void close() {

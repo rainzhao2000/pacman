@@ -84,6 +84,7 @@ public class Main {
 	static Pacman tempPacman;
 	static ArrayList<Ghost> ghosts;
 	static ArrayList<Ghost> tempGhosts;
+	static int pacmanLives = 3;
 
 	static final int tileWidth = 10;
 	static final int padding = 1;

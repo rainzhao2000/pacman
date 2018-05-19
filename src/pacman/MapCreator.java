@@ -25,8 +25,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 
 import pacman.Main.Code;
+import javax.swing.JSpinner;
 
 public class MapCreator {
 
@@ -36,6 +38,7 @@ public class MapCreator {
 	private JFrame frmMapCreator;
 	private JFrame frmGame = Main.game.getFrame();
 	private JTextField txtFieldFileName;
+	private JSpinner pacmanLivesSpinner;
 	private DrawPanel canvas;
 	private DrawPanel gameCanvas = Main.game.getCanvas();
 
@@ -62,6 +65,7 @@ public class MapCreator {
 		// Unpause the canvas rendering in Game on close of MapCreator
 		frmMapCreator.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(WindowEvent winEvt) {
+				Main.pacmanLives = (int) ((double) (pacmanLivesSpinner.getValue()));
 				canvas.close();
 				gameCanvas.reset(true);
 				frmGame.requestFocusInWindow();
@@ -78,7 +82,7 @@ public class MapCreator {
 		frmMapCreator = new JFrame();
 		frmMapCreator.setResizable(false);
 		frmMapCreator.setTitle("Pac-Man Map Creator");
-		frmMapCreator.setBounds(frmGame.getX() + frmGame.getWidth(), frmGame.getY(), 450, 498);
+		frmMapCreator.setBounds(frmGame.getX() + frmGame.getWidth(), frmGame.getY(), 450, 540);
 		frmMapCreator.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmMapCreator.getContentPane().setLayout(null);
 
@@ -130,58 +134,66 @@ public class MapCreator {
 
 		JButton btnBlinky = new JButton("blinky");
 		btnBlinky.setAction(blinkySelect);
-		btnBlinky.setBounds(315, 252, 117, 29);
+		btnBlinky.setBounds(315, 293, 117, 29);
 		frmMapCreator.getContentPane().add(btnBlinky);
 
 		JButton btnPinky = new JButton("pinky");
 		btnPinky.setAction(pinkySelect);
-		btnPinky.setBounds(315, 293, 117, 29);
+		btnPinky.setBounds(315, 334, 117, 29);
 		frmMapCreator.getContentPane().add(btnPinky);
 
 		JButton btnInky = new JButton("inky");
 		btnInky.setAction(inkySelect);
-		btnInky.setBounds(315, 334, 117, 29);
+		btnInky.setBounds(315, 375, 117, 29);
 		frmMapCreator.getContentPane().add(btnInky);
 
 		JButton btnClyde = new JButton("clyde");
 		btnClyde.setAction(clydeSelect);
-		btnClyde.setBounds(315, 375, 117, 29);
+		btnClyde.setBounds(315, 416, 117, 29);
 		frmMapCreator.getContentPane().add(btnClyde);
 
 		JButton btnDefaultMap = new JButton("default map");
 		btnDefaultMap.setAction(defaultMapSelect);
-		btnDefaultMap.setBounds(0, 354, 117, 29);
+		btnDefaultMap.setBounds(29, 375, 117, 29);
 		frmMapCreator.getContentPane().add(btnDefaultMap);
 
 		JButton btnBlankMap = new JButton("blank map");
 		btnBlankMap.setAction(blankMapSelect);
-		btnBlankMap.setBounds(129, 354, 117, 29);
+		btnBlankMap.setBounds(158, 375, 117, 29);
 		frmMapCreator.getContentPane().add(btnBlankMap);
 
 		JButton btnOpenMap = new JButton("open map");
 		btnOpenMap.setAction(openMapSelect);
-		btnOpenMap.setBounds(0, 393, 117, 29);
+		btnOpenMap.setBounds(29, 414, 117, 29);
 		frmMapCreator.getContentPane().add(btnOpenMap);
 
 		JButton btnSaveMap = new JButton("save map");
 		btnSaveMap.setAction(saveMapSelect);
-		btnSaveMap.setBounds(129, 393, 117, 29);
+		btnSaveMap.setBounds(158, 414, 117, 29);
 		frmMapCreator.getContentPane().add(btnSaveMap);
 
 		txtFieldFileName = new JTextField();
-		txtFieldFileName.setBounds(129, 434, 134, 28);
+		txtFieldFileName.setBounds(158, 455, 117, 28);
 		frmMapCreator.getContentPane().add(txtFieldFileName);
 		txtFieldFileName.setColumns(10);
 
 		JLabel lblSaveAsFile = new JLabel("Save As File Name:");
-		lblSaveAsFile.setBounds(10, 440, 123, 16);
+		lblSaveAsFile.setBounds(39, 461, 123, 16);
 		frmMapCreator.getContentPane().add(lblSaveAsFile);
 
 		JTextArea txtAreaHint = new JTextArea();
 		txtAreaHint.setLineWrap(true);
-		txtAreaHint.setText("Close Map Creator to apply changes");
-		txtAreaHint.setBounds(315, 416, 117, 32);
+		txtAreaHint.setText("Close to apply changes");
+		txtAreaHint.setBounds(61, 336, 180, 28);
 		frmMapCreator.getContentPane().add(txtAreaHint);
+
+		pacmanLivesSpinner = new JSpinner(new SpinnerNumberModel(1, 1, Double.MAX_VALUE, 1));
+		pacmanLivesSpinner.setBounds(374, 251, 37, 31);
+		frmMapCreator.getContentPane().add(pacmanLivesSpinner);
+
+		JLabel lblLives = new JLabel("Lives");
+		lblLives.setBounds(339, 251, 46, 31);
+		frmMapCreator.getContentPane().add(lblLives);
 	}
 
 	JFrame getFrame() {

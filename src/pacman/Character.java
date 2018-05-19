@@ -71,7 +71,7 @@ public class Character implements ActionListener {
 		// canvas.getFramerate();
 		// }
 
-		displacement = speed * Main.tilePadWidth / canvas.getFramerate();
+		displacement = speed * 2 * Main.tilePadWidth / canvas.getFramerate();
 
 		if (doShowPos) {
 			g.setColor(Color.GREEN);

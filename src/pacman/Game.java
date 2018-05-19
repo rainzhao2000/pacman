@@ -54,7 +54,7 @@ public class Game implements KeyListener {
 		frmGame = new JFrame();
 		frmGame.setResizable(false);
 		frmGame.setTitle("Pac-Man");
-		frmGame.setBounds(400, 100, 349, 550);
+		frmGame.setBounds(400, 100, 355, 550);
 		frmGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmGame.getContentPane().setLayout(null);
 		frmGame.addKeyListener(this);
