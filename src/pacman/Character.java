@@ -62,12 +62,17 @@ public class Character implements ActionListener {
 
 	protected void animate(Graphics g) {
 
-		Object value = Main.game.getSpeedMultiplierSpinner().getValue();
-		try {
-			displacement = speed * (double) value * Main.tilePadWidth / canvas.getFramerate();
-		} catch (ClassCastException cce) {
-			displacement = speed * (int) value * Main.tilePadWidth / canvas.getFramerate();
-		}
+		// Object value = Main.game.getSpeedMultiplierSpinner().getValue();
+		// try {
+		// displacement = speed * (double) value * Main.tilePadWidth /
+		// canvas.getFramerate();
+		// } catch (ClassCastException cce) {
+		// displacement = speed * (int) value * Main.tilePadWidth /
+		// canvas.getFramerate();
+		// }
+
+		displacement = speed * Main.tilePadWidth / canvas.getFramerate();
+
 		if (doShowPos) {
 			g.setColor(Color.GREEN);
 			g.fillRect(col * Main.tilePadWidth, row * Main.tilePadWidth, Main.tilePadWidth, Main.tilePadWidth);
@@ -184,7 +189,12 @@ public class Character implements ActionListener {
 			edibleTimer = new Timer(edibleTime, this);
 			edibleTimer.start();
 		} else {
-			edibleTimer.stop();
+			try {
+				// if the timer exists, stop it
+				edibleTimer.stop();
+			} catch (NullPointerException e) {
+				// if the timer is never started, do nothing
+			}
 			this.speed = stdSpeed;
 		}
 		this.edible = state;

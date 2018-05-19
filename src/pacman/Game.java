@@ -24,11 +24,12 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 import pacman.Main.Direction;
+import javax.swing.SwingConstants;
 
 public class Game implements KeyListener {
 
 	private JFrame frmGame;
-	private JLabel lblScore;
+	private JLabel lblScore, lblCurrentLives;
 	private JSpinner speedMultiplierSpinner;
 	private DrawPanel canvas;
 	private MapCreator mapCreatorWindow = null;
@@ -36,7 +37,7 @@ public class Game implements KeyListener {
 	private final Action mapCreatorAction = new MapCreatorAction();
 	private final Action togglePosAction = new TogglePosAction();
 	private final Action toggleGridAction = new ToggleGridAction();
-	private final Action resetAction = new ResetAction();
+	private final Action resetAction = new RestartAction();
 
 	/**
 	 * Create the application.
@@ -61,11 +62,11 @@ public class Game implements KeyListener {
 		frmGame.requestFocusInWindow();
 
 		JLabel lblHighScore = new JLabel("High Score:");
-		lblHighScore.setBounds(128, 6, 92, 16);
+		lblHighScore.setBounds(20, 11, 92, 16);
 		frmGame.getContentPane().add(lblHighScore);
 
 		lblScore = new JLabel("0");
-		lblScore.setBounds(24, 24, 300, 16);
+		lblScore.setBounds(20, 23, 238, 16);
 		frmGame.getContentPane().add(lblScore);
 
 		canvas = new DrawPanel(frmGame, false, false, Main.framerate);
@@ -76,9 +77,23 @@ public class Game implements KeyListener {
 		infoPanel.setBounds(24, 392, 300, 40);
 		frmGame.getContentPane().add(infoPanel);
 
-		JLabel lblDebugControls = new JLabel("Debug Controls");
-		lblDebugControls.setBounds(125, 434, 99, 16);
-		frmGame.getContentPane().add(lblDebugControls);
+		// JLabel lblSpeedMultiplier = new JLabel("Speed multiplier:");
+		// debugPanel2.add(lblSpeedMultiplier);
+		//
+		// speedMultiplierSpinner = new JSpinner(new SpinnerNumberModel(1, 0, 10, 0.1));
+		// Component[] comps = speedMultiplierSpinner.getEditor().getComponents();
+		// for (Component component : comps) {
+		// component.setFocusable(false);
+		// }
+		// debugPanel2.add(speedMultiplierSpinner);
+
+		JButton btnReset = new JButton("Restart Game");
+		infoPanel.add(btnReset);
+		btnReset.setAction(resetAction);
+
+		// JLabel lblDebugControls = new JLabel("Debug Controls");
+		// lblDebugControls.setBounds(125, 434, 99, 16);
+		// frmGame.getContentPane().add(lblDebugControls);
 
 		JPanel debugPanel = new JPanel();
 		debugPanel.setBounds(0, 450, 349, 78);
@@ -102,19 +117,13 @@ public class Game implements KeyListener {
 		debugPanel2.setBackground(Color.LIGHT_GRAY);
 		debugPanel.add(debugPanel2, BorderLayout.SOUTH);
 
-		JLabel lblSpeedMultiplier = new JLabel("Speed multiplier:");
-		debugPanel2.add(lblSpeedMultiplier);
+		JLabel lblLives = new JLabel("Lives");
+		lblLives.setBounds(283, 12, 46, 14);
+		frmGame.getContentPane().add(lblLives);
 
-		speedMultiplierSpinner = new JSpinner(new SpinnerNumberModel(1, 0, 10, 0.1));
-		Component[] comps = speedMultiplierSpinner.getEditor().getComponents();
-		for (Component component : comps) {
-			component.setFocusable(false);
-		}
-		debugPanel2.add(speedMultiplierSpinner);
-
-		JButton btnReset = new JButton("Reset Game");
-		btnReset.setAction(resetAction);
-		debugPanel2.add(btnReset);
+		lblCurrentLives = new JLabel(Integer.toString(Main.pacman.getLives()));
+		lblCurrentLives.setBounds(283, 24, 46, 14);
+		frmGame.getContentPane().add(lblCurrentLives);
 	}
 
 	JFrame getFrame() {
@@ -127,6 +136,10 @@ public class Game implements KeyListener {
 
 	JLabel getScoreLabel() {
 		return lblScore;
+	}
+
+	JLabel getCurrentLivesLabel() {
+		return lblCurrentLives;
 	}
 
 	JSpinner getSpeedMultiplierSpinner() {
@@ -170,10 +183,10 @@ public class Game implements KeyListener {
 		}
 
 		/*
-		 * When the component this action is attached to is triggered, pause the
-		 * current canvas rendering (so that resources can be allocated to the
-		 * MapCreator canvas), then try to close any existing open MapCreator
-		 * window and instantiate a new MapCreator window
+		 * When the component this action is attached to is triggered, pause the current
+		 * canvas rendering (so that resources can be allocated to the MapCreator
+		 * canvas), then try to close any existing open MapCreator window and
+		 * instantiate a new MapCreator window
 		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -220,9 +233,9 @@ public class Game implements KeyListener {
 		}
 	}
 
-	private class ResetAction extends AbstractAction {
-		public ResetAction() {
-			putValue(NAME, "Reset Game");
+	private class RestartAction extends AbstractAction {
+		public RestartAction() {
+			putValue(NAME, "Restart Game");
 		}
 
 		public void actionPerformed(ActionEvent e) {

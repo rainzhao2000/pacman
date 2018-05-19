@@ -13,10 +13,10 @@ public class Pacman extends Character {
 	private int eatCounter, lives;
 
 	// Pacman constructor
-	public Pacman(DrawPanel canvas, Direction dir, int row, int col, boolean isFixed) {
+	public Pacman(DrawPanel canvas, Direction dir, int row, int col, boolean isFixed, int initialLives) {
 		super(canvas, dir, row, col, Color.yellow, isFixed);
 		this.intendedDir = dir;
-		lives = 3;
+		this.lives = initialLives;
 	}
 
 	@Override
@@ -82,6 +82,10 @@ public class Pacman extends Character {
 	// return lives
 	int getLives() {
 		return lives;
+	}
+
+	void setLives(int lives) {
+		this.lives = lives;
 	}
 
 	void logDir(Direction intendedDir) {

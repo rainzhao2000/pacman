@@ -70,7 +70,13 @@ public class DrawPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == timer && !paused) {
 			Main.game.getScoreLabel().setText(Integer.toString(score));
-			repaint();
+			if (Main.pacman.getLives() == 0) {
+				// game over
+				System.out.println("GAME OVER");
+			} else {
+				Main.game.getCurrentLivesLabel().setText(Integer.toString(Main.pacman.getLives()));
+				repaint();
+			}
 		}
 	}
 
@@ -259,7 +265,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 			} catch (NullPointerException e) {
 				System.out.println("tempPacman first init");
 			}
-			Main.tempPacman = new Pacman(this, Direction.left, row, col, true);
+			Main.tempPacman = new Pacman(this, Direction.left, row, col, true, 3);
 		} else if (code == Code.blinky) {
 			Main.tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.red, true, 1));
 		} else if (code == Code.pinky) {
@@ -299,7 +305,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 			Main.ghosts.add(new Ghost(this, Direction.left, tempGhost.getRow(), tempGhost.getCol(),
 					tempGhost.getColor(), false, tempGhost.getProb()));
 		}
-		Main.pacman = new Pacman(this, Direction.left, Main.tempPacman.getRow(), Main.tempPacman.getCol(), false);
+		Main.pacman = new Pacman(this, Direction.left, Main.tempPacman.getRow(), Main.tempPacman.getCol(), false, 3);
 	}
 
 	void close() {
