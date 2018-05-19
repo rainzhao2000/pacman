@@ -82,7 +82,7 @@ public class MapCreator {
 		frmMapCreator = new JFrame();
 		frmMapCreator.setResizable(false);
 		frmMapCreator.setTitle("Pac-Man Map Creator");
-		frmMapCreator.setBounds(frmGame.getX() + frmGame.getWidth(), frmGame.getY(), 450, 540);
+		frmMapCreator.setBounds(frmGame.getX() + frmGame.getWidth(), frmGame.getY(), 450, 528);
 		frmMapCreator.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmMapCreator.getContentPane().setLayout(null);
 
@@ -104,95 +104,95 @@ public class MapCreator {
 
 		JButton btnPath = new JButton("path");
 		btnPath.setAction(pathSelect);
-		btnPath.setBounds(315, 6, 117, 29);
+		btnPath.setBounds(317, 13, 117, 29);
 		frmMapCreator.getContentPane().add(btnPath);
 
 		JButton btnWall = new JButton("wall");
 		btnWall.setAction(wallSelect);
-		btnWall.setBounds(315, 47, 117, 29);
+		btnWall.setBounds(317, 54, 117, 29);
 		frmMapCreator.getContentPane().add(btnWall);
 
 		JButton btnPacdot = new JButton("pacdot");
 		btnPacdot.setAction(pacdotSelect);
-		btnPacdot.setBounds(315, 88, 117, 29);
+		btnPacdot.setBounds(317, 95, 117, 29);
 		frmMapCreator.getContentPane().add(btnPacdot);
 
 		JButton btnPowerPellet = new JButton("power pellet");
 		btnPowerPellet.setAction(powerPelletSelect);
-		btnPowerPellet.setBounds(315, 129, 117, 29);
+		btnPowerPellet.setBounds(317, 136, 117, 29);
 		frmMapCreator.getContentPane().add(btnPowerPellet);
 
 		JButton btnFruit = new JButton("fruit");
 		btnFruit.setAction(fruitSelect);
-		btnFruit.setBounds(315, 170, 117, 29);
+		btnFruit.setBounds(317, 177, 117, 29);
 		frmMapCreator.getContentPane().add(btnFruit);
 
 		JButton btnPacman = new JButton("pacman");
 		btnPacman.setAction(pacmanSelect);
-		btnPacman.setBounds(315, 211, 117, 29);
+		btnPacman.setBounds(317, 218, 117, 29);
 		frmMapCreator.getContentPane().add(btnPacman);
 
 		JButton btnBlinky = new JButton("blinky");
 		btnBlinky.setAction(blinkySelect);
-		btnBlinky.setBounds(315, 293, 117, 29);
+		btnBlinky.setBounds(317, 300, 117, 29);
 		frmMapCreator.getContentPane().add(btnBlinky);
 
 		JButton btnPinky = new JButton("pinky");
 		btnPinky.setAction(pinkySelect);
-		btnPinky.setBounds(315, 334, 117, 29);
+		btnPinky.setBounds(317, 341, 117, 29);
 		frmMapCreator.getContentPane().add(btnPinky);
 
 		JButton btnInky = new JButton("inky");
 		btnInky.setAction(inkySelect);
-		btnInky.setBounds(315, 375, 117, 29);
+		btnInky.setBounds(317, 382, 117, 29);
 		frmMapCreator.getContentPane().add(btnInky);
 
 		JButton btnClyde = new JButton("clyde");
 		btnClyde.setAction(clydeSelect);
-		btnClyde.setBounds(315, 416, 117, 29);
+		btnClyde.setBounds(317, 423, 117, 29);
 		frmMapCreator.getContentPane().add(btnClyde);
 
 		JButton btnDefaultMap = new JButton("default map");
 		btnDefaultMap.setAction(defaultMapSelect);
-		btnDefaultMap.setBounds(29, 375, 117, 29);
+		btnDefaultMap.setBounds(29, 384, 117, 29);
 		frmMapCreator.getContentPane().add(btnDefaultMap);
 
 		JButton btnBlankMap = new JButton("blank map");
 		btnBlankMap.setAction(blankMapSelect);
-		btnBlankMap.setBounds(158, 375, 117, 29);
+		btnBlankMap.setBounds(158, 384, 117, 29);
 		frmMapCreator.getContentPane().add(btnBlankMap);
 
 		JButton btnOpenMap = new JButton("open map");
 		btnOpenMap.setAction(openMapSelect);
-		btnOpenMap.setBounds(29, 414, 117, 29);
+		btnOpenMap.setBounds(29, 423, 117, 29);
 		frmMapCreator.getContentPane().add(btnOpenMap);
 
 		JButton btnSaveMap = new JButton("save map");
 		btnSaveMap.setAction(saveMapSelect);
-		btnSaveMap.setBounds(158, 414, 117, 29);
+		btnSaveMap.setBounds(158, 423, 117, 29);
 		frmMapCreator.getContentPane().add(btnSaveMap);
 
 		txtFieldFileName = new JTextField();
-		txtFieldFileName.setBounds(158, 455, 117, 28);
+		txtFieldFileName.setBounds(158, 464, 117, 28);
 		frmMapCreator.getContentPane().add(txtFieldFileName);
 		txtFieldFileName.setColumns(10);
 
 		JLabel lblSaveAsFile = new JLabel("Save As File Name:");
-		lblSaveAsFile.setBounds(39, 461, 123, 16);
+		lblSaveAsFile.setBounds(39, 470, 123, 16);
 		frmMapCreator.getContentPane().add(lblSaveAsFile);
 
 		JTextArea txtAreaHint = new JTextArea();
 		txtAreaHint.setLineWrap(true);
 		txtAreaHint.setText("Close to apply changes");
-		txtAreaHint.setBounds(61, 336, 180, 28);
+		txtAreaHint.setBounds(62, 351, 180, 22);
 		frmMapCreator.getContentPane().add(txtAreaHint);
 
 		pacmanLivesSpinner = new JSpinner(new SpinnerNumberModel(1, 1, Double.MAX_VALUE, 1));
-		pacmanLivesSpinner.setBounds(374, 251, 37, 31);
+		pacmanLivesSpinner.setBounds(376, 258, 37, 31);
 		frmMapCreator.getContentPane().add(pacmanLivesSpinner);
 
 		JLabel lblLives = new JLabel("Lives");
-		lblLives.setBounds(339, 251, 46, 31);
+		lblLives.setBounds(341, 258, 46, 31);
 		frmMapCreator.getContentPane().add(lblLives);
 	}
 

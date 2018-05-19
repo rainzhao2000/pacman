@@ -62,16 +62,14 @@ public class Character implements ActionListener {
 
 	protected void animate(Graphics g) {
 
-		// Object value = Main.game.getSpeedMultiplierSpinner().getValue();
-		// try {
-		// displacement = speed * (double) value * Main.tilePadWidth /
-		// canvas.getFramerate();
-		// } catch (ClassCastException cce) {
-		// displacement = speed * (int) value * Main.tilePadWidth /
-		// canvas.getFramerate();
-		// }
+		Object value = Main.game.getSpeedMultiplierSpinner().getValue();
+		try {
+			displacement = speed * 2 * (double) value * Main.tilePadWidth / canvas.getFramerate();
+		} catch (ClassCastException cce) {
+			displacement = speed * 2 * (int) value * Main.tilePadWidth / canvas.getFramerate();
+		}
 
-		displacement = speed * 2 * Main.tilePadWidth / canvas.getFramerate();
+		// displacement = speed * 2 * Main.tilePadWidth / canvas.getFramerate();
 
 		if (doShowPos) {
 			g.setColor(Color.GREEN);

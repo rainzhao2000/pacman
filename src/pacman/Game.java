@@ -37,7 +37,7 @@ public class Game implements KeyListener {
 	private final Action mapCreatorAction = new MapCreatorAction();
 	private final Action togglePosAction = new TogglePosAction();
 	private final Action toggleGridAction = new ToggleGridAction();
-	private final Action resetAction = new RestartAction();
+	private final Action resetAction = new ResetAction();
 
 	/**
 	 * Create the application.
@@ -54,7 +54,7 @@ public class Game implements KeyListener {
 		frmGame = new JFrame();
 		frmGame.setResizable(false);
 		frmGame.setTitle("Pac-Man");
-		frmGame.setBounds(400, 100, 355, 550);
+		frmGame.setBounds(400, 100, 355, 558);
 		frmGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmGame.getContentPane().setLayout(null);
 		frmGame.addKeyListener(this);
@@ -77,17 +77,7 @@ public class Game implements KeyListener {
 		infoPanel.setBounds(24, 392, 300, 40);
 		frmGame.getContentPane().add(infoPanel);
 
-		// JLabel lblSpeedMultiplier = new JLabel("Speed multiplier:");
-		// debugPanel2.add(lblSpeedMultiplier);
-		//
-		// speedMultiplierSpinner = new JSpinner(new SpinnerNumberModel(1, 0, 10, 0.1));
-		// Component[] comps = speedMultiplierSpinner.getEditor().getComponents();
-		// for (Component component : comps) {
-		// component.setFocusable(false);
-		// }
-		// debugPanel2.add(speedMultiplierSpinner);
-
-		JButton btnReset = new JButton("Restart Game");
+		JButton btnReset = new JButton("Reset Game");
 		infoPanel.add(btnReset);
 		btnReset.setAction(resetAction);
 
@@ -116,6 +106,16 @@ public class Game implements KeyListener {
 		JPanel debugPanel2 = new JPanel();
 		debugPanel2.setBackground(Color.LIGHT_GRAY);
 		debugPanel.add(debugPanel2, BorderLayout.SOUTH);
+
+		JLabel lblSpeedMultiplier = new JLabel("Speed multiplier:");
+		debugPanel2.add(lblSpeedMultiplier);
+
+		speedMultiplierSpinner = new JSpinner(new SpinnerNumberModel(1, 0, 10, 0.1));
+		Component[] comps = speedMultiplierSpinner.getEditor().getComponents();
+		for (Component component : comps) {
+			component.setFocusable(false);
+		}
+		debugPanel2.add(speedMultiplierSpinner);
 
 		JLabel lblLives = new JLabel("Lives");
 		lblLives.setBounds(283, 12, 46, 14);
@@ -233,9 +233,9 @@ public class Game implements KeyListener {
 		}
 	}
 
-	private class RestartAction extends AbstractAction {
-		public RestartAction() {
-			putValue(NAME, "Restart Game");
+	private class ResetAction extends AbstractAction {
+		public ResetAction() {
+			putValue(NAME, "Reset Game");
 		}
 
 		public void actionPerformed(ActionEvent e) {
