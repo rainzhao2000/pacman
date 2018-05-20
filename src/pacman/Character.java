@@ -45,7 +45,7 @@ public class Character implements ActionListener {
 		y0 = row * Main.tilePadWidth;
 		x = x0 + centerOffset;
 		y = y0 + centerOffset;
-		speed = 5;
+		speed = stdSpeed;
 		this.color = color;
 		this.isFixed = isFixed;
 		this.doAnimate = !isFixed;
@@ -64,9 +64,9 @@ public class Character implements ActionListener {
 
 		Object value = Main.game.getSpeedMultiplierSpinner().getValue();
 		try {
-			displacement = speed * 2 * (double) value * Main.tilePadWidth / canvas.getFramerate();
+			displacement = speed * (double) value * Main.tilePadWidth / canvas.getFramerate();
 		} catch (ClassCastException cce) {
-			displacement = speed * 2 * (int) value * Main.tilePadWidth / canvas.getFramerate();
+			displacement = speed * (int) value * Main.tilePadWidth / canvas.getFramerate();
 		}
 
 		// displacement = speed * 2 * Main.tilePadWidth / canvas.getFramerate();

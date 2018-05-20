@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -26,7 +27,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 	private Code[][] map = Main.map;
 
 	private Component parent;
-	private Timer timer;
+	private Timer frameTimer, respawnTimer;
 
 	private int framerate;
 	private int score;
@@ -45,8 +46,8 @@ public class DrawPanel extends JPanel implements ActionListener {
 		this.isFixed = isFixed;
 		this.framerate = framerate;
 		reset(false);
-		timer = new Timer(1000 / framerate, this);
-		timer.start();
+		frameTimer = new Timer(1000 / framerate, this);
+		frameTimer.start();
 	}
 
 	void reset(boolean newMap) {
@@ -68,7 +69,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 	 * Repaints the panel at the conditions of the timer
 	 */
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == timer && !paused) {
+		if (e.getSource() == frameTimer && !paused) {
 			Main.game.getScoreLabel().setText(Integer.toString(score));
 			if (Main.pacman.getLives() == 0) {
 				// game over
@@ -77,8 +78,38 @@ public class DrawPanel extends JPanel implements ActionListener {
 				Main.game.getCurrentLivesLabel().setText(Integer.toString(Main.pacman.getLives()));
 			}
 			repaint();
+		} else if (e.getSource() == respawnTimer && !paused) {
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException exeption) {
+				// TODO Auto-generated catch block
+				exeption.printStackTrace();
+			}
+			respawnTimer.stop();
+			Main.game.getInfoPanel().removeAll();
+			Main.game.getInfoPanel().setVisible(false);
 
 		}
+	}
+
+	public void respawnCharacters() {
+		Main.pacman.setLives(Main.pacman.getLives() - 1);
+		Main.pacman.respawn();
+		for (Ghost g : Main.ghosts) {
+			g.respawn();
+		}
+		Main.pacman.doAnimate = false;
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException exeption) {
+			// TODO Auto-generated catch block
+			exeption.printStackTrace();
+		}
+		JLabel lblDeath = new JLabel("You died!");
+		Main.game.getInfoPanel().add(lblDeath);
+		Main.game.getInfoPanel().setVisible(true);
+		respawnTimer = new Timer(1 * 1000 / framerate, this);
+		respawnTimer.start();
 	}
 
 	/*
@@ -266,7 +297,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 			} catch (NullPointerException e) {
 				System.out.println("tempPacman first init");
 			}
-			Main.tempPacman = new Pacman(this, Direction.left, row, col, true, 3);
+			Main.tempPacman = new Pacman(this, Direction.down, row, col, true, 3);
 		} else if (code == Code.blinky) {
 			Main.tempGhosts.add(new Ghost(this, Direction.left, row, col, Color.red, true, 1));
 		} else if (code == Code.pinky) {
@@ -306,12 +337,12 @@ public class DrawPanel extends JPanel implements ActionListener {
 			Main.ghosts.add(new Ghost(this, Direction.left, tempGhost.getRow(), tempGhost.getCol(),
 					tempGhost.getColor(), false, tempGhost.getProb()));
 		}
-		Main.pacman = new Pacman(this, Direction.left, Main.tempPacman.getRow(), Main.tempPacman.getCol(), false,
+		Main.pacman = new Pacman(this, Direction.down, Main.tempPacman.getRow(), Main.tempPacman.getCol(), false,
 				Main.pacmanLives);
 	}
 
 	void close() {
-		timer.stop();
+		frameTimer.stop();
 	}
 
 	/*

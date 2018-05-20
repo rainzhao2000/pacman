@@ -31,6 +31,7 @@ public class Game implements KeyListener {
 	private JFrame frmGame;
 	private JLabel lblScore, lblCurrentLives;
 	private JSpinner speedMultiplierSpinner;
+	private JPanel infoPanel;
 	private DrawPanel canvas;
 	private MapCreator mapCreatorWindow = null;
 
@@ -73,13 +74,9 @@ public class Game implements KeyListener {
 		canvas.setBounds(20, 50, Main.mapWidth, Main.mapHeight);
 		frmGame.getContentPane().add(canvas);
 
-		JPanel infoPanel = new JPanel();
+		infoPanel = new JPanel();
 		infoPanel.setBounds(24, 392, 300, 40);
 		frmGame.getContentPane().add(infoPanel);
-
-		JButton btnReset = new JButton("Reset Game");
-		infoPanel.add(btnReset);
-		btnReset.setAction(resetAction);
 
 		// JLabel lblDebugControls = new JLabel("Debug Controls");
 		// lblDebugControls.setBounds(125, 434, 99, 16);
@@ -106,6 +103,10 @@ public class Game implements KeyListener {
 		JPanel debugPanel2 = new JPanel();
 		debugPanel2.setBackground(Color.LIGHT_GRAY);
 		debugPanel.add(debugPanel2, BorderLayout.SOUTH);
+
+		JButton btnReset = new JButton("Reset Game");
+		debugPanel2.add(btnReset);
+		btnReset.setAction(resetAction);
 
 		JLabel lblSpeedMultiplier = new JLabel("Speed multiplier:");
 		debugPanel2.add(lblSpeedMultiplier);
@@ -144,6 +145,10 @@ public class Game implements KeyListener {
 
 	JSpinner getSpeedMultiplierSpinner() {
 		return speedMultiplierSpinner;
+	}
+
+	JPanel getInfoPanel() {
+		return infoPanel;
 	}
 
 	@Override

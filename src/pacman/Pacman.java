@@ -23,7 +23,9 @@ public class Pacman extends Character {
 	void draw(Graphics g) {
 		if (canvas.inBounds(row, col) && !isFixed) {
 			checkSurrounding();
+			// if (x0 == col * Main.tilePadWidth && y0 == row * Main.tilePadWidth) {
 			checkCurrent();
+			// }
 		}
 		animate(g);
 	}
@@ -49,12 +51,13 @@ public class Pacman extends Character {
 					ghost.respawn();
 					eatCounter++;
 				} else {
-					lives--;
-					respawn();
-					for (Ghost g : Main.ghosts) {
-						g.respawn();
-					}
-					doAnimate = false;
+					// lives--;
+					// respawn();
+					// for (Ghost g : Main.ghosts) {
+					// g.respawn();
+					// }
+					// doAnimate = false;
+					Main.game.getCanvas().respawnCharacters();
 					break;
 				}
 			}
