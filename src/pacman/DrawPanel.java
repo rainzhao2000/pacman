@@ -74,6 +74,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 			if (Main.pacman.getLives() == 0) {
 				// game over
 				System.out.println("GAME OVER");
+				Main.game.getCurrentLivesLabel().setText(Integer.toString(Main.pacman.getLives()));
 			} else {
 				Main.game.getCurrentLivesLabel().setText(Integer.toString(Main.pacman.getLives()));
 			}
