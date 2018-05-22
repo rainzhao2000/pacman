@@ -55,6 +55,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 			// Game.canvas
 			if (!newMap) {
 				defaultMap();
+
 			}
 			initCharacters();
 		} else {
@@ -62,6 +63,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 			defaultMap();
 		}
 		score = 0;
+		Main.pacman.setLives(Main.pacmanLives);
 		setPaused(false);
 	}
 
@@ -94,7 +96,6 @@ public class DrawPanel extends JPanel implements ActionListener {
 	}
 
 	public void respawnCharacters() {
-		Main.pacman.setLives(Main.pacman.getLives() - 1);
 		Main.pacman.respawn();
 		for (Ghost g : Main.ghosts) {
 			g.respawn();

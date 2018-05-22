@@ -58,6 +58,7 @@ public class Pacman extends Character {
 					// }
 					// doAnimate = false;
 					Main.game.getCanvas().respawnCharacters();
+					lives--;
 					break;
 				}
 			}

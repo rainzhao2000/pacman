@@ -187,7 +187,7 @@ public class MapCreator {
 		txtAreaHint.setBounds(62, 351, 180, 22);
 		frmMapCreator.getContentPane().add(txtAreaHint);
 
-		pacmanLivesSpinner = new JSpinner(new SpinnerNumberModel(1, 1, Double.MAX_VALUE, 1));
+		pacmanLivesSpinner = new JSpinner(new SpinnerNumberModel(3.0, 1.0, 2.147483647E9, 1.0));
 		pacmanLivesSpinner.setBounds(376, 258, 37, 31);
 		frmMapCreator.getContentPane().add(pacmanLivesSpinner);
 
