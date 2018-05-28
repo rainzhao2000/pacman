@@ -37,8 +37,8 @@ public class Character implements ActionListener {
 	protected Character(DrawPanel canvas, Direction dir, int row, int col, Color color, boolean isFixed) {
 		this.canvas = canvas;
 		this.dir = dir;
-		this.rowSpawn = row;
-		this.colSpawn = col;
+		rowSpawn = row;
+		colSpawn = col;
 		this.row = row;
 		this.col = col;
 		x0 = col * Main.tilePadWidth;
@@ -48,11 +48,11 @@ public class Character implements ActionListener {
 		speed = stdSpeed;
 		this.color = color;
 		this.isFixed = isFixed;
-		this.doAnimate = !isFixed;
+		doAnimate = !isFixed;
 		doShowPos = false;
-		this.edible = false;
-		this.firstEdible = false;
-		this.edibleTime = 10000;
+		edible = false;
+		firstEdible = false;
+		edibleTime = 10000;
 		move = true;
 	}
 
@@ -179,10 +179,10 @@ public class Character implements ActionListener {
 	}
 
 	protected void setEdible(boolean state) {
-		// this.edible = state;
+		// edible = state;
 		if (state) {
-			if (!this.edible) {
-				this.firstEdible = true;
+			if (!edible) {
+				firstEdible = true;
 			}
 			edibleTimer = new Timer(edibleTime, this);
 			edibleTimer.start();
@@ -193,9 +193,9 @@ public class Character implements ActionListener {
 			} catch (NullPointerException e) {
 				// if the timer is never started, do nothing
 			}
-			this.speed = stdSpeed;
+			speed = stdSpeed;
 		}
-		this.edible = state;
+		edible = state;
 	}
 
 	boolean turnAround() {
@@ -209,7 +209,7 @@ public class Character implements ActionListener {
 	// turn into inedible state when time comes
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == edibleTimer) {
-			this.setEdible(false);
+			setEdible(false);
 		}
 
 	}

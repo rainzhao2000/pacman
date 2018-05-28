@@ -194,12 +194,12 @@ public class Ghost extends Character {
 	}
 
 	double getProb() {
-		return this.probability;
+		return probability;
 	}
 
 	@Override
 	void respawn() {
-		this.setEdible(false);
+		setEdible(false);
 		super.respawn();
 	}
 

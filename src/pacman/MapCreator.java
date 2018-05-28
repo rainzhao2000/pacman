@@ -44,6 +44,7 @@ public class MapCreator {
 
 	private final Action pathSelect = new PathSelect();
 	private final Action wallSelect = new WallSelect();
+	private final Action portalSelect = new PortalSelect();
 	private final Action pacdotSelect = new PacdotSelect();
 	private final Action powerPelletSelect = new PowerPelletSelect();
 	private final Action fruitSelect = new FruitSelect();
@@ -111,45 +112,50 @@ public class MapCreator {
 		btnWall.setAction(wallSelect);
 		btnWall.setBounds(317, 54, 117, 29);
 		frmMapCreator.getContentPane().add(btnWall);
+		
+		JButton btnPortal = new JButton("portal");
+		btnPortal.setAction(portalSelect);
+		btnPortal.setBounds(317, 94, 117, 24);
+		frmMapCreator.getContentPane().add(btnPortal);
 
 		JButton btnPacdot = new JButton("pacdot");
 		btnPacdot.setAction(pacdotSelect);
-		btnPacdot.setBounds(317, 95, 117, 29);
+		btnPacdot.setBounds(317, 129, 117, 29);
 		frmMapCreator.getContentPane().add(btnPacdot);
 
 		JButton btnPowerPellet = new JButton("power pellet");
 		btnPowerPellet.setAction(powerPelletSelect);
-		btnPowerPellet.setBounds(317, 136, 117, 29);
+		btnPowerPellet.setBounds(317, 170, 117, 29);
 		frmMapCreator.getContentPane().add(btnPowerPellet);
 
 		JButton btnFruit = new JButton("fruit");
 		btnFruit.setAction(fruitSelect);
-		btnFruit.setBounds(317, 177, 117, 29);
+		btnFruit.setBounds(317, 211, 117, 29);
 		frmMapCreator.getContentPane().add(btnFruit);
 
 		JButton btnPacman = new JButton("pacman");
 		btnPacman.setAction(pacmanSelect);
-		btnPacman.setBounds(317, 218, 117, 29);
+		btnPacman.setBounds(317, 252, 117, 29);
 		frmMapCreator.getContentPane().add(btnPacman);
 
 		JButton btnBlinky = new JButton("blinky");
 		btnBlinky.setAction(blinkySelect);
-		btnBlinky.setBounds(317, 300, 117, 29);
+		btnBlinky.setBounds(317, 334, 117, 29);
 		frmMapCreator.getContentPane().add(btnBlinky);
 
 		JButton btnPinky = new JButton("pinky");
 		btnPinky.setAction(pinkySelect);
-		btnPinky.setBounds(317, 341, 117, 29);
+		btnPinky.setBounds(317, 375, 117, 29);
 		frmMapCreator.getContentPane().add(btnPinky);
 
 		JButton btnInky = new JButton("inky");
 		btnInky.setAction(inkySelect);
-		btnInky.setBounds(317, 382, 117, 29);
+		btnInky.setBounds(317, 416, 117, 29);
 		frmMapCreator.getContentPane().add(btnInky);
 
 		JButton btnClyde = new JButton("clyde");
 		btnClyde.setAction(clydeSelect);
-		btnClyde.setBounds(317, 423, 117, 29);
+		btnClyde.setBounds(317, 457, 117, 29);
 		frmMapCreator.getContentPane().add(btnClyde);
 
 		JButton btnDefaultMap = new JButton("default map");
@@ -188,11 +194,11 @@ public class MapCreator {
 		frmMapCreator.getContentPane().add(txtAreaHint);
 
 		pacmanLivesSpinner = new JSpinner(new SpinnerNumberModel(3.0, 1.0, 2.147483647E9, 1.0));
-		pacmanLivesSpinner.setBounds(376, 258, 37, 31);
+		pacmanLivesSpinner.setBounds(376, 292, 37, 31);
 		frmMapCreator.getContentPane().add(pacmanLivesSpinner);
 
 		JLabel lblLives = new JLabel("Lives");
-		lblLives.setBounds(341, 258, 46, 31);
+		lblLives.setBounds(341, 292, 46, 31);
 		frmMapCreator.getContentPane().add(lblLives);
 	}
 
@@ -225,6 +231,16 @@ public class MapCreator {
 
 		public void actionPerformed(ActionEvent e) {
 			currentObject = Code.wall;
+		}
+	}
+	
+	private class PortalSelect extends AbstractAction {
+		public PortalSelect() {
+			putValue(NAME, "portal");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			currentObject = Code.portal;
 		}
 	}
 
@@ -414,6 +430,14 @@ public class MapCreator {
 					e1.printStackTrace();
 				}
 			}
+		}
+	}
+	private class SwingAction extends AbstractAction {
+		public SwingAction() {
+			putValue(NAME, "SwingAction");
+			putValue(SHORT_DESCRIPTION, "Some short description");
+		}
+		public void actionPerformed(ActionEvent e) {
 		}
 	}
 }

@@ -15,8 +15,8 @@ public class Pacman extends Character {
 	// Pacman constructor
 	public Pacman(DrawPanel canvas, Direction dir, int row, int col, boolean isFixed, int initialLives) {
 		super(canvas, dir, row, col, Color.yellow, isFixed);
-		this.intendedDir = dir;
-		this.lives = initialLives;
+		intendedDir = dir;
+		lives = initialLives;
 	}
 
 	@Override
