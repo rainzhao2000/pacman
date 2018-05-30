@@ -24,7 +24,6 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 import pacman.Main.Direction;
-import javax.swing.SwingConstants;
 
 public class Game implements KeyListener {
 

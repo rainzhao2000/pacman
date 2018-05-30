@@ -134,16 +134,30 @@ public class Character implements ActionListener {
 		if (map[row][col] == Code.wall) {
 			return false;
 		}
+		if (map[row][col] == Code.portal) {
+			for (int row1 = 0; row1 < map.length; row1++) {
+				for (int col1 = 0; col1 < map[row1].length; col1++) {
+					if (map[row1][col1] == Code.portal && !(row1 == row && col1 == col)) {
+						setPos(row1, col1);
+						return true;
+					}
+				}
+			}
+		}
 		return true;
 	}
 
-	void respawn() {
-		row = rowSpawn;
-		col = colSpawn;
+	private void setPos(int row, int col) {
+		this.row = row;
+		this.col = col;
 		x0 = col * Main.tilePadWidth;
 		y0 = row * Main.tilePadWidth;
 		x = x0 + centerOffset;
 		y = y0 + centerOffset;
+	}
+
+	void respawn() {
+		setPos(rowSpawn, colSpawn);
 	}
 
 	int getRow() {

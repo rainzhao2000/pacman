@@ -178,9 +178,9 @@ public class DrawPanel extends JPanel implements ActionListener {
 		case path:
 			return Color.black;
 		case wall:
-			return new Color(68, 63, 175);
+			return Color.blue;
 		case portal:
-			return new Color(255, 100 ,220);
+			return new Color(255, 100, 220);
 		case pacdot:
 			return Color.white;
 		case powerPellet:
