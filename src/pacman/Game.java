@@ -77,9 +77,9 @@ public class Game implements KeyListener {
 		infoPanel.setBounds(24, 392, 300, 40);
 		frmGame.getContentPane().add(infoPanel);
 
-		// JLabel lblDebugControls = new JLabel("Debug Controls");
-		// lblDebugControls.setBounds(125, 434, 99, 16);
-		// frmGame.getContentPane().add(lblDebugControls);
+		 JLabel lblDebugControls = new JLabel("Debug Panel");
+		 lblDebugControls.setBounds(138, 434, 72, 16);
+		 frmGame.getContentPane().add(lblDebugControls);
 
 		JPanel debugPanel = new JPanel();
 		debugPanel.setBounds(0, 450, 349, 78);
