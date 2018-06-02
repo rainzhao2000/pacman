@@ -157,12 +157,13 @@ public class Character implements ActionListener {
 						if (portals.get(randomIndex).getRow() != row || portals.get(randomIndex).getCol() != col) {
 							setPos(portals.get(randomIndex).getRow(), portals.get(randomIndex).getCol());
 							justTeleported = true;
+							checkSurrounding();
 							break;
 						}
 
 					}
 				}
-			} else if (map[row][col] != Code.portal && justTeleported) {
+			} else {
 				justTeleported = false;
 			}
 		}
