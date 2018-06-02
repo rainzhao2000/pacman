@@ -67,6 +67,10 @@ public class MapCreator {
 		frmMapCreator.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(WindowEvent winEvt) {
 				Main.pacmanLives = (int) ((double) (pacmanLivesSpinner.getValue()));
+				Main.pacman.scanPortals();
+				for (Ghost g : Main.ghosts) {
+					g.scanPortals();
+				}
 				canvas.close();
 				gameCanvas.reset(true);
 				frmGame.requestFocusInWindow();
@@ -112,7 +116,7 @@ public class MapCreator {
 		btnWall.setAction(wallSelect);
 		btnWall.setBounds(317, 54, 117, 29);
 		frmMapCreator.getContentPane().add(btnWall);
-		
+
 		JButton btnPortal = new JButton("portal");
 		btnPortal.setAction(portalSelect);
 		btnPortal.setBounds(317, 94, 117, 24);
@@ -233,7 +237,7 @@ public class MapCreator {
 			currentObject = Code.wall;
 		}
 	}
-	
+
 	private class PortalSelect extends AbstractAction {
 		public PortalSelect() {
 			putValue(NAME, "portal");
@@ -432,11 +436,13 @@ public class MapCreator {
 			}
 		}
 	}
+
 	private class SwingAction extends AbstractAction {
 		public SwingAction() {
 			putValue(NAME, "SwingAction");
 			putValue(SHORT_DESCRIPTION, "Some short description");
 		}
+
 		public void actionPerformed(ActionEvent e) {
 		}
 	}

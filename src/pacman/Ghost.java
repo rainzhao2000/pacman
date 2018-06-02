@@ -15,8 +15,6 @@ public class Ghost extends Character {
 	public Ghost(DrawPanel canvas, Direction dir, int row, int col, Color color, boolean isFixed, double probability) {
 		super(canvas, dir, row, col, color, isFixed);
 		lastDir = dir;
-		lastRow = -1;
-		lastCol = -1;
 		this.probability = probability;
 	}
 

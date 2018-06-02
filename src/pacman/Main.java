@@ -12,7 +12,8 @@ public class Main {
 	 */
 	static enum Code {
 
-		path(0), wall(1), portal(2), pacdot(3), powerPellet(4), fruit(5), pacman(6), blinky(7), pinky(8), inky(9), clyde(10);
+		path(0), wall(1), portal(2), pacdot(3), powerPellet(4), fruit(5), pacman(6), blinky(7), pinky(8), inky(
+				9), clyde(10);
 
 		private final int code;
 		private static final Map<Integer, Code> codeIndex = new HashMap<Integer, Code>();

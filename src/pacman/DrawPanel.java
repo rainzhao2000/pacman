@@ -64,6 +64,10 @@ public class DrawPanel extends JPanel implements ActionListener {
 		}
 		score = 0;
 		Main.pacman.setLives(Main.pacmanLives);
+		Main.pacman.scanPortals();
+		for (Ghost g : Main.ghosts) {
+			g.scanPortals();
+		}
 		setPaused(false);
 	}
 

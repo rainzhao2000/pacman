@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.concurrent.SynchronousQueue;
 
 import javax.swing.Timer;
 
@@ -21,18 +23,16 @@ public class Character implements ActionListener {
 	protected DrawPanel canvas;
 	protected Color color;
 
-	protected int rowSpawn, colSpawn, row, col, x0, y0, edibleTime;
+	protected int rowSpawn, colSpawn, row, col, x0, y0, edibleTime, lastRow, lastCol;
 	protected final double stdSpeed = 5;
 
 	protected double x, y, speed, displacement; // speed in tiles/sec
 	protected double centerOffset = Main.tilePadWidth / 2.0;
 
-	protected boolean isFixed;
-	protected boolean doAnimate;
-	protected boolean move;
-	protected boolean doShowPos;
+	protected boolean isFixed, doAnimate, move, doShowPos, edible, firstEdible, justTeleported;
 	protected boolean left, right, up, down;
-	protected boolean edible, firstEdible;
+
+	protected ArrayList<point> portals;
 
 	protected Character(DrawPanel canvas, Direction dir, int row, int col, Color color, boolean isFixed) {
 		this.canvas = canvas;
@@ -54,6 +54,10 @@ public class Character implements ActionListener {
 		firstEdible = false;
 		edibleTime = 10000;
 		move = true;
+		portals = new ArrayList<>();
+		lastRow = -1;
+		lastCol = -1;
+		justTeleported = false;
 	}
 
 	void draw(Graphics g) {
@@ -119,6 +123,7 @@ public class Character implements ActionListener {
 			} else {
 				selectDir();
 			}
+			checkPortal(row, col);
 		}
 	}
 
@@ -134,17 +139,43 @@ public class Character implements ActionListener {
 		if (map[row][col] == Code.wall) {
 			return false;
 		}
-		if (map[row][col] == Code.portal) {
-			for (int row1 = 0; row1 < map.length; row1++) {
-				for (int col1 = 0; col1 < map[row1].length; col1++) {
-					if (map[row1][col1] == Code.portal && !(row1 == row && col1 == col)) {
-						setPos(row1, col1);
-						return true;
+
+		return true;
+	}
+
+	private void checkPortal(int row, int col) {
+		if (lastRow == row && lastCol == col) {
+			return;
+		} else {
+			lastRow = row;
+			lastCol = col;
+
+			if (map[row][col] == Code.portal && !justTeleported) {
+				if (portals.size() >= 2) {
+					while (true) {
+						int randomIndex = (int) (Math.random() * portals.size());
+						if (portals.get(randomIndex).getRow() != row || portals.get(randomIndex).getCol() != col) {
+							setPos(portals.get(randomIndex).getRow(), portals.get(randomIndex).getCol());
+							justTeleported = true;
+							break;
+						}
+
 					}
+				}
+			} else if (map[row][col] != Code.portal && justTeleported) {
+				justTeleported = false;
+			}
+		}
+	}
+
+	public void scanPortals() {
+		for (int row1 = 0; row1 < map.length; row1++) {
+			for (int col1 = 0; col1 < map[row1].length; col1++) {
+				if (map[row1][col1] == Code.portal) {
+					portals.add(new point(row1, col1));
 				}
 			}
 		}
-		return true;
 	}
 
 	private void setPos(int row, int col) {
@@ -226,6 +257,23 @@ public class Character implements ActionListener {
 			setEdible(false);
 		}
 
+	}
+
+	protected class point {
+		private int row, col;
+
+		public point(int row, int col) {
+			this.row = row;
+			this.col = col;
+		}
+
+		public int getRow() {
+			return this.row;
+		}
+
+		public int getCol() {
+			return this.col;
+		}
 	}
 
 }
