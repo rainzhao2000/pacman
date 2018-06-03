@@ -11,6 +11,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -51,18 +55,26 @@ public class DrawPanel extends JPanel implements ActionListener {
 	}
 
 	void reset(boolean newMap) {
+		resetMap(newMap);
+		score = 0;
+		try {
+			Main.game.getSpeedMultiplierSpinner().setValue(1.0);
+		} catch (NullPointerException e) {
+
+		}
+	}
+
+	private void resetMap(boolean newMap) {
 		if (!isFixed) {
 			// Game.canvas
 			if (!newMap) {
-				defaultMap();
-
+				currentMap();
 			}
 			initCharacters();
 		} else {
 			// MapCreator.canvas
 			defaultMap();
 		}
-		score = 0;
 		Main.pacman.setLives(Main.pacmanLives);
 		Main.pacman.scanPortals();
 		for (Ghost g : Main.ghosts) {
@@ -84,6 +96,9 @@ public class DrawPanel extends JPanel implements ActionListener {
 			} else {
 				Main.game.getCurrentLivesLabel().setText(Integer.toString(Main.pacman.getLives()));
 			}
+			if (checkStagePass() && !isFixed) {
+				nextStage(false);
+			}
 			repaint();
 		} else if (e.getSource() == respawnTimer && !paused) {
 			try {
@@ -97,6 +112,61 @@ public class DrawPanel extends JPanel implements ActionListener {
 			Main.game.getInfoPanel().setVisible(false);
 
 		}
+	}
+	
+	private void fixMaps() {
+		defaultMap();
+		updateCurrentMap(map);
+	}
+
+	private boolean checkStagePass() {
+		try {
+			if (!currentMapIsDefault()) {
+				return false;
+			}
+		} catch (IOException e) {
+			fixMaps();
+		}
+		for (int row = 0; row < map.length; row++) {
+			for (int col = 0; col < map[row].length; col++) {
+				if (map[row][col] == Code.pacdot || map[row][col] == Code.powerPellet || map[row][col] == Code.fruit) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	private boolean currentMapIsDefault() throws IOException {
+		BufferedReader reader1 = new BufferedReader(new FileReader("./default map.txt"));
+		BufferedReader reader2 = new BufferedReader(new FileReader("./current map.txt"));
+		String line1 = reader1.readLine();
+		String line2 = reader2.readLine();
+		boolean areEqual = true;
+		while (line1 != null || line2 != null) {
+			if (line1 == null || line2 == null) {
+				areEqual = false;
+				break;
+			} else if (!line1.equalsIgnoreCase(line2)) {
+				areEqual = false;
+				break;
+			}
+			line1 = reader1.readLine();
+			line2 = reader2.readLine();
+		}
+		reader1.close();
+		reader2.close();
+		if (areEqual) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private void nextStage(boolean newMap) {
+		resetMap(newMap);
+		Object value = Main.game.getSpeedMultiplierSpinner().getValue();
+		Main.game.getSpeedMultiplierSpinner().setValue((double) value * 1.1);
 	}
 
 	public void respawnCharacters() {
@@ -238,6 +308,63 @@ public class DrawPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	private void currentMap() {
+		// Generate file from path 'current map.txt'
+		ArrayList<String> lines = new ArrayList<String>();
+		File file = new File("current map.txt");
+		BufferedReader reader = null;
+
+		// Read each line as string and add to ArrayList of strings
+		try {
+			reader = new BufferedReader(new FileReader(file));
+			String line = null;
+
+			while ((line = reader.readLine()) != null) {
+				lines.add(line);
+			}
+		} catch (FileNotFoundException e1) {
+			fixMaps();
+			currentMap();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} finally {
+			try {
+				if (reader != null) {
+					reader.close();
+				}
+			} catch (IOException e1) {
+
+			}
+		}
+
+		// upload ArrayList of strings to map array
+		if (!uploadMap(lines)) {
+			JOptionPane.showMessageDialog(parent, "Invalid text file structure and/or codes", "Invalid Map",
+					JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	void updateCurrentMap(Code[][] map) {
+		// Get the code values of each element in map array and add to
+		// ArrayList of strings
+		ArrayList<String> lines = new ArrayList<String>();
+		for (int row = 0; row < map.length; row++) {
+			StringBuilder line = new StringBuilder();
+			for (int col = 0; col < map[row].length; col++) {
+				line.append(map[row][col].getCode() + " ");
+			}
+			lines.add(line.toString());
+		}
+
+		// Write ArrayList of strings to file
+		Path file = Paths.get("current map.txt");
+		try {
+			Files.write(file, lines, Charset.forName("UTF-8"));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+	}
+
 	/*
 	 * Looks for 'default map.txt' in current directory and uploads it to map
 	 */
@@ -278,8 +405,8 @@ public class DrawPanel extends JPanel implements ActionListener {
 	}
 
 	/*
-	 * Looks up an ArrayList of strings and adds the Codes objects obtained from the
-	 * code values to the map array
+	 * Looks up an ArrayList of strings and adds the Codes objects obtained from
+	 * the code values to the map array
 	 */
 	boolean uploadMap(ArrayList<String> lines) {
 		try {
@@ -328,8 +455,8 @@ public class DrawPanel extends JPanel implements ActionListener {
 	}
 
 	/*
-	 * Finds the element in map array corresponding to position of mouse cursor and
-	 * sets the element to a specified code
+	 * Finds the element in map array corresponding to position of mouse cursor
+	 * and sets the element to a specified code
 	 */
 	void setTile(MouseEvent e, Code code) {
 		int row = e.getY() / Main.tilePadWidth;

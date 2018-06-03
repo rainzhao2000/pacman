@@ -71,6 +71,7 @@ public class MapCreator {
 				for (Ghost g : Main.ghosts) {
 					g.scanPortals();
 				}
+				Main.game.getCanvas().updateCurrentMap(map);
 				canvas.close();
 				gameCanvas.reset(true);
 				frmGame.requestFocusInWindow();
