@@ -92,7 +92,7 @@ public class MapCreator {
 		frmMapCreator.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmMapCreator.getContentPane().setLayout(null);
 
-		canvas = new DrawPanel(frmMapCreator, true, true, Main.framerate);
+		canvas = new DrawPanel(frmMapCreator, false, true, true, Main.framerate);
 		canvas.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
@@ -330,8 +330,8 @@ public class MapCreator {
 	}
 
 	/*
-	 * The following classes are actions attributed to the buttons that handle map
-	 * selection, saving and loading
+	 * The following classes are actions attributed to the buttons that handle
+	 * map selection, saving and loading
 	 */
 	private class DefaultMapSelect extends AbstractAction {
 		public DefaultMapSelect() {

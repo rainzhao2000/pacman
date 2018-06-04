@@ -19,6 +19,7 @@ import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -69,7 +70,7 @@ public class Game implements KeyListener {
 		lblScore.setBounds(20, 23, 238, 16);
 		frmGame.getContentPane().add(lblScore);
 
-		canvas = new DrawPanel(frmGame, false, false, Main.framerate);
+		canvas = new DrawPanel(frmGame, true, false, false, Main.framerate);
 		canvas.setBounds(20, 50, Main.mapWidth, Main.mapHeight);
 		frmGame.getContentPane().add(canvas);
 

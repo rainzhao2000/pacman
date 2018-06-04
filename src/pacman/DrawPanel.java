@@ -44,9 +44,8 @@ public class DrawPanel extends JPanel implements ActionListener {
 	/*
 	 * DrawPanel constructor sets paused and timer states
 	 */
-	public DrawPanel(Component parent, boolean doDrawGrid, boolean isFixed, int framerate) {
+	public DrawPanel(Component parent, boolean paused, boolean doDrawGrid, boolean isFixed, int framerate) {
 		this.parent = parent;
-		paused = false;
 		this.doDrawGrid = doDrawGrid;
 		this.isFixed = isFixed;
 		this.framerate = framerate;
@@ -54,6 +53,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 			fixMaps();
 		}
 		reset(false);
+		this.paused = paused;
 		frameTimer = new Timer(1000 / framerate, this);
 		frameTimer.start();
 	}
@@ -76,8 +76,6 @@ public class DrawPanel extends JPanel implements ActionListener {
 			currentMap();
 			if (!firstTime) {
 				respawnCharacters(false);
-			} else {
-				firstTime = false;
 			}
 		}
 		Main.pacman.setLives(Main.pacmanLives);
@@ -85,13 +83,22 @@ public class DrawPanel extends JPanel implements ActionListener {
 		for (Ghost g : Main.ghosts) {
 			g.scanPortals();
 		}
-		setPaused(false);
+		paused = false;
 	}
 
 	/*
 	 * Repaints the panel at the conditions of the timer
 	 */
 	public void actionPerformed(ActionEvent e) {
+		if (firstTime) {
+			int input = JOptionPane.showConfirmDialog(parent, "Start game?", "Welcome to Pacman", JOptionPane.YES_NO_OPTION);
+			if (input == JOptionPane.YES_OPTION) {
+				paused = false;
+				firstTime = false;
+			} else {
+				System.exit(0);
+			}
+		}
 		if (e.getSource() == frameTimer && !paused) {
 			Main.game.getScoreLabel().setText(Integer.toString(score));
 			if (Main.pacman.getLives() == 0) {
