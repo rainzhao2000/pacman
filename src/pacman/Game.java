@@ -19,7 +19,6 @@ import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -29,7 +28,7 @@ import pacman.Main.Direction;
 public class Game implements KeyListener {
 
 	private JFrame frmGame;
-	private JLabel lblScore, lblCurrentLives;
+	private JLabel lblScore, lblCurrentLives, lblDeath, lblPaused;
 	private JSpinner speedMultiplierSpinner;
 	private JPanel infoPanel;
 	private DrawPanel canvas;
@@ -77,6 +76,13 @@ public class Game implements KeyListener {
 		infoPanel = new JPanel();
 		infoPanel.setBounds(24, 392, 300, 40);
 		frmGame.getContentPane().add(infoPanel);
+
+		lblDeath = new JLabel("You Died!");
+		infoPanel.add(lblDeath);
+		lblDeath.setVisible(false);
+
+		lblPaused = new JLabel("Game Paused");
+		infoPanel.add(lblPaused);
 
 		JLabel lblDebugControls = new JLabel("Debug Panel");
 		lblDebugControls.setBounds(132, 434, 78, 16);
@@ -143,6 +149,14 @@ public class Game implements KeyListener {
 		return lblCurrentLives;
 	}
 
+	JLabel getDeathLabel() {
+		return lblDeath;
+	}
+
+	JLabel getPausedLabel() {
+		return lblPaused;
+	}
+
 	JSpinner getSpeedMultiplierSpinner() {
 		return speedMultiplierSpinner;
 	}
@@ -166,6 +180,9 @@ public class Game implements KeyListener {
 		if (code == KeyEvent.VK_DOWN) {
 			Main.pacman.logDir(Direction.down);
 		}
+		if (code == KeyEvent.VK_P) {
+			canvas.setPaused(!canvas.getPaused());
+		}
 	}
 
 	@Override
@@ -188,10 +205,10 @@ public class Game implements KeyListener {
 		}
 
 		/*
-		 * When the component this action is attached to is triggered, pause the current
-		 * canvas rendering (so that resources can be allocated to the MapCreator
-		 * canvas), then try to close any existing open MapCreator window and
-		 * instantiate a new MapCreator window
+		 * When the component this action is attached to is triggered, pause the
+		 * current canvas rendering (so that resources can be allocated to the
+		 * MapCreator canvas), then try to close any existing open MapCreator
+		 * window and instantiate a new MapCreator window
 		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {

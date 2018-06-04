@@ -32,6 +32,8 @@ public class DrawPanel extends JPanel implements ActionListener {
 
 	private Component parent;
 	private Timer frameTimer, respawnTimer;
+	private JLabel lblDeath;
+	private JLabel lblPaused;
 
 	private int framerate;
 	private int score;
@@ -91,13 +93,20 @@ public class DrawPanel extends JPanel implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (firstTime) {
-			int input = JOptionPane.showConfirmDialog(parent, "Start game?", "Welcome to Pacman", JOptionPane.YES_NO_OPTION);
+			int input = JOptionPane.showConfirmDialog(parent,
+					"Instructions:\n\tarrow keys to move,\n\tpress P to pause/unpause\nStart game?",
+					"Welcome to Pacman", JOptionPane.YES_NO_OPTION);
 			if (input == JOptionPane.YES_OPTION) {
 				paused = false;
 				firstTime = false;
 			} else {
 				System.exit(0);
 			}
+		}
+		if (paused) {
+			informPaused();
+		} else {
+			clearLblPaused();
 		}
 		if (e.getSource() == frameTimer && !paused) {
 			Main.game.getScoreLabel().setText(Integer.toString(score));
@@ -120,12 +129,11 @@ public class DrawPanel extends JPanel implements ActionListener {
 				exeption.printStackTrace();
 			}
 			respawnTimer.stop();
-			Main.game.getInfoPanel().removeAll();
-			Main.game.getInfoPanel().setVisible(false);
+			clearLblDeath();
 
 		}
 	}
-	
+
 	private void fixMaps() {
 		defaultMap();
 		updateCurrentMap(map);
@@ -193,11 +201,21 @@ public class DrawPanel extends JPanel implements ActionListener {
 		respawnTimer = new Timer(1 * 1000 / framerate, this);
 		respawnTimer.start();
 	}
-	
+
 	private void informDeath() {
-		JLabel lblDeath = new JLabel("You died!");
-		Main.game.getInfoPanel().add(lblDeath);
-		Main.game.getInfoPanel().setVisible(true);
+		Main.game.getDeathLabel().setVisible(true);
+	}
+
+	private void clearLblDeath() {
+		Main.game.getDeathLabel().setVisible(false);
+	}
+
+	private void informPaused() {
+		Main.game.getPausedLabel().setVisible(true);
+	}
+
+	private void clearLblPaused() {
+		Main.game.getPausedLabel().setVisible(false);
 	}
 
 	/*
@@ -517,6 +535,10 @@ public class DrawPanel extends JPanel implements ActionListener {
 
 	void setScore(int score) {
 		this.score = score;
+	}
+
+	boolean getPaused() {
+		return paused;
 	}
 
 	void setPaused(boolean state) {

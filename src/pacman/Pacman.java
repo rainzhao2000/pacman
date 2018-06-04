@@ -23,7 +23,8 @@ public class Pacman extends Character {
 	void draw(Graphics g) {
 		if (canvas.inBounds(row, col) && !isFixed) {
 			checkSurrounding();
-			// if (x0 == col * Main.tilePadWidth && y0 == row * Main.tilePadWidth) {
+			// if (x0 == col * Main.tilePadWidth && y0 == row *
+			// Main.tilePadWidth) {
 			checkCurrent();
 			// }
 		}
