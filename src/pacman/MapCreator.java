@@ -445,14 +445,4 @@ public class MapCreator {
 			}
 		}
 	}
-
-	// private class SwingAction extends AbstractAction {
-	// public SwingAction() {
-	// putValue(NAME, "SwingAction");
-	// putValue(SHORT_DESCRIPTION, "Some short description");
-	// }
-	//
-	// public void actionPerformed(ActionEvent e) {
-	// }
-	// }
 }
