@@ -1,3 +1,9 @@
+/*
+ * Collaborators: Jacky Zhao and Rain Zhao
+ * Date: June 4, 2018
+ * Description: This class allows user to create their own map.
+ */
+
 package pacman;
 
 import java.awt.event.ActionEvent;
@@ -32,6 +38,7 @@ import pacman.Main.Code;
 
 public class MapCreator {
 
+	// declaring and/or initializing variables
 	private Code[][] map = Main.map;
 	private Code currentObject = Code.path;
 
@@ -58,12 +65,11 @@ public class MapCreator {
 	private final Action openMapSelect = new OpenMapSelect();
 	private final Action saveMapSelect = new SaveMapSelect();
 
-	/**
-	 * Create the application.
-	 */
+	// constructor
 	public MapCreator() {
 		initialize();
-		// Unpause the canvas rendering in Game on close of MapCreator
+		// resume the DrawPanel object and reset the game with new map when the
+		// MapCreator window is closed
 		frmMapCreator.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(WindowEvent winEvt) {
 				Main.pacmanLives = (int) ((double) (pacmanLivesSpinner.getValue()));
@@ -84,7 +90,7 @@ public class MapCreator {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		// Set up the window (frame), and its elements
+		// Set up the window and all its elements
 		frmMapCreator = new JFrame();
 		frmMapCreator.setResizable(false);
 		frmMapCreator.setTitle("Pac-Man Map Creator");
@@ -207,17 +213,19 @@ public class MapCreator {
 		frmMapCreator.getContentPane().add(lblLives);
 	}
 
+	// accessor method
 	JFrame getFrame() {
 		return frmMapCreator;
 	}
 
+	// accessor method
 	DrawPanel getCanvas() {
 		return canvas;
 	}
 
 	/*
-	 * The following classes are Actions attributed to button components in the
-	 * frame and sets the currentObject
+	 * The following classes are AbstractActions attributed to button components in
+	 * the frame and sets the currentObject
 	 */
 	private class PathSelect extends AbstractAction {
 		public PathSelect() {
@@ -330,8 +338,8 @@ public class MapCreator {
 	}
 
 	/*
-	 * The following classes are actions attributed to the buttons that handle
-	 * map selection, saving and loading
+	 * The following classes are actions attributed to the buttons that handle map
+	 * selection, saving and loading
 	 */
 	private class DefaultMapSelect extends AbstractAction {
 		public DefaultMapSelect() {
@@ -438,13 +446,13 @@ public class MapCreator {
 		}
 	}
 
-	private class SwingAction extends AbstractAction {
-		public SwingAction() {
-			putValue(NAME, "SwingAction");
-			putValue(SHORT_DESCRIPTION, "Some short description");
-		}
-
-		public void actionPerformed(ActionEvent e) {
-		}
-	}
+	// private class SwingAction extends AbstractAction {
+	// public SwingAction() {
+	// putValue(NAME, "SwingAction");
+	// putValue(SHORT_DESCRIPTION, "Some short description");
+	// }
+	//
+	// public void actionPerformed(ActionEvent e) {
+	// }
+	// }
 }
