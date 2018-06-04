@@ -83,7 +83,7 @@ public class Character implements ActionListener {
 		} else {
 			g.setColor(color);
 		}
-		g.fillOval(x0, y0, Main.tilePadWidth, Main.tilePadWidth);
+		drawShape(g);
 		if (move) {
 			if (doAnimate) {
 				switch (dir) {
@@ -108,6 +108,10 @@ public class Character implements ActionListener {
 		}
 	}
 
+	protected void drawShape(Graphics g) {
+
+	}
+	
 	protected void checkSurrounding() {
 		doAnimate = true;
 		left = checkTile(row, col - 1);

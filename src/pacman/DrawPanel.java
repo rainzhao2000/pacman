@@ -117,6 +117,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 			repaint();
 		} else if (e.getSource() == respawnTimer && !paused) {
 			if (Main.pacman.getLives() == 0) {
+				paused = true;
 				int input = JOptionPane.showConfirmDialog(parent, "Game over\nPlay again?", "Game Over",
 						JOptionPane.YES_NO_OPTION);
 				if (input == JOptionPane.YES_OPTION) {

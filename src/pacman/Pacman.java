@@ -30,6 +30,11 @@ public class Pacman extends Character {
 		}
 		animate(g);
 	}
+	
+	@Override
+	protected void drawShape(Graphics g) {
+		g.fillOval(x0, y0, Main.tilePadWidth, Main.tilePadWidth);
+	}
 
 	@Override
 	protected void selectDir() {

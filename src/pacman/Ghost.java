@@ -27,6 +27,12 @@ public class Ghost extends Character {
 	}
 
 	@Override
+	protected void drawShape(Graphics g) {
+		g.fillOval(x0, y0, Main.tilePadWidth, Main.tilePadWidth);
+		g.fillRect(x0, (int) y, Main.tilePadWidth, Main.tilePadWidth / 2);
+	}
+
+	@Override
 	protected void selectDir() {
 
 		lastDir = dir;
