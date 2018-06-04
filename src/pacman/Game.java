@@ -244,7 +244,7 @@ public class Game implements KeyListener {
 		}
 	}
 
-	// following 3 classes are abstract classes for each actions
+	// following 3 classes are AbstractAction classes for each actions
 	private class TogglePosAction extends AbstractAction {
 		public TogglePosAction() {
 			putValue(NAME, "Toggle Pos");

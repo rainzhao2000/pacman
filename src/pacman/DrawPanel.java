@@ -158,7 +158,6 @@ public class DrawPanel extends JPanel implements ActionListener {
 					System.exit(0);
 				}
 			}
-
 			// freeze the game for 2 seconds
 			try {
 				Thread.sleep(2000);
@@ -169,7 +168,6 @@ public class DrawPanel extends JPanel implements ActionListener {
 			// restore the timer and the label
 			respawnTimer.stop();
 			clearLblDeath();
-
 		}
 	}
 
@@ -181,9 +179,12 @@ public class DrawPanel extends JPanel implements ActionListener {
 
 	// This method detects whether a stage is completed
 	private boolean checkStagePass() {
+		// if the map does not have any edible objects in the beginning
 		if (this.edibleOjectCounter == 0) {
 			return false;
-		} else if (this.edibleObjectEaten >= this.edibleOjectCounter) {
+		} // if the edible objects that are eaten is equal to the edible object detected
+		else if (this.edibleObjectEaten >= this.edibleOjectCounter) {
+			// double check
 			for (int row = 0; row < map.length; row++) {
 				for (int col = 0; col < map[row].length; col++) {
 					if (map[row][col] == Code.pacdot || map[row][col] == Code.powerPellet
@@ -192,15 +193,20 @@ public class DrawPanel extends JPanel implements ActionListener {
 					}
 				}
 			}
+			// return true
 			return true;
 		}
+		// any other case, return false
 		return false;
 	}
 
+	// This method increase the number of edible objects eaten by 1
 	protected void incrementEdibleObjectEaten() {
 		this.edibleObjectEaten++;
 	}
 
+	// This method scan the map and count the number of edible objects and store the
+	// information in the edibleObjectCounter variable
 	private void scanMap() {
 		for (int row = 0; row < map.length; row++) {
 			for (int col = 0; col < map[row].length; col++) {
@@ -211,6 +217,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	// This method detects whether the current map is the default map
 	private boolean currentMapIsDefault() throws IOException {
 		BufferedReader reader1 = new BufferedReader(new FileReader("./default map.txt"));
 		BufferedReader reader2 = new BufferedReader(new FileReader("./current map.txt"));
@@ -237,17 +244,24 @@ public class DrawPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	// This method changes the variables when the game moves to the next stage
 	private void nextStage(boolean newMap) {
+		// reset the game but keep the current pacman lives
 		int tempPacmanLives = Main.pacman.getLives();
 		resetMap(newMap);
 		Main.pacman.setLives(tempPacmanLives);
+
+		// increase the speed of the game
 		Object value = Main.game.getSpeedMultiplierSpinner().getValue();
 		Main.game.getSpeedMultiplierSpinner().setValue((double) value * 1.1);
+
+		// reduce the ghost edible time
 		for (Ghost g : Main.ghosts) {
 			g.edibleTime *= 0.9;
 		}
 	}
 
+	// respawn all characters
 	public void respawnCharacters(boolean died) {
 		Main.pacman.respawn();
 		for (Ghost g : Main.ghosts) {
@@ -261,25 +275,27 @@ public class DrawPanel extends JPanel implements ActionListener {
 		respawnTimer.start();
 	}
 
+	// show the label that pacman has died
 	private void informDeath() {
 		Main.game.getDeathLabel().setVisible(true);
 	}
 
+	// remove the label that pacman has died
 	private void clearLblDeath() {
 		Main.game.getDeathLabel().setVisible(false);
 	}
 
+	// show the label that the game is paused
 	private void informPaused() {
 		Main.game.getPausedLabel().setVisible(true);
 	}
 
+	// remove the label that the game is paused
 	private void clearLblPaused() {
 		Main.game.getPausedLabel().setVisible(false);
 	}
 
-	/*
-	 * Handles all painting
-	 */
+	// This method handles all painting
 	protected void paintComponent(Graphics g) {
 		drawMap(g);
 		if (doDrawGrid) {
@@ -298,9 +314,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 		}
 	}
 
-	/*
-	 * Temporary draw map method with simplified colors instead of sprites
-	 */
+	// This method draws the map of the game
 	private void drawMap(Graphics g) {
 		for (int row = 0; row < map.length; row++) {
 			for (int col = 0; col < map[row].length; col++) {
@@ -333,9 +347,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 		}
 	}
 
-	/*
-	 * Temporary color getter
-	 */
+	// This method returns the corresponding color
 	private Color getColor(Code code) {
 		switch (code) {
 		case path:
@@ -365,9 +377,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 		}
 	}
 
-	/*
-	 * Draw Main.padding guides at every row and column (forming a visual grid)
-	 */
+	// This method draws the grid
 	private void drawGrid(Graphics g) {
 		// Draw horizontal guides
 		g.setColor(Color.green);
@@ -385,9 +395,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 		}
 	}
 
-	/*
-	 * Reset all elements in map array to path
-	 */
+	// This method sets all elements in the 2D array to path
 	void blankMap() {
 		Main.tempGhosts = new ArrayList<Ghost>();
 		for (int row = 0; row < map.length; row++) {
@@ -397,6 +405,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	// This method reads the current map into the 2D array
 	private void currentMap() {
 		// Generate file from path 'current map.txt'
 		ArrayList<String> lines = new ArrayList<String>();
@@ -433,6 +442,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	// This method updates the current map file to the more recent map created
 	void updateCurrentMap(Code[][] map) {
 		// Get the code values of each element in map array and add to
 		// ArrayList of strings
@@ -454,9 +464,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 		}
 	}
 
-	/*
-	 * Looks for 'default map.txt' in current directory and uploads it to map
-	 */
+	// Looks for 'default map.txt' in current directory and uploads it to map
 	void defaultMap() {
 		// Generate file from path 'default map.txt'
 		ArrayList<String> lines = new ArrayList<String>();
@@ -493,10 +501,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 		}
 	}
 
-	/*
-	 * Looks up an ArrayList of strings and adds the Codes objects obtained from the
-	 * code values to the map array
-	 */
+	// This method upload the ArrayList of Strings to the 2D array map
 	boolean uploadMap(ArrayList<String> lines) {
 		try {
 			Main.tempGhosts = new ArrayList<Ghost>();
@@ -513,13 +518,14 @@ public class DrawPanel extends JPanel implements ActionListener {
 		return true;
 	}
 
+	// This method upload a single tile to the 2D array map
 	private void uploadTile(Code code, int row, int col) {
 		removeOccupiedGhostSpawn(row, col);
 		if (code == Code.pacman) {
 			try {
 				map[Main.tempPacman.getRow()][Main.tempPacman.getCol()] = Code.path;
 			} catch (NullPointerException e) {
-				System.out.println("tempPacman first init");
+
 			}
 			Main.tempPacman = new Pacman(this, Direction.down, row, col, true, 3);
 		} else if (code == Code.blinky) {
@@ -534,6 +540,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 		map[row][col] = code;
 	}
 
+	// This method remove occupied ghost spawn
 	private void removeOccupiedGhostSpawn(int row, int col) {
 		Iterator<Ghost> iter = Main.tempGhosts.iterator();
 		while (iter.hasNext()) {
@@ -544,8 +551,8 @@ public class DrawPanel extends JPanel implements ActionListener {
 	}
 
 	/*
-	 * Finds the element in map array corresponding to position of mouse cursor and
-	 * sets the element to a specified code
+	 * This method finds the element in map array corresponding to position of mouse
+	 * cursor and sets the element to a specified code
 	 */
 	void setTile(MouseEvent e, Code code) {
 		int row = e.getY() / Main.tilePadWidth;
@@ -555,6 +562,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	// This method initialize the characters
 	private void initCharacters() {
 		Main.ghosts = new ArrayList<Ghost>();
 		for (Ghost tempGhost : Main.tempGhosts) {
@@ -565,49 +573,56 @@ public class DrawPanel extends JPanel implements ActionListener {
 				Main.pacmanLives);
 	}
 
+	// This method stops the refresh timer
 	void close() {
 		frameTimer.stop();
 	}
 
-	/*
-	 * 
-	 */
+	// This method sets all ghosts to edible state
 	void setGhostsEdible() {
 		for (Ghost ghost : Main.ghosts) {
 			ghost.setEdible(true);
 			ghost.setSpeed(ghost.getStdSpeed() * 0.6);
 		}
-		// reset edible timer of each ghost
 	}
 
+	// This method returns true if the given location is within the bound, otherwise
+	// return false
 	boolean inBounds(int row, int col) {
 		return row >= 0 && row < map.length && col >= 0 && col < map[0].length;
 	}
 
+	// accessor method
 	int getFramerate() {
 		return framerate;
 	}
 
+	// accessor method
 	int getScore() {
 		return score;
 	}
 
+	// modifier method
 	void setScore(int score) {
 		this.score = score;
 	}
 
+	// accessor method
 	boolean getPaused() {
 		return paused;
 	}
 
+	// modifier method
 	void setPaused(boolean state) {
 		paused = state;
 	}
 
+	// accessor method
 	boolean getDoDrawGrid() {
 		return doDrawGrid;
 	}
 
+	// modifier method
 	void setDoDrawGrid(boolean state) {
 		doDrawGrid = state;
 	}
