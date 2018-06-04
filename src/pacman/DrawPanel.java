@@ -92,7 +92,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 	 * Repaints the panel at the conditions of the timer
 	 */
 	public void actionPerformed(ActionEvent e) {
-		if (firstTime) {
+		if (!isFixed && firstTime) {
 			int input = JOptionPane.showConfirmDialog(parent,
 					"Instructions:\n\tarrow keys to move,\n\tpress P to pause/unpause\nStart game?",
 					"Welcome to Pacman", JOptionPane.YES_NO_OPTION);
@@ -110,18 +110,21 @@ public class DrawPanel extends JPanel implements ActionListener {
 		}
 		if (e.getSource() == frameTimer && !paused) {
 			Main.game.getScoreLabel().setText(Integer.toString(score));
-			if (Main.pacman.getLives() == 0) {
-				// game over
-				System.out.println("GAME OVER");
-				Main.game.getCurrentLivesLabel().setText(Integer.toString(Main.pacman.getLives()));
-			} else {
-				Main.game.getCurrentLivesLabel().setText(Integer.toString(Main.pacman.getLives()));
-			}
+			Main.game.getCurrentLivesLabel().setText(Integer.toString(Main.pacman.getLives()));
 			if (checkStagePass() && !isFixed) {
 				nextStage(false);
 			}
 			repaint();
 		} else if (e.getSource() == respawnTimer && !paused) {
+			if (Main.pacman.getLives() == 0) {
+				int input = JOptionPane.showConfirmDialog(parent, "Game over\nPlay again?", "Game Over",
+						JOptionPane.YES_NO_OPTION);
+				if (input == JOptionPane.YES_OPTION) {
+					reset(false);
+				} else {
+					System.exit(0);
+				}
+			}
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException exeption) {
