@@ -1,3 +1,9 @@
+/*
+ * Collaborators: Jacky Zhao and Rain Zhao
+ * Date: June 4, 2018
+ * Description: This class is the actual pacman game.
+ */
+
 package pacman;
 
 import java.awt.Color;
@@ -17,6 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.SynchronousQueue;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -28,25 +35,24 @@ import pacman.Main.Direction;
 
 public class DrawPanel extends JPanel implements ActionListener {
 
+	// declaring and/or initializing variables
 	private Code[][] map = Main.map;
 
 	private Component parent;
 	private Timer frameTimer, respawnTimer;
-	private JLabel lblDeath;
-	private JLabel lblPaused;
 
 	private int framerate;
 	private int score;
+	private int edibleOjectCounter, edibleObjectEaten;
 
 	private boolean paused;
 	private boolean doDrawGrid;
 	private boolean isFixed;
 	private boolean firstTime = true;
 
-	/*
-	 * DrawPanel constructor sets paused and timer states
-	 */
+	// constructor
 	public DrawPanel(Component parent, boolean paused, boolean doDrawGrid, boolean isFixed, int framerate) {
+		// assigning values from parameter to local variables
 		this.parent = parent;
 		this.doDrawGrid = doDrawGrid;
 		this.isFixed = isFixed;
@@ -54,12 +60,17 @@ public class DrawPanel extends JPanel implements ActionListener {
 		if (!isFixed) {
 			fixMaps();
 		}
+
 		reset(false);
 		this.paused = paused;
+		this.edibleOjectCounter = 0;
+		this.edibleObjectEaten = 0;
+
 		frameTimer = new Timer(1000 / framerate, this);
 		frameTimer.start();
 	}
 
+	// This method resets the entire pacman game
 	void reset(boolean newMap) {
 		resetMap(newMap);
 		score = 0;
@@ -70,6 +81,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	// This method resets the map and the characters of the pacman game
 	private void resetMap(boolean newMap) {
 		if (!isFixed) {
 			initCharacters();
@@ -80,18 +92,29 @@ public class DrawPanel extends JPanel implements ActionListener {
 				respawnCharacters(false);
 			}
 		}
+		// set pacman lives
 		Main.pacman.setLives(Main.pacmanLives);
+		// scan portals
 		Main.pacman.scanPortals();
+
+		// scan portals
 		for (Ghost g : Main.ghosts) {
 			g.scanPortals();
 		}
+
+		// reset counter
+		edibleOjectCounter = 0;
+		edibleObjectEaten = 0;
+		// rescan map
+		scanMap();
+
+		// resume the game
 		paused = false;
 	}
 
-	/*
-	 * Repaints the panel at the conditions of the timer
-	 */
+	// Repaints the panel at the conditions of the timer
 	public void actionPerformed(ActionEvent e) {
+		// if this is the first game, show pop up window for instructions
 		if (!isFixed && firstTime) {
 			int input = JOptionPane.showConfirmDialog(parent,
 					"Instructions:\n\tarrow keys to move,\n\tpress P to pause/unpause\nStart game?",
@@ -99,15 +122,20 @@ public class DrawPanel extends JPanel implements ActionListener {
 			if (input == JOptionPane.YES_OPTION) {
 				paused = false;
 				firstTime = false;
+				scanMap();
 			} else {
 				System.exit(0);
 			}
 		}
+
+		// if the game is paused
 		if (paused) {
 			informPaused();
 		} else {
 			clearLblPaused();
 		}
+
+		// if it is time to refresh and the game is not paused
 		if (e.getSource() == frameTimer && !paused) {
 			Main.game.getScoreLabel().setText(Integer.toString(score));
 			Main.game.getCurrentLivesLabel().setText(Integer.toString(Main.pacman.getLives()));
@@ -115,9 +143,13 @@ public class DrawPanel extends JPanel implements ActionListener {
 				nextStage(false);
 			}
 			repaint();
-		} else if (e.getSource() == respawnTimer && !paused) {
+		} // if it the end of the game or the pacman died
+		else if (e.getSource() == respawnTimer && !paused) {
+			// if it is the end of the game
 			if (Main.pacman.getLives() == 0) {
+				// pause the game
 				paused = true;
+				// show the pop up message
 				int input = JOptionPane.showConfirmDialog(parent, "Game over\nPlay again?", "Game Over",
 						JOptionPane.YES_NO_OPTION);
 				if (input == JOptionPane.YES_OPTION) {
@@ -126,39 +158,57 @@ public class DrawPanel extends JPanel implements ActionListener {
 					System.exit(0);
 				}
 			}
+
+			// freeze the game for 2 seconds
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException exeption) {
-				// TODO Auto-generated catch block
 				exeption.printStackTrace();
 			}
+
+			// restore the timer and the label
 			respawnTimer.stop();
 			clearLblDeath();
 
 		}
 	}
 
+	// This method restores the map to the default map
 	private void fixMaps() {
 		defaultMap();
 		updateCurrentMap(map);
 	}
 
+	// This method detects whether a stage is completed
 	private boolean checkStagePass() {
-		try {
-			if (!currentMapIsDefault()) {
-				return false;
+		if (this.edibleOjectCounter == 0) {
+			return false;
+		} else if (this.edibleObjectEaten >= this.edibleOjectCounter) {
+			for (int row = 0; row < map.length; row++) {
+				for (int col = 0; col < map[row].length; col++) {
+					if (map[row][col] == Code.pacdot || map[row][col] == Code.powerPellet
+							|| map[row][col] == Code.fruit) {
+						return false;
+					}
+				}
 			}
-		} catch (IOException e) {
-			fixMaps();
+			return true;
 		}
+		return false;
+	}
+
+	protected void incrementEdibleObjectEaten() {
+		this.edibleObjectEaten++;
+	}
+
+	private void scanMap() {
 		for (int row = 0; row < map.length; row++) {
 			for (int col = 0; col < map[row].length; col++) {
 				if (map[row][col] == Code.pacdot || map[row][col] == Code.powerPellet || map[row][col] == Code.fruit) {
-					return false;
+					this.edibleOjectCounter++;
 				}
 			}
 		}
-		return true;
 	}
 
 	private boolean currentMapIsDefault() throws IOException {
@@ -188,9 +238,14 @@ public class DrawPanel extends JPanel implements ActionListener {
 	}
 
 	private void nextStage(boolean newMap) {
+		int tempPacmanLives = Main.pacman.getLives();
 		resetMap(newMap);
+		Main.pacman.setLives(tempPacmanLives);
 		Object value = Main.game.getSpeedMultiplierSpinner().getValue();
 		Main.game.getSpeedMultiplierSpinner().setValue((double) value * 1.1);
+		for (Ghost g : Main.ghosts) {
+			g.edibleTime *= 0.9;
+		}
 	}
 
 	public void respawnCharacters(boolean died) {
@@ -439,8 +494,8 @@ public class DrawPanel extends JPanel implements ActionListener {
 	}
 
 	/*
-	 * Looks up an ArrayList of strings and adds the Codes objects obtained from
-	 * the code values to the map array
+	 * Looks up an ArrayList of strings and adds the Codes objects obtained from the
+	 * code values to the map array
 	 */
 	boolean uploadMap(ArrayList<String> lines) {
 		try {
@@ -489,8 +544,8 @@ public class DrawPanel extends JPanel implements ActionListener {
 	}
 
 	/*
-	 * Finds the element in map array corresponding to position of mouse cursor
-	 * and sets the element to a specified code
+	 * Finds the element in map array corresponding to position of mouse cursor and
+	 * sets the element to a specified code
 	 */
 	void setTile(MouseEvent e, Code code) {
 		int row = e.getY() / Main.tilePadWidth;

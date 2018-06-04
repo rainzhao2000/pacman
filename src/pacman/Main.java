@@ -1,3 +1,11 @@
+/*
+ * Collaborators: Jacky Zhao and Rain Zhao
+ * Date: June 4, 2018
+ * Description: This class is the Main class that stores the main components of the game, it contains an instance 
+ * 				of game, pacman, ghosts, and other useful things. Also, the enum that is used throughout the 
+ * 				program is also written in this class.
+ */
+
 package pacman;
 
 import java.awt.EventQueue;
@@ -8,8 +16,7 @@ import java.util.Map;
 public class Main {
 
 	/*
-	 * Enumerator handles codes of elements that will be referenced from map
-	 * array
+	 * Enumerator handles codes of elements that will be referenced from map array
 	 */
 	static enum Code {
 
@@ -20,8 +27,8 @@ public class Main {
 		private static final Map<Integer, Code> codeIndex = new HashMap<Integer, Code>();
 
 		/*
-		 * Make a HashMap to hold references to Codes objects by reference of
-		 * their values
+		 * Make a HashMap to hold references to Codes objects by reference of their
+		 * values
 		 */
 		static {
 			for (Code code : Code.values()) {
@@ -52,6 +59,9 @@ public class Main {
 
 	}
 
+	/*
+	 * Direction enum handles all directions
+	 */
 	static enum Direction {
 
 		left(1), right(2), up(3), down(4);
@@ -59,25 +69,40 @@ public class Main {
 		private final int dir;
 		private static final Map<Integer, Direction> dirIndex = new HashMap<Integer, Direction>();
 
+		/*
+		 * Make a HashMap to hold references to Codes objects by reference of their
+		 * values
+		 */
 		static {
 			for (Direction dir : Direction.values()) {
 				dirIndex.put(dir.getDir(), dir);
 			}
 		}
 
+		/*
+		 * constructor
+		 */
 		Direction(int dir) {
 			this.dir = dir;
 		}
 
+		/*
+		 * Returns the code value of a Codes object
+		 */
 		int getDir() {
 			return dir;
 		}
 
+		/*
+		 * Returns the Codes object of a code value
+		 */
 		static Direction lookupByValue(int dir) {
 			return dirIndex.get(dir);
 		}
 
 	}
+
+	// declaration and/or initialization of static elements
 
 	static Code[][] map = new Code[31][28];
 
@@ -95,10 +120,12 @@ public class Main {
 	static final int mapHeight = map.length * tileWidth + (map.length + 1) * padding;
 	static final int framerate = 240;
 
+	// main method created with WindowBuilder
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					// creates instance of Game
 					game = new Game();
 					game.getFrame().setVisible(true);
 				} catch (Exception e) {

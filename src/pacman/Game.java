@@ -1,7 +1,9 @@
 /*
  * Collaborators: Jacky Zhao and Rain Zhao
- * Due Date: 1 Jun 2018
- * Description:
+ * Date: June 4, 2018
+ * Description: This class handles the entire game window, including all the 
+ * 				buttons and the actual pacman game. The actual pacman game 
+ * 				within the window is a DrawPanel object.
  */
 
 package pacman;
@@ -27,6 +29,10 @@ import pacman.Main.Direction;
 
 public class Game implements KeyListener {
 
+	/*
+	 * all private variables declaration and/or initialization
+	 */
+
 	private JFrame frmGame;
 	private JLabel lblScore, lblCurrentLives, lblDeath, lblPaused;
 	private JSpinner speedMultiplierSpinner;
@@ -39,14 +45,14 @@ public class Game implements KeyListener {
 	private final Action toggleGridAction = new ToggleGridAction();
 	private final Action resetAction = new ResetAction();
 
-	/**
-	 * Create the application.
+	/*
+	 * Constructor
 	 */
 	public Game() {
 		initialize();
 	}
 
-	/**
+	/*
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
@@ -69,6 +75,7 @@ public class Game implements KeyListener {
 		lblScore.setBounds(20, 23, 238, 16);
 		frmGame.getContentPane().add(lblScore);
 
+		// the "actual pacman game" object is created here
 		canvas = new DrawPanel(frmGame, true, false, false, Main.framerate);
 		canvas.setBounds(20, 50, Main.mapWidth, Main.mapHeight);
 		frmGame.getContentPane().add(canvas);
@@ -133,38 +140,47 @@ public class Game implements KeyListener {
 		frmGame.getContentPane().add(lblCurrentLives);
 	}
 
+	// accessor methods
 	JFrame getFrame() {
 		return frmGame;
 	}
 
+	// accessor methods
 	DrawPanel getCanvas() {
 		return canvas;
 	}
 
+	// accessor methods
 	JLabel getScoreLabel() {
 		return lblScore;
 	}
 
+	// accessor methods
 	JLabel getCurrentLivesLabel() {
 		return lblCurrentLives;
 	}
 
+	// accessor methods
 	JLabel getDeathLabel() {
 		return lblDeath;
 	}
 
+	// accessor methods
 	JLabel getPausedLabel() {
 		return lblPaused;
 	}
 
+	// accessor methods
 	JSpinner getSpeedMultiplierSpinner() {
 		return speedMultiplierSpinner;
 	}
 
+	// accessor methods
 	JPanel getInfoPanel() {
 		return infoPanel;
 	}
 
+	// the following 3 methods are for the KeyListener
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
@@ -205,10 +221,10 @@ public class Game implements KeyListener {
 		}
 
 		/*
-		 * When the component this action is attached to is triggered, pause the
-		 * current canvas rendering (so that resources can be allocated to the
-		 * MapCreator canvas), then try to close any existing open MapCreator
-		 * window and instantiate a new MapCreator window
+		 * When the component this action is attached to is triggered, pause the current
+		 * canvas rendering (so that resources can be allocated to the MapCreator
+		 * canvas), then try to close any existing open MapCreator window and
+		 * instantiate a new MapCreator window
 		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -228,6 +244,7 @@ public class Game implements KeyListener {
 		}
 	}
 
+	// following 3 classes are abstract classes for each actions
 	private class TogglePosAction extends AbstractAction {
 		public TogglePosAction() {
 			putValue(NAME, "Toggle Pos");
