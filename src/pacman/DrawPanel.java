@@ -39,6 +39,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 	private boolean paused;
 	private boolean doDrawGrid;
 	private boolean isFixed;
+	private boolean firstTime = true;
 
 	/*
 	 * DrawPanel constructor sets paused and timer states
@@ -49,6 +50,9 @@ public class DrawPanel extends JPanel implements ActionListener {
 		this.doDrawGrid = doDrawGrid;
 		this.isFixed = isFixed;
 		this.framerate = framerate;
+		if (!isFixed) {
+			fixMaps();
+		}
 		reset(false);
 		frameTimer = new Timer(1000 / framerate, this);
 		frameTimer.start();
@@ -66,14 +70,15 @@ public class DrawPanel extends JPanel implements ActionListener {
 
 	private void resetMap(boolean newMap) {
 		if (!isFixed) {
-			// Game.canvas
-			if (!newMap) {
-				currentMap();
-			}
 			initCharacters();
-		} else {
-			// MapCreator.canvas
-			defaultMap();
+		}
+		if (!newMap) {
+			currentMap();
+			if (!firstTime) {
+				respawnCharacters(false);
+			} else {
+				firstTime = false;
+			}
 		}
 		Main.pacman.setLives(Main.pacmanLives);
 		Main.pacman.scanPortals();
@@ -169,23 +174,23 @@ public class DrawPanel extends JPanel implements ActionListener {
 		Main.game.getSpeedMultiplierSpinner().setValue((double) value * 1.1);
 	}
 
-	public void respawnCharacters() {
+	public void respawnCharacters(boolean died) {
 		Main.pacman.respawn();
 		for (Ghost g : Main.ghosts) {
 			g.respawn();
 		}
 		Main.pacman.doAnimate = false;
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException exeption) {
-			// TODO Auto-generated catch block
-			exeption.printStackTrace();
+		if (died) {
+			informDeath();
 		}
+		respawnTimer = new Timer(1 * 1000 / framerate, this);
+		respawnTimer.start();
+	}
+	
+	private void informDeath() {
 		JLabel lblDeath = new JLabel("You died!");
 		Main.game.getInfoPanel().add(lblDeath);
 		Main.game.getInfoPanel().setVisible(true);
-		respawnTimer = new Timer(1 * 1000 / framerate, this);
-		respawnTimer.start();
 	}
 
 	/*

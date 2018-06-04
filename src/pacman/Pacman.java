@@ -51,13 +51,7 @@ public class Pacman extends Character {
 					ghost.respawn();
 					eatCounter++;
 				} else {
-					// lives--;
-					// respawn();
-					// for (Ghost g : Main.ghosts) {
-					// g.respawn();
-					// }
-					// doAnimate = false;
-					Main.game.getCanvas().respawnCharacters();
+					Main.game.getCanvas().respawnCharacters(true);
 					lives--;
 					break;
 				}
