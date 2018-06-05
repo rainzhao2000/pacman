@@ -370,6 +370,9 @@ public class MapCreator {
 		 * Looks for a chosen file in current directory and uploads it to map
 		 */
 		public void actionPerformed(ActionEvent e) {
+			// cache the current progress
+			Main.game.getCanvas().updateCurrentMap(map);
+
 			// Open JFileChooser dialog to import map file
 			ArrayList<String> lines = new ArrayList<String>();
 			File file = new File("current map.txt");
