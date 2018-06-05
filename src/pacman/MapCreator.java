@@ -372,7 +372,7 @@ public class MapCreator {
 		public void actionPerformed(ActionEvent e) {
 			// Open JFileChooser dialog to import map file
 			ArrayList<String> lines = new ArrayList<String>();
-			File file = new File("default map.txt");
+			File file = new File("current map.txt");
 			BufferedReader reader = null;
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));

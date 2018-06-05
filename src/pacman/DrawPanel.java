@@ -118,7 +118,7 @@ public class DrawPanel extends JPanel implements ActionListener {
 		if (!isFixed && firstTime) {
 			int input = JOptionPane.showConfirmDialog(parent,
 					"Instructions:\n\tarrow keys to move,\n\tpress P to pause/unpause\nStart game?",
-					"Welcome to Pacman", JOptionPane.YES_NO_OPTION);
+					"Welcome to Pac-Man", JOptionPane.YES_NO_OPTION);
 			if (input == JOptionPane.YES_OPTION) {
 				paused = false;
 				firstTime = false;
