@@ -217,33 +217,6 @@ public class DrawPanel extends JPanel implements ActionListener {
 		}
 	}
 
-	// This method detects whether the current map is the default map
-	private boolean currentMapIsDefault() throws IOException {
-		BufferedReader reader1 = new BufferedReader(new FileReader("./default map.txt"));
-		BufferedReader reader2 = new BufferedReader(new FileReader("./current map.txt"));
-		String line1 = reader1.readLine();
-		String line2 = reader2.readLine();
-		boolean areEqual = true;
-		while (line1 != null || line2 != null) {
-			if (line1 == null || line2 == null) {
-				areEqual = false;
-				break;
-			} else if (!line1.equalsIgnoreCase(line2)) {
-				areEqual = false;
-				break;
-			}
-			line1 = reader1.readLine();
-			line2 = reader2.readLine();
-		}
-		reader1.close();
-		reader2.close();
-		if (areEqual) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	// This method changes the variables when the game moves to the next stage
 	private void nextStage(boolean newMap) {
 		// reset the game but keep the current pacman lives
