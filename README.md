@@ -140,3 +140,82 @@ Your program must incorporate programming concepts learned throughout the course
 * Recursion 
 
 # Final Documentation
+
+<details>
+ <summary>Decription:</summary>
+ <br>
+For this project, we recreated a simplified version of Pac-Man with an added bonus of customizable game maps. In the game, the pac-dots, the power pellets, and the fruits (known as edibles) can be eaten by the pacman character. Every pac-dot eaten earns the player 10 points; every fruit, 100 points; and when the pacman eats a power pellet, the player will not only earn 50 points but also ghosts will slow down and become edible for 10 seconds. When all the edibles are eaten by the pacman, the level is clear and the player will enter the next stage. The map remains the same but will increase the speed of all characters by 10% and reduce the edible time of the ghosts by 10%.
+ 
+What is different in our version of Pacman, compared to the original Pacman game, is the AI logic of the ghost. We found that the complexity of the ghost AI in the original game is beyond our ability in the time allotted (see http://gameinternals.com/post/2072558330/understanding-pac-man-ghost-behavior). In the original game, the 4 ghosts have much more intricate details to their personalities and behaviour. Our ghosts instead, have a probability of pursuing the pacman when they are inedible and running away from the Pacman when they are edible. Blinky, the red ghost, will 100% pursue pacman when it is inedible and will 100% run away from pacman when itself is edible. In a similar way, Pinky the pink ghost, Inky the cyan ghost, and Clyde the yellow ghost will each have a probability of 75%, 50%, and 25%. When pacman is not in their line of sight towards the direction that they are moving, or if pacman is not visible from the intersection that they are in, the ghosts will randomly choose a direction and move on. Additionally, the ghosts know how to get out of dead ends or run away by turning 180 degrees.
+
+Our portal implementation differs a bit from the original game. Since we allow the user to put more than 2 portals, we have to modify the teleporting logic a little bit to make the game both reliable and enjoyable. If there are only a pair of portals, then by entering from any one of them will bring you to the other one. If there are more than 2 portals, the game will randomly teleport you to one of the many exits. The direction that the character was moving before they enter the portal will remain unchanged and carry on after they exit the portal. It is not possible to teleport again from the portal that the character just exit without moving out of the tile that contains the portal.
+
+We also implemented the ability to load and save the maps that the player have created so that when they want to replay a level that they have saved they can easily do so. In the Map Creator window the player can choose from a selection of items on the right side to draw into the map as well as change the lives counter. For debug purposes, we included toggle pos and toggle grid buttons to be able to see behind the scenes as well as a speed multiplier that can make the game run in fast or slow motion.
+</details>
+<details>
+ <summary>Screenshots</summary>
+</details>
+<details>
+ <summary>Details</summary>
+ <br>
+ <h4>Overview:</h4>
+Our game is built on object oriented programming. We have a total of seven classes: Main, Game, MapCreator, DrawPanel, Chararcter, Pacman, and Ghost. The Main class holds some important static elements which is referred to throughout the other classes, but other than that it holds the main method that instantiates a new game window. Using Eclipse Windowbuilder we designed the Game and MapCreator windows to hold the necessary buttons, spinners, labels, and other gui elements for the players to see and use. The Game class also listens for key presses to control the game and the MapCreator offers the tools: DrawPanel and buttons for map creation, saving, and loading. Our DrawPanel class is an extension of JPanel and handles all of logic and painting required to make the game run. DrawPanel is on a timer that paints at the conditions of a framerate, and for each frame all the objects in the map are updated. While most fixed elements of the map array can be painted from DrawPanel, our character objects including pacman and the ghosts need to be painted in their own away to make animations work. As pacman and the ghosts share similar methods and variables, we’ve decided to make a Character superclass that provides the platform for how the pacman and ghosts move, paint, and access their properties. The Pacman class itself has to handle player controls as well as checking conditions for running into walls, eating edibles, interacting with ghosts. Lastly, the ghost class is purely responsible for ray tracing pacman and deciding whether to chase based on given probability.
+
+<h4>Main:</h4>
+<ul>
+<li>Holds Code enum that we use as a reference to ingame elements</li>
+<li>Holds Direction enum that we use to indicate 4 directions for Character objects</li>
+<li>Holds Game and Character objects as well as map dimensions and framerate for references</li>
+<li>Instantiates Game</li>
+</ul>
+
+<h4>Game:</h4>
+<ul>
+<li>Holds score panel, game canvas panel, info panel and debug panel to show control surfaces and information</li>
+<li>Instantiates DrawPanel as a canvas</li>
+<li>Listens for arrow key controls and P pause</li>
+<li>Can instantiate MapCreator</li>
+</ul>
+
+<h4>MapCreator:</h4>
+<ul>
+<li>Holds a selection of buttons that correspond to ingame elements</li>
+<li>Instantiates its own DrawPanel as a fixed canvas for creating maps</li>
+<li>Can save the current map to a text file holding int values that correspond to enum elements</li>
+<li>Can open maps from reading the int values in a text file</li>
+<li>Implements created map on close</li>
+</ul>
+
+<h4>DrawPanel:</h4>
+<ul>
+<li>Updates every frame on a timer</li>
+<li>Starts with a JOptionPane prompt for the player to begin as well as informs player when game is paused and when game is over</li>
+<li>Draws the map by for looping through array</li>
+<li>Invokes the draw methods of the characters for animation</li>
+<li>Checks for stage completion, deaths, and can set ghost edibility</li>
+<li>Holds map modifying methods e.g setTile, uploadMap etc</li>
+</ul>
+
+<h4>Character:</h4>
+<ul>
+<li>Super class of pacman and ghost</li>
+<li>Holds characteristics such as position, row, column</li>
+<li>Holds super methods such as animate</li>
+<li>Holds super methods that are being overridden by subclasses</li>
+<li>Back bone of character</li>
+</ul>
+
+<h4>Pacman:</h4>
+<ul>
+<li>Keeps track of pacman’s position in terms of the map and window (x, y and row, col), as well as speed, direction and lives</li>
+<li>Checks the surrounding tiles for available spaces (e.g path, pac-dot, powerpellet, fruit, etc)</li>
+<li>Detects ghost collision and edibles</li>
+</ul>
+
+<h4>Ghost:</h4>
+<ul>
+<li>Extends Character</li>
+<li>Holds its own AI system for direction decision</li>
+<li>to be continued</li>
+</ul>
+</details>
