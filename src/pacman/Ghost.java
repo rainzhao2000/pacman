@@ -9,16 +9,23 @@ package pacman;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import javax.swing.Timer;
 
 import pacman.Main.Code;
 import pacman.Main.Direction;
 
-public class Ghost extends Character {
+public class Ghost extends Character implements ActionListener {
 	// declaring and/or initializing variables
 	private Direction lastDir;
 	private int lastRow, lastCol;
 	private double probability;
+	private Timer edibleTimer;
+
+	int edibleTime;
 
 	// constructor of the class
 	public Ghost(DrawPanel canvas, Direction dir, int row, int col, Color color, boolean isFixed, double probability) {
@@ -26,6 +33,8 @@ public class Ghost extends Character {
 		super(canvas, dir, row, col, color, isFixed);
 		// initialize the last direction to the given direction
 		lastDir = dir;
+		//
+		edibleTime = 10000;
 		// set the probability of chasing pacman or running away from pacman
 		this.probability = probability;
 	}
@@ -163,6 +172,33 @@ public class Ghost extends Character {
 			int randomIndex = (int) (Math.random() * availableDir.size());
 			dir = availableDir.get(randomIndex);
 		}
+	}
+
+	protected void setEdible(boolean state) {
+		if (state) {
+			if (!edible) {
+				firstEdible = true;
+			}
+			edibleTimer = new Timer(edibleTime, this);
+			edibleTimer.start();
+		} else {
+			try {
+				// if the timer exists, stop it
+				edibleTimer.stop();
+			} catch (NullPointerException e) {
+				// if the timer is never started, do nothing
+			}
+			speed = stdSpeed;
+		}
+		edible = state;
+	}
+
+	// when the character is no longer edible, set to inedible state
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == edibleTimer) {
+			setEdible(false);
+		}
+
 	}
 
 	// return the reverse direction

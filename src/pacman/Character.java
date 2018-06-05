@@ -19,7 +19,7 @@ import javax.swing.Timer;
 import pacman.Main.Code;
 import pacman.Main.Direction;
 
-public class Character implements ActionListener {
+public class Character {
 
 	// declaration and/or initialization of protected objects
 
@@ -27,12 +27,10 @@ public class Character implements ActionListener {
 
 	protected Direction dir;
 
-	protected Timer edibleTimer;
-
 	protected DrawPanel canvas;
 	protected Color color;
 
-	protected int rowSpawn, colSpawn, row, col, x0, y0, edibleTime, lastRow, lastCol;
+	protected int rowSpawn, colSpawn, row, col, x0, y0, lastRow, lastCol;
 	protected final double stdSpeed = 5;
 
 	// speed in tiles per second
@@ -64,7 +62,6 @@ public class Character implements ActionListener {
 		doShowPos = false;
 		edible = false;
 		firstEdible = false;
-		edibleTime = 10000;
 		move = true;
 		portals = new ArrayList<>();
 		lastRow = -1;
@@ -298,34 +295,6 @@ public class Character implements ActionListener {
 	// modifier method
 	void setDoShowPos(boolean state) {
 		doShowPos = state;
-	}
-
-	protected void setEdible(boolean state) {
-		// edible = state;
-		if (state) {
-			if (!edible) {
-				firstEdible = true;
-			}
-			edibleTimer = new Timer(edibleTime, this);
-			edibleTimer.start();
-		} else {
-			try {
-				// if the timer exists, stop it
-				edibleTimer.stop();
-			} catch (NullPointerException e) {
-				// if the timer is never started, do nothing
-			}
-			speed = stdSpeed;
-		}
-		edible = state;
-	}
-
-	// when the character is no longer edible, set to inedible state
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == edibleTimer) {
-			setEdible(false);
-		}
-
 	}
 
 	// a class that simply stores a row number and a column number
