@@ -21,6 +21,8 @@ git push
 ```
 Note: First time pushing requires `git push origin master` instead of `git push` and you can check the status of your files at any time with `git status`
 
+### Proposal
+
 <details>
  <summary>Description:</summary>
 <br>
@@ -33,7 +35,7 @@ When a Power Pellet is eaten the player gains 50 points and the Ghosts will turn
 Pac-Man can be controlled by the arrow keys, and only the most recent key is logged for operation when Pac-Man reaches an intersection. Pac-Man will, however, stop moving upon collision with a wall if no input is received. The ghosts, named: Blinky (red), Pinky (pink), Inky (cyan), and Clyde (orange), each have their own personalities, cannot turn 180 degrees except when they first become edible, move 5% faster than Pac-Man when they are inedible, and move 5% slower when edible. Blinky will move randomly until it sees Pac-Man in its line of sight, and will pursue in his direction until he either eats Pac-Man or reaches an intersection/corner where he then picks a random available direction to look in. If Blinky can no longer find Pac-Man in its direction at this point, it will continue its random behaviour. Pinky will exhibit the same behaviour as Blinky, but there is a random chance it can decide to turn at an intersection and move around a block of the maze to try to intercept Pac-Man on the other side. Inky will exhibit Blinky’s behaviour 75% of the time and wander aimlessly the other 25% of the time while Clyde will exhibit Blinky’s behaviour only 50% of the time.
 </details>
  
-### Details:
+#### Details:
 * #### Objects:
   * Pacman
     * Variables:
