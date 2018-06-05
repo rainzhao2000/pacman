@@ -21,7 +21,7 @@ git push
 ```
 Note: First time pushing requires `git push origin master` instead of `git push` and you can check the status of your files at any time with `git status`
 
-## Proposal
+# Proposal
 
 <details>
  <summary>Description:</summary>
@@ -35,48 +35,86 @@ When a Power Pellet is eaten the player gains 50 points and the Ghosts will turn
 Pac-Man can be controlled by the arrow keys, and only the most recent key is logged for operation when Pac-Man reaches an intersection. Pac-Man will, however, stop moving upon collision with a wall if no input is received. The ghosts, named: Blinky (red), Pinky (pink), Inky (cyan), and Clyde (orange), each have their own personalities, cannot turn 180 degrees except when they first become edible, move 5% faster than Pac-Man when they are inedible, and move 5% slower when edible. Blinky will move randomly until it sees Pac-Man in its line of sight, and will pursue in his direction until he either eats Pac-Man or reaches an intersection/corner where he then picks a random available direction to look in. If Blinky can no longer find Pac-Man in its direction at this point, it will continue its random behaviour. Pinky will exhibit the same behaviour as Blinky, but there is a random chance it can decide to turn at an intersection and move around a block of the maze to try to intercept Pac-Man on the other side. Inky will exhibit Blinky’s behaviour 75% of the time and wander aimlessly the other 25% of the time while Clyde will exhibit Blinky’s behaviour only 50% of the time.
 </details>
  
-### Details:
-* #### Objects:
-  * Pacman
-    * Variables:
-      * speed
-      * direction
-      * xPos
-      * yPos
-    * Methods:
-      * update()
-      * paint()
-      * getPos()
-      * death()
-  * Ghosts static class
-    * Methods:
-      * paint()
-      * getPos()
-      * death()
-    * Subclasses: Blinky, Pinky, Inky, Clyde
-      * Variables:
-        * speed
-        * Direction
-        * row
-        * col
-        * xPos
-        * yPos
-      * Methods:
-        * update() [specific to the ghost]
-        * changeMode() [update Ghost to vulnerable state]
-  * GameManager Class
-    * Variables:
-      * 2D int Array
-    * Methods:
-      * main()
-      * setup() [use respawn and resetCoin]
-      * update()
-      * paint()
-      * respawn() [reset Ghosts and Pac Man]
-      * resetCoin() [reset all Pac-Dots and Power Pellets]
-      * checkEnding()
-      * displayEnding()
-      * keyListener()
+<details>
+ <summary>Details:</summary>
+ <h4>Objects:</h4>
+ <ul>
+  <li>Pacman
+   <ul>
+    <li>Variables:
+     <ul>
+      <li>speed</li>
+      <li>direction</li>
+      <li>xPos</li>
+      <li>yPos</li>
+     </ul>
+    </li>
+    <li>Methods:
+     <ul>
+      <li>update()</li>
+      <li>paint()</li>
+      <li>getPos()</li>
+      <li>death()</li>
+     </ul>
+    </li>
+   </ul>
+  </li>
+  <li>Ghosts static class
+   <ul>
+    <li>Methods:
+     <ul>
+      <li>paint()</li>
+      <li>getPos()</li>
+      <li>death()</li>
+      </ul>
+     </li>
+    <li>Subclasses: Blinky, Pinky, Inky, Clyde
+     <ul>
+      <li>Variables:
+       <ul>
+        <li>speed</li>
+        <li>Direction</li>
+        <li>row</li>
+        <li>col</li>
+        <li>xPos</li>
+        <li>yPos</li>
+       </ul>
+      </li>
+      <li>Methods:
+       <ul>
+        <li>update() [specific to the ghost]</li>
+        <li>changeMode() [update Ghost to vulnerable state]</li>
+       </ul>
+      </li>
+     </ul>
+     </li>
+   </ul>
+  </li>
+  <li>GameManager Class
+   <ul>
+    <li>Variables:
+     <ul>
+      <li>2D int Array</li>
+     </ul>
+    </li>
+    <li>Methods:
+     <ul>
+      <li>main()</li>
+      <li>setup() [use respawn and resetCoin]</li>
+      <li>update()</li>
+      <li>paint()</li>
+      <li>respawn() [reset Ghosts and Pac Man]</li>
+      <li>resetCoin() [reset all Pac-Dots and Power Pellets]</li>
+      <li>checkEnding()</li>
+      <li>displayEnding()</li>
+      <li>keyListener()</li>
+     </ul>
+     </li>
+   </ul>
+   </li>
+ </ul>
+ </details>
+ 
 #### Details (continued):
 For our game, everything is going to be handled by the GameManager class; this includes: the setup of the game (map, scores, positions etc.), the main update method that checks everything by calling specific checking and updating methods in individual objects, and the GUI drawing methods. When the game starts, the main method will setup the window size and the GUI elements etc. and the setup method is called to set the scores, ghost and Pac-Man properties, collectable item locations, etc. This setup method is also useful for the fact that we can restart the game any time we want and every aspect of the game apart from the main window elements receive a complete reset. Then in the update method is where we can handle object and item locations within a 2D array that is in the GameManager class and do the checking for collisions, controls, points, deaths, spawning, etc. Lastly our paint method should be called by the update method to repaint the frame of the game each time, rendering the newly updated positions and animations and any useful graphic elements. To conclude, game logic and handling will be take place relative to the 2D array we create in the GameManager class, and the GUI will simply paint the elements and map them accordingly to the space using math.
 
@@ -100,3 +138,5 @@ Your program must incorporate programming concepts learned throughout the course
 * Methods & overloading
 * Writing to File
 * Recursion 
+
+# Final Documentation
