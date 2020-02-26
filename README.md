@@ -152,10 +152,8 @@ Our portal implementation differs a bit from the original game. Since we allow t
 
 We also implemented the ability to load and save the maps that the player have created so that when they want to replay a level that they have saved they can easily do so. In the Map Creator window the player can choose from a selection of items on the right side to draw into the map as well as change the lives counter. For debug purposes, we included toggle pos and toggle grid buttons to be able to see behind the scenes as well as a speed multiplier that can make the game run in fast or slow motion.
 </details>
-<details>
  <summary>Screenshots</summary>
  ![Demo gif](out.gif)
-</details>
 <details>
  <summary>Details</summary>
  <br>
