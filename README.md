@@ -2,24 +2,7 @@
 
 ### By: Rain Zhao and Jacky Zhao
 
-### How to setup github (mac os)
-
-1. Create a github account and give me your username or the email you used, then I'll send an invite and you can accept it.
-2. Install git from https://git-scm.com/downloads
-3. (From here on out, type commands using terminal) cd into your folder of choice for workspace (see terminal navigation commands)
-4. Configure your name with `git config --global user.name "Mona Lisa"`
-5. Configure your github email `git config --global user.email "email@example.com"`
-6. Clone this repository `git clone https://github.com/rainzhao2000/pacman.git`
-7. `cd pacman`
-8. Work on files in eclipse
-9. To update your files (in case I made changes) `git pull`
-10. To upload your files (commit and push)
-```
-git add .
-git commit -m "very short description of what you did"
-git push
-```
-Note: First time pushing requires `git push origin master` instead of `git push` and you can check the status of your files at any time with `git status`
+![Demo gif](out.gif)
 
 # Proposal
 
@@ -152,8 +135,6 @@ Our portal implementation differs a bit from the original game. Since we allow t
 
 We also implemented the ability to load and save the maps that the player have created so that when they want to replay a level that they have saved they can easily do so. In the Map Creator window the player can choose from a selection of items on the right side to draw into the map as well as change the lives counter. For debug purposes, we included toggle pos and toggle grid buttons to be able to see behind the scenes as well as a speed multiplier that can make the game run in fast or slow motion.
 </details>
- <summary>Screenshots</summary>
- ![Demo gif](out.gif)
 <details>
  <summary>Details</summary>
  <br>
