@@ -154,6 +154,8 @@ We also implemented the ability to load and save the maps that the player have c
 </details>
 <details>
  <summary>Screenshots</summary>
+ ![Demo gif]
+ (out.gif)
 </details>
 <details>
  <summary>Details</summary>
